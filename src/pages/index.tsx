@@ -9,9 +9,9 @@ export default function Home() {
   //Allows me add patients to JaneHopkins system.
   const addPatient = async () => {
     const addPatientResponse = await entities.patient.add({
-      name: "Jesse",
-      dob: "January 1, 2000",
-      insuranceNumber: "114528972",
+      name: "Vanessa",
+      dob: "March 3, 2000",
+      insuranceNumber: "123456789",
     });
     console.log(addPatientResponse);
   }
