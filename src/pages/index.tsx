@@ -5,6 +5,7 @@ import DataTable from '@/components/data-table';
 import Users from "@/api/Users";
 import AddPatientForm from "@/components/AddPatientForm";
 import SideMenu from "@/components/SubMenu";
+
 import StartStudyButton from "@/components/StartStudyButton";
 
 export default function Home() {
@@ -12,7 +13,6 @@ export default function Home() {
 
   // 0 == not started, 1 == started, 2 == finished
   const [studyStatus, setStudyStatus] = React.useState(0);
-
   const onChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
 
     console.log("ASDASD");
@@ -36,9 +36,9 @@ export default function Home() {
     <>
       <ResponsiveAppBar />
       <br></br>
-      <StartStudyButton studyStatus={studyStatus} setStudyStatus={setStudyStatus} />
-      <Container  maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
 
+  <StartStudyButton studyStatus={studyStatus} setStudyStatus={setStudyStatus} />
+      <Container maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
         <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px'}}>
           <SideMenu/>
           <FormControl>
