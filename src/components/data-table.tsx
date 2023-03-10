@@ -1,5 +1,5 @@
 import useJaneHopkins from "@/api/useJaneHopkins";
-import Users from "@/lib/Users";
+import Users from "@/api/Users";
 import { DataGrid, GridColDef, GridRowModel } from "@mui/x-data-grid"
 import React, { useEffect } from "react";
 import AddPatientForm from "./AddPatientForm";

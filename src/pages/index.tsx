@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from "react";
 import ResponsiveAppBar from '@/components/Appbar';
 import { Typography, Button, Box, Stack, Modal, TextField, OutlinedInput, FormControl, InputAdornment, FormHelperText, FormLabel, RadioGroup, FormControlLabel, Radio, Container, Drawer } from '@mui/material';
 import DataTable from '@/components/data-table';
-import Users from "@/lib/Users";
+import Users from "@/api/Users";
 import AddPatientForm from "@/components/AddPatientForm";
 import SideMenu from "@/components/SubMenu";
 
@@ -31,7 +31,7 @@ export default function Home() {
     <>
       <ResponsiveAppBar />
       <br></br>
-      <Container  maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
+      <Container maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
 
         <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px'}}>
           <SideMenu/>
