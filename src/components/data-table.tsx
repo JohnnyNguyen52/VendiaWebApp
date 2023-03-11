@@ -1,14 +1,14 @@
+import { BatchNumberAPI } from "@/api/BatchNumberAPI";
 import useJaneHopkins from "@/api/useJaneHopkins";
 import Users from "@/api/Users";
 import { DataGrid, GridColDef, GridRowModel } from "@mui/x-data-grid"
 import React, { useEffect } from "react";
 
-import AddPatientForm from "./AddPatientForm";
-
 function removePII(columns: GridColDef[]) {
     columns.splice(columns.findIndex(i => i.field == 'patientPicture'), 1);
     columns.splice(columns.findIndex(i => i.field == 'name'), 1);
 }
+
 /**
  * Data Table used to display patient info.
  * Mark rows or columns as editable if necessary. e.g columns={[{ field: 'name', editable: true }]}
@@ -20,6 +20,7 @@ function removePII(columns: GridColDef[]) {
 function DataTable({ currentUser }: { currentUser: Users }) {
     const { entities } = useJaneHopkins();
     const [patients, setPatients] = React.useState<any[]>([]);
+    const [drugs, setDrugs] = React.useState<any[]>([]);
 
     let rows: any[] = [];
 
@@ -27,8 +28,7 @@ function DataTable({ currentUser }: { currentUser: Users }) {
         { field: 'patientPicture', headerName: 'Picture', width: 125 },
         { field: 'id', headerName: 'ID', width: 300 },
         { field: 'name', headerName: 'Name', width: 150 },
-        { field: 'dob', headerName: 'Date of Birth', width: 175 },
-        { field: 'uuid', headerName: 'UUID', width: 100 },
+        { field: 'dob', headerName: 'Date of Birth', width: 100 },
     ];
 
     //List patients
@@ -37,10 +37,21 @@ function DataTable({ currentUser }: { currentUser: Users }) {
         setPatients(patientList.items);
 
     };
+    const listDrugs = async () => {
+        let drugs = await entities.drug.list();
+        setDrugs(drugs.items);
+    };
 
     useEffect(() => {
         listPatients();
+        listDrugs();
     });
+
+    // return true if placebo, false if not placebo
+    const getBatchNumberPlacebo = (batchNumber) =>
+    {
+        return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
+    }
 
     if (currentUser == Users.BavariaAdmin) {
         removePII(columns);
@@ -55,12 +66,17 @@ function DataTable({ currentUser }: { currentUser: Users }) {
     }
     else if (currentUser == Users.FDAAdmin) {
         removePII(columns);
+        columns.push({ field: 'batchNumber', headerName: 'Batch #', width: 100 });
+        columns.push({ field: 'placebo', headerName: 'placebo', width: 100 });
+
         //Pushes out the info to the data table.
         for (let i = 0; i < patients.length; i++) {
             rows.push({
                 id: patients[i]._id,
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
+                batchNumber: patients[i].batchNumber,
+                placebo: getBatchNumberPlacebo(patients[i].batchNumber)
             });
         }
 
