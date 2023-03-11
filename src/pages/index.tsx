@@ -7,6 +7,7 @@ import AddPatientForm from "@/components/AddPatientForm";
 import SideMenu from "@/components/SubMenu";
 
 import StartStudyButton from "@/components/StartStudyButton";
+import AssignBatchNumberButton from "@/components/AssignBatchNumberButton";
 
 export default function Home() {
   const [currentUser, setCurrentuser] = React.useState<Users>(Users.JHDoctor);
@@ -37,6 +38,7 @@ export default function Home() {
       <ResponsiveAppBar />
       <br></br>
 
+    <AssignBatchNumberButton />
   <StartStudyButton studyStatus={studyStatus} setStudyStatus={setStudyStatus} />
       <Container maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
         <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px'}}>
