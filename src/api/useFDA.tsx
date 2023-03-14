@@ -10,15 +10,8 @@ const client = createVendiaClient({
 
 const { entities }: any = client;
 
-type Patient = {
-  icd10: { code: string };
-  dob: string;
-};
-
-
-
-const useFDA = (): { entities: any[]; checkPatientEligibility: (patient: Patient) => Promise<boolean> } => {
-  return { entities, checkPatientEligibility };
-};
+const useFDA = () => {
+  return { entities };
+}
 
 export default useFDA;
