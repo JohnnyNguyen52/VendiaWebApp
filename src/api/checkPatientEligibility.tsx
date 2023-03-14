@@ -4,7 +4,7 @@ export default function isPatientEligible(patient: any): boolean {
     const dob = new Date(patient.dob);
 
     // Exclude ICD-10 Pregnancy codes
-    if (healthCodes.find((x) => {x == '009' || x == '010'}) != undefined)
+    if (healthCodes.find((x) => {x.startsWith('O')}) != undefined)
     {
         return false
     }
