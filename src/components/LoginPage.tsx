@@ -1,5 +1,6 @@
-import { Button, Container, Link, makeStyles, TextField, Typography } from '@mui/material';
+import { Button, Container, TextField, Typography } from '@mui/material';
 import React, { useState, FormEvent } from 'react';
+import Link from 'next/link';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -13,12 +14,13 @@ function LoginPage() {
 
   return (
     <Container maxWidth="sm">
-      <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center'
-    }}>
+      <div style={{
+        marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center'
+      }}>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form style={{width: '100%', marginTop: '1px'}} onSubmit={handleSubmit}>
+        <form style={{ width: '100%', marginTop: '1px' }} onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -45,23 +47,19 @@ function LoginPage() {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-          >
-            Sign In
-          </Button>
-          <Link href="#" variant="body2">
-            Forgot password?
-          </Link>
-          <Link href="#" variant="body2">
-            {"Don't have an account? Sign Up"}
+          <Link href="/home" passHref>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+            >
+              Sign In
+            </Button>
           </Link>
         </form>
       </div>
-    </Container>
+    </Container >
   );
 }
 
