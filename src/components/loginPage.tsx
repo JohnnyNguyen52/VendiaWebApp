@@ -1,25 +1,7 @@
+import { Button, Container, Link, makeStyles, TextField, Typography } from '@mui/material';
 import React, { useState, FormEvent } from 'react';
-import { Container, Typography, TextField, Button, Link } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
 
 function LoginPage() {
-  const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -31,11 +13,12 @@ function LoginPage() {
 
   return (
     <Container maxWidth="sm">
-      <div className={classes.root}>
+      <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center'
+    }}>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <form style={{width: '100%', marginTop: '1px'}} onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -67,7 +50,6 @@ function LoginPage() {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
           >
             Sign In
           </Button>
