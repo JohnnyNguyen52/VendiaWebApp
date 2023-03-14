@@ -8,7 +8,7 @@ import SideMenu from "@/components/SubMenu";
 
 import StartStudyButton from "@/components/StartStudyButton";
 import AssignBatchNumberButton from "@/components/AssignBatchNumberButton";
-import LoginPage from "@/components/loginPage";
+import LoginPage from "@/components/LoginPage";
 
 export default function Home() {
   const [currentUser, setCurrentuser] = React.useState<Users>(Users.JHDoctor);
