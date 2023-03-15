@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useReducer } from "react";
 import LoginPage from "@/components/loginPage";
 
+
 export default function index() {
   return (
     <LoginPage />
+
   );
 }
 
