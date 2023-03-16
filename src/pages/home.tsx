@@ -5,7 +5,6 @@ import DataTable from '@/components/data-table';
 import Users from "@/api/Users";
 import AddPatientForm from "@/components/AddPatientForm";
 import SideMenu from "@/components/SubMenu";
-
 import StartStudyButton from "@/components/StartStudyButton";
 import AssignBatchNumberButton from "@/components/AssignBatchNumberButton";
 
@@ -13,9 +12,11 @@ export default function Home() {
   const [currentUser, setCurrentuser] = React.useState<Users>(Users.JHDoctor);
 
   // 0 == not started, 1 == started, 2 == finished
-  const [studyStatus, setStudyStatus] = React.useState(0);
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
+  let d: any = "";
+  fetch("http://localhost:3000/api/items/studyStatus").then((response) => response.json()).then((data) => { d = data });
+  const [studyStatus, setStudyStatus] = React.useState(d.studyStatus);
 
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
     console.log("ASDASD");
     switch (value) {
       case "Users.JHDoctor":
