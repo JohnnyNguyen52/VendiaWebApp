@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
-import LoginPage from "@/components/loginPage";
+import LoginPage from "@/components/LoginPage";
 
 
 export default function index() {
