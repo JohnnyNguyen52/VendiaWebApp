@@ -8,6 +8,7 @@ import { Patient } from "..";
 import isPatientEligible from "../api/checkPatientEligibility"
 interface Props {
   onAddPatient: (patient: Patient) => void;
+  
 }
 
 const AddPatientForm: React.FC<Props> = ({ onAddPatient }) => {
