@@ -1,47 +1,35 @@
-import { Button } from "@mui/material";
-import React from "react";
+import { VendiaWebAppAPI } from "@/api/VendiaWebAppAPI";
+import { Button, setRef } from "@mui/material";
+import React, { useEffect } from "react";
 
-export default function StartStudyButton({ studyStatus, setStudyStatus }
-    : { studyStatus: number, setStudyStatus: React.Dispatch<React.SetStateAction<number>> }) {
+export default function StartStudyButton() {
+    const [refreshKey, setRefreshKey] = React.useState(false);
+    const [status, setStatus] = React.useState(-1);
 
-        let defaultVar = ""
-        switch (studyStatus) {
-            case 0:
-                defaultVar = "Start Study";
-                break;
-            
-            case 1:
-                defaultVar = "Finish Study";
-                break;
+    const onClick = () => {
+        setRefreshKey(!refreshKey);
+    }
 
-            case 2:
-                defaultVar = "Study Finished";
-                break;
-        
-            default:
-                break;
-        }
-        const [status, setStatus] = React.useState(defaultVar);
+    useEffect(() => {
+        const fetchStatus = async () => {
+            let s: number = await VendiaWebAppAPI.getStudyStatus() as number;
+            switch (s) {
+                case 0:
+                    setStatus(await VendiaWebAppAPI.setStudyStatus(1));
+                    break;
 
-        const onClick = () =>
-        {
-        switch (studyStatus) {
-            case 0:
-                setStatus("Finish Study");
-                setStudyStatus(1);
-                break;
-            case 1:
-                setStatus("Study Finished");
-                setStudyStatus(2);
-                break;
-            case 2:
-                setStatus("Reset Study");
-                setStudyStatus(0);
-                break;
-        }
+                case 1:
+                    setStatus(await VendiaWebAppAPI.setStudyStatus(2));
+                    break;
+
+                case 2:
+                    setStatus(await VendiaWebAppAPI.setStudyStatus(0));
+                    break;
+            }
         }
 
-    
+        fetchStatus();
+    }, [refreshKey])
 
     return (
         <Button onClick={onClick} variant="contained">{status}</Button>
