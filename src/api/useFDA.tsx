@@ -9,6 +9,7 @@ const client = createVendiaClient({
 })
 
 const { entities }: any = client;
+
 const useFDA = () => {
   return { entities };
 }
