@@ -1,15 +1,22 @@
 import { useState } from 'react';
 
-function onRowClick(patient) {
-  // Update the state with the selected patient
-  setSelectedPatient(patient);
+interface Patient {
+  name: string;
+  location: string;
+  dob: string;
+  patientPicture?: string;
+  batchNumber?: string;
 }
 
-function SideMenu({ patient }) {
-  const [selectedPatient, setSelectedPatient] = useState(null);
+interface SideMenuProps {
+  patient: Patient;
+}
+
+function SideMenu({ patient }: SideMenuProps) {
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
 
   // Exclude info based on user access
-  let patientInfo = {};
+  let patientInfo: Partial<Patient> = {};
   if (patient.location === 'Jane Hopkins') {
     patientInfo = { dob: patient.dob };
   } else if (patient.location === 'Bavaria') {
@@ -23,6 +30,11 @@ function SideMenu({ patient }) {
     delete patientInfo.patientPicture;
   } else {
     patientInfo = { ...patient };
+  }
+
+  function onRowClick(patient: Patient) {
+    // Update the state with the selected patient
+    setSelectedPatient(patient);
   }
 
   return (

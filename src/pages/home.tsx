@@ -17,7 +17,7 @@ export default function Home() {
   const [studyStatus, setStudyStatus] = React.useState(d.studyStatus);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
-    console.log("ASDASD");
+    console.log("passed value ->", value);
     switch (value) {
       case "Users.JHDoctor":
         setCurrentuser(Users.JHDoctor);
@@ -36,7 +36,7 @@ export default function Home() {
 
   return (
     <>
-      <ResponsiveAppBar />
+    {/* <ResponsiveAppBar/> */}
       <br></br>
 
     <AssignBatchNumberButton />
