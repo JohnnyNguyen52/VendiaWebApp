@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
@@ -23,11 +22,18 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import PersonIcon from '@mui/icons-material/Person';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import BiotechIcon from '@mui/icons-material/Biotech';
+import AssignBatchNumberButton from '@/components/AssignBatchNumberButton';
+import StartStudyButton from '@/components/StartStudyButton';
+import { start } from 'repl';
+
 
 const pages = ['Home', 'Products', 'Pricing', 'Help'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-const functionPages = ['Start Study', 'Assign Batch Number'];
+const functionButtons = [StartStudyButton, AssignBatchNumberButton];
 const drawerWidth = 250;
+
+
+
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -190,7 +196,7 @@ export default function ResponsiveAppBar() {
           ))}
         </List>
         <Divider />
-        {functionPages.map((text, index) => (
+        {/* {functionPages.map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
               sx={{
@@ -209,9 +215,41 @@ export default function ResponsiveAppBar() {
                 <ListItemText primary={text}  sx={{ opacity: open ? 1 : 0 }}/>
               </ListItemButton>
             </ListItem>
+          ))} */}
+          
+          <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <StartStudyButton/> 
+              <AssignBatchNumberButton/>
+                <ListItemText sx={{ opacity: open ? 1 : 0 }}/>
+            </ListItem>
+        </List>
+
+
+
+        {/* <List>
+          {functionButtons.map((button, index) => (
+            <ListItem key={button.name} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,}}>
+                <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}>
+                  {index === 0 ? <BiotechIcon /> 
+                  : index === 1 ? <AssignmentTurnedInIcon /> : null} 
+                </ListItemIcon>
+                <ListItemText primary={button.name}  sx={{ opacity: open ? 1 : 0 }}/>
+              </ListItemButton>
+            </ListItem>
           ))}
-
-
+        </List> */}
+        
       </Drawer>
       
       </Box>
