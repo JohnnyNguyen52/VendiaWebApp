@@ -1,11 +1,14 @@
 import useJaneHopkins from "@/api/useJaneHopkins";
-import { Box, Button, FormControl, FormHelperText, InputAdornment, Modal, OutlinedInput, TextField } from "@mui/material";
+import { Checkbox, FormControlLabel, Box, Button, FormControl, FormHelperText, InputAdornment, Modal, OutlinedInput, TextField } from "@mui/material";
 import { useReducer, useState } from "react";
+import useRefreshKey from "@/api/useRefreshKey";
+
 
 function AddPatientForm()
 {
     const { entities } = useJaneHopkins();
     const [openViewModal, setOpenViewModal] = useState(false);//set to false so that it is closed
+    const {count, setCount} : any = useRefreshKey();
 
     const handleCloseView = () => setOpenViewModal(false);
   //This creates the "name: formInput[0].name" to be set into the formInput that is above this.
@@ -25,6 +28,17 @@ function AddPatientForm()
       weight: "",
       insuranceNumber: "",
       address:"",
+      bloodPressure:"",
+      temperature:"",
+      oxygenSaturation:"",
+      uuid:"",
+      currentMedications:[],
+      familyHistory:"",
+      currentlyEmployed:"",
+      currentlyInsured:"",
+      icdHealthCodes:[],
+      allergies:[],
+      visits:[],
 
     }
   );
@@ -37,6 +51,18 @@ function AddPatientForm()
       weight:formInput.weight,
       insuranceNumber:formInput.insuranceNumber,
       address:formInput.address,
+      bloodPressure:formInput.bloodPressure,
+      temperature:formInput.temperature,
+      oxygenSaturation:formInput.oxygenSaturation,
+      uuid:formInput.uuid,
+      currentMedications:formInput.currentMedications,
+      familyHistory:formInput.familyHistory,
+      currentlyEmployed:formInput.currentlyEmployed,
+      currentlyInsured:formInput.currentlyInsured,
+      icdHealthCodes:formInput.icdHealthCodes,
+      allergies:formInput.allergies,
+      visits:formInput.visits,
+     
       },
       {
         aclInput:{
@@ -52,21 +78,37 @@ function AddPatientForm()
         },
       }
     );
-    
+    setCount(count+1)
+      console.log("JA - "+count);
     setOpenViewModal(false); //Closes it
+    
   };
 
   //This will reset the appearance of the form. Making blank once you enter it again.
   //Probably a better way to do this.
   const resetFormInput = async () =>{
-    console.log("reached here");
+   
     formInput.name = "";
     formInput.dob = "";
     formInput.height = "";
     formInput.weight = "";
     formInput.insuranceNumber = "";
     formInput.address = "";
+    formInput.bloodPressure= "";
+    formInput.temperature = "";
+    formInput.oxygenSaturation = "";
+    formInput.uuid = "";
+    formInput.currentMedications = [];
+    formInput.familyHistory = "";
+    formInput.currentlyEmployed = "";
+    formInput.currentlyInsured = "";
+    formInput.icdHealthCodes = [];
+    formInput.allergies = [];
+    formInput.visits = [];
   };
+
+
+
     return(
         <>
       <Button 
@@ -118,15 +160,7 @@ function AddPatientForm()
           >
             <TextField sx = {{m: 1,width: 200 }} helperText="Address" name="address" onChange={handleInput}defaultValue={formInput.address} />
           </Box>
-          <Box sx={{
-            display: "flex",
-            justifyContent: "left",
-            alignItems: "center",
-            m:2,      
-            }}
-          >
-            <TextField sx = {{m: 1,width: 200 }} helperText="Insurance" name="insuranceNumber" onChange={handleInput} defaultValue={formInput.insuranceNumber}/>
-          </Box>
+         
           <Box sx={{
             display: "flex",
             justifyContent: "left",
@@ -164,6 +198,68 @@ function AddPatientForm()
             </FormControl>
             
             </Box>
+            <Box sx={{
+            display: "flex",
+            justifyContent: "left",
+            alignItems: "center",
+            m:2,      
+            }}
+          >
+            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+            <OutlinedInput
+              id="outlined-adornment-bloodPressure"
+              endAdornment={<InputAdornment position="end">mm Hg</InputAdornment>}
+              aria-describedby="outlined-bloodPressure-helper-text"
+              inputProps={{
+                'aria-label': 'bloodPressure',
+              }}
+              name="bloodPressure"
+              onChange={handleInput}
+              defaultValue={formInput.bloodPressure}
+            />
+            <FormHelperText id="outlined-height-helper-text">Blood Pressure</FormHelperText>
+            </FormControl>
+            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+            <OutlinedInput
+              id="outlined-adornment-weight"
+              endAdornment={<InputAdornment position="end">°F</InputAdornment>}
+              aria-describedby="outlined-temperature-helper-text"
+              inputProps={{
+                'aria-label': 'temperature',
+              }}
+              name="temperature"
+              onChange={handleInput}
+              defaultValue={formInput.temperature}
+              
+            />
+            <FormHelperText id="outlined-weight-helper-text">Temperature</FormHelperText>
+            </FormControl>
+            
+            </Box>
+            <Box sx={{
+            display: "flex",
+            justifyContent: "left",
+            alignItems: "center",
+            m:2,      
+            }}
+          >
+            <FormControlLabel
+              value="currentlyEmployed"
+              control={<Checkbox 
+              />}
+              label="Currently Employed"
+              labelPlacement="end"
+        />
+        <FormControlLabel
+              value="currentlyInsured"
+              control={<Checkbox />}
+              label="Currently Insured"
+              labelPlacement="end"
+        />
+            </Box>
+
+
+
         <Box>
           <Button 
             variant="contained"
@@ -174,6 +270,7 @@ function AddPatientForm()
             variant="outlined"
             onClick={() => {
               setOpenViewModal(false);
+
             }}
           >Cancel
           </Button></Box>
