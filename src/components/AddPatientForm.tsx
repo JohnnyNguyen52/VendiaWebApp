@@ -187,7 +187,7 @@ function AddPatientForm()
             <FormHelperText id="outlined-weight-helper-text">Weight</FormHelperText>
             </FormControl>
             
-            </Box>
+            </Box>            
         <Box>
           <Button 
             variant="contained"
