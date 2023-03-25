@@ -16,6 +16,15 @@
       "items": {
         "type": "object",
         "properties": {
+          "eligible": {
+            "type": "boolean"
+          },
+          "dosesID": {
+            "type": "string"
+          },
+          "currentlyReceivedDoses": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },

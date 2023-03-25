@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import Users from "@/api/Users";
 import { Box, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Container } from '@mui/material';
+
+
 const SubMenu = ({ setUserTYpe })=> {
 
+
   const [currentUser, setCurrentuser] = React.useState<Users>(Users.JHDoctor);
+
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
     console.log("passed value ->", value);
@@ -23,13 +27,16 @@ const SubMenu = ({ setUserTYpe })=> {
     }
   };
 
+
   useEffect(() => {
     setUserTYpe(currentUser)
-  }, [currentUser])
+  }, [currentUser]);
+
 
   return (
     <>
       <h2>Side menu (Placeholder, will be used to show selected patient data)</h2>
+
 
       <FormControl>
         <FormLabel id="form-user">User</FormLabel>
@@ -48,5 +55,6 @@ const SubMenu = ({ setUserTYpe })=> {
     </>
   );
 }
+
 
 export default SubMenu;
