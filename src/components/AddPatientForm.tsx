@@ -30,6 +30,7 @@ function AddPatientForm() {
   };
   const handleCheckbox = (evt: any) => {
     const { name, checked } = evt.target;
+    const value = checked ? "yes" : "no";
     setFormInput({ ...formInput, [name]: checked });
   };
   const handlePictureUpload = (evt: any) => {
@@ -63,8 +64,8 @@ function AddPatientForm() {
       address: "",
       currentMedications: [], // as string array
       familyHistory: "",
-      currentlyEmployed: false,
-      currentlyInsured: false,
+      currentlyEmployed: "No",
+      currentlyInsured: "No",
       icdHealthCodes: [], // as string array
       allergies: [], // as string array
     }
