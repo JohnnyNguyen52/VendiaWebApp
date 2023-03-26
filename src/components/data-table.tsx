@@ -1,6 +1,6 @@
 import { BatchNumberAPI } from "@/api/BatchNumberAPI";
 import useJaneHopkins from "@/api/useJaneHopkins";
-
+import useRefreshKey from "@/api/useRefreshKey";
 import Users from "@/api/Users";
 import { DataGrid, GridColDef, GridRowModel } from "@mui/x-data-grid"
 import React, { useEffect } from "react";
@@ -22,6 +22,8 @@ function DataTable({ currentUser }: { currentUser: Users }) {
     const { entities } = useJaneHopkins();
     const [patients, setPatients] = React.useState<any[]>([]);
     const [drugs, setDrugs] = React.useState<any[]>([]);
+    const {count, setCount} : any = useRefreshKey();
+
 
     let rows: any[] = [];
 
@@ -46,14 +48,12 @@ function DataTable({ currentUser }: { currentUser: Users }) {
     useEffect(() => {
         listPatients();
         listDrugs();
-    }, []);
+    },[count]);
 
     // return true if placebo, false if not placebo
-    const getBatchNumberPlacebo = (batchNumber) =>
+    const getBatchNumberPlacebo = (batchNumber:any) =>
     {
-        if(drugs.length >0)
-            return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
-        return "";
+        return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
     }
 
     if (currentUser == Users.BavariaAdmin) {

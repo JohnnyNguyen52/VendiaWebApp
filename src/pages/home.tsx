@@ -19,24 +19,7 @@ export default function Home() {
   });
   const [studyStatus, setStudyStatus] = React.useState(d.studyStatus);
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
-    console.log("passed value ->", value);
-    switch (value) {
-      case "Users.JHDoctor":
-        setCurrentuser(Users.JHDoctor);
-        break;
-      case "Users.JHAdmin":
-        setCurrentuser(Users.JHAdmin);
-        break;
-      case "Users.FDAAdmin":
-        setCurrentuser(Users.FDAAdmin);
-        break;
-      case "Users.BavariaAdmin":
-        setCurrentuser(Users.BavariaAdmin);
-        break;
-    }
-  }
-
+  
   return (
     <>
     {/* <ResponsiveAppBar/> */}
@@ -46,21 +29,7 @@ export default function Home() {
   <StartStudyButton studyStatus={studyStatus} setStudyStatus={setStudyStatus} />
       <Container maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
         <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px'}}>
-          <SideMenu/>
-          <FormControl>
-            <FormLabel id="form-user">User</FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="Users.JHDoctor"
-              name="radio-buttons-group"
-              onChange={onChange}
-            >
-              <FormControlLabel value="Users.JHDoctor" control={<Radio />} label="JHDoctor" />
-              <FormControlLabel value="Users.JHAdmin" control={<Radio />} label="JHAdmin" />
-              <FormControlLabel value="Users.FDAAdmin" control={<Radio />} label="FDAAdmin" />
-              <FormControlLabel value="Users.BavariaAdmin" control={<Radio />} label="BavariaAdmin" />
-            </RadioGroup>
-          </FormControl>
+          <SideMenu setUserTYpe={setCurrentuser}/>
         </Box>
 
         <Box sx={{flexGrow: 1}}>

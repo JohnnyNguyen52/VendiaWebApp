@@ -26,7 +26,6 @@ function Datagrid() {
           ))}
         </tbody>
       </table>
-      <SideMenu patient={selectedPatient} />
     </div>
   );
 }
