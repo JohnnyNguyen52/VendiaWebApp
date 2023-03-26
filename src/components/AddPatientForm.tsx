@@ -240,13 +240,15 @@ function AddPatientForm() {
               }}
             >
               {/* Second column content */}
-              <Input
+              <label>Upload Image:</label>
+              <Input 
                 type="file"
                 name="image"
                 sx={{ m: 1 }}
                 inputProps={{
                   accept: "image/*",
                   onChange: handlePictureUpload,
+                  
                 }}
               />
               <TextField
