@@ -9,6 +9,10 @@ import {
   Modal,
   OutlinedInput,
   TextField,
+  Input,
+  MenuItem,
+  Select,
+  InputLabel,
 } from "@mui/material";
 import { sizeHeight } from "@mui/system";
 import { useReducer, useState } from "react";
@@ -28,6 +32,25 @@ function AddPatientForm() {
     const { name, checked } = evt.target;
     setFormInput({ ...formInput, [name]: checked });
   };
+  const handlePictureUpload = (evt: any) => {
+    const file = evt.target.files && evt.target.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      setFormInput({
+        ...formInput,
+        patientPicture: e.target.result,
+      });
+    };
+
+    reader.readAsDataURL(file);
+  };
+
   //This stores the info that you inputted.
   const [formInput, setFormInput] = useReducer(
     (state: any, newState: any) => ({ ...state, ...newState }),
@@ -127,28 +150,34 @@ function AddPatientForm() {
             sx={{
               position: "absolute",
               top: "50%",
-              margin: "5%  0%",
               left: "50%",
-              padding: "5% 0%",
               transform: "translate(-50%, -50%)",
               width: "80%",
-              maxWidth: 600,
+              maxWidth: 1000,
               backgroundColor: "#fff",
               boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)",
               borderRadius: "8px",
               p: 4,
-              columnCount: 2,
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              gap: "16px",
               zIndex: 1059,
             }}
           >
+            <label style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Patient Information</label>
+
+
             <Box
               sx={{
+                gridColumn: "1 / 2",
                 display: "flex",
-                justifyContent: "left",
-                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "flex-start",
                 m: 2,
               }}
             >
+              {/* First column content */}
               <TextField
                 sx={{ m: 1, width: 200 }}
                 helperText="Name"
@@ -164,47 +193,7 @@ function AddPatientForm() {
                 onChange={handleInput}
                 defaultValue={formInput.dob}
               />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "left",
-                alignItems: "center",
-                m: 2,
-              }}
-            >
-              <TextField
-                sx={{ m: 2, width: 200 }}
-                helperText="Address"
-                name="address"
-                onChange={handleInput}
-                defaultValue={formInput.address}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "left",
-                alignItems: "center",
-                m: 2,
-              }}
-            >
-              <TextField
-                sx={{ m: 1, width: 200 }}
-                helperText="Insurance"
-                name="insuranceNumber"
-                onChange={handleInput}
-                defaultValue={formInput.insuranceNumber}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "left",
-                alignItems: "center",
-                m: 2,
-              }}
-            >
+
               <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
                 <OutlinedInput
                   id="outlined-adornment-height"
@@ -239,30 +228,78 @@ function AddPatientForm() {
                 </FormHelperText>
               </FormControl>
             </Box>
+
             <Box
               sx={{
+                gridColumn: "2 / 3",
                 display: "flex",
-                justifyContent: "left",
-                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "flex-start",
                 m: 2,
               }}
             >
+              {/* Second column content */}
+              <Input
+                type="file"
+                name="image"
+                sx={{ m: 1 }}
+                inputProps={{
+                  accept: "image/*",
+                  onChange: handlePictureUpload,
+                }}
+              />
               <TextField
-                sx={{ m: 1, width: 200 }}
+                sx={{ m: 2, width: 200 }}
                 helperText="Address"
                 name="address"
                 onChange={handleInput}
                 defaultValue={formInput.address}
               />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "left",
-                alignItems: "center",
-                m: 2,
-              }}
-            >
+
+              <FormControl sx={{ minWidth: 120, marginBottom: 2 }}>
+                <InputLabel id="icd-health-codes-label">
+                  ICD Health Codes
+                </InputLabel>
+                <Select
+                  labelId="icd-health-codes-label"
+                  id="icd-health-codes"
+                  multiple
+                  value={formInput.icdHealthCodes}
+                  onChange={handleInput}
+                  defaultValue={formInput.icdHealthCodes}
+                  inputProps={{
+                    name: "icdHealthCodes",
+                    id: "icd-health-codes",
+                  }}
+                >
+                  <MenuItem value="A01.0">A01.0</MenuItem>
+                  <MenuItem value="A01.1">A01.1</MenuItem>
+                  <MenuItem value="A01.2">A01.2</MenuItem>
+                  <MenuItem value="A02.0">A02.0</MenuItem>
+                  <MenuItem value="A02.1">A02.1</MenuItem>
+                  <MenuItem value="A02.2">A02.2</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl sx={{ minWidth: 120, marginBottom: 2 }}>
+                <InputLabel id="allergies-label">Allergies</InputLabel>
+                <Select
+                  labelId="allergies-label"
+                  id="allergies"
+                  multiple
+                  value={formInput.allergies}
+                  onChange={handleInput}
+                  defaultValue={formInput.allergies}
+                  inputProps={{ name: "allergies", id: "allergies" }}
+                >
+                  <MenuItem value="Peanuts">Peanuts</MenuItem>
+                  <MenuItem value="Shellfish">Shellfish</MenuItem>
+                  <MenuItem value="Dairy">Dairy</MenuItem>
+                  <MenuItem value="Eggs">Eggs</MenuItem>
+                  <MenuItem value="Soy">Soy</MenuItem>
+                  <MenuItem value="Wheat">Wheat</MenuItem>
+                </Select>
+              </FormControl>
               <TextField
                 sx={{ m: 1, width: 200 }}
                 helperText="Insurance"
@@ -271,14 +308,19 @@ function AddPatientForm() {
                 defaultValue={formInput.insuranceNumber}
               />
             </Box>
+
             <Box
               sx={{
+                gridColumn: "3 / 4",
                 display: "flex",
-                justifyContent: "left",
-                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "flex-start",
                 m: 2,
               }}
             >
+              {/* Third column content */}
+            
               <TextField
                 sx={{ m: 1, width: 200 }}
                 helperText="Current Medications"
@@ -286,31 +328,13 @@ function AddPatientForm() {
                 onChange={handleInput}
                 defaultValue={formInput.currentMedications}
               />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "left",
-                alignItems: "center",
-                m: 2,
-              }}
-            >
               <TextField
                 sx={{ m: 1, width: 200 }}
                 helperText="Family History"
                 name="familyHistory"
                 onChange={handleInput}
                 defaultValue={formInput.familyHistory}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                m: 2,
-              }}
-            >
+              />{" "}
               <FormControl>
                 <Checkbox
                   checked={formInput.currentlyEmployed}
@@ -325,15 +349,8 @@ function AddPatientForm() {
                 />
                 Currently Insured
               </FormControl>
+              {/*                */}
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                m: 2,
-              }}
-            ></Box>
 
             <Box>
               <Button variant="contained" onClick={handleAdd}>
