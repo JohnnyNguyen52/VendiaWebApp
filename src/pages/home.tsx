@@ -13,7 +13,10 @@ export default function Home() {
 
   // 0 == not started, 1 == started, 2 == finished
   let d: any = "";
-  fetch("http://localhost:3000/api/items/studyStatus").then((response) => response.json()).then((data) => { d = data });
+  fetch("http://localhost:3000/api/items/studyStatus").then((response) => response.json()).then((data) => { d = data })
+  .catch((error) => {
+   //  console.log("Error fetching data:", error);
+  });
   const [studyStatus, setStudyStatus] = React.useState(d.studyStatus);
   const [nextcomponent, setNextcomponent] = React.useState();
   

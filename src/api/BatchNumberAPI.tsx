@@ -9,7 +9,7 @@ export class BatchNumberAPI {
 
         // Fetch the 2 batch numbers. Should only be 2 in the table.
         let batchNumbers: string[] = [];
-        drugs.items.forEach(drug => {
+        drugs.items.forEach((drug: any) => {
             if (batchNumbers.find(drug.batchNumber) == undefined) {
                 batchNumbers.push(drug.batchNumber);
             }
@@ -27,7 +27,7 @@ export class BatchNumberAPI {
         let batchNumbers = await this.getBatchNumbers();
 
         // Randomly select a batch number for each patient.
-        patients.items.forEach(patient => {
+        patients.items.forEach((patient: any)=> {
             let x = 0;
             if (Math.random() > .5) {
                 x = 1

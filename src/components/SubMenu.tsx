@@ -7,6 +7,7 @@ const SubMenu = ({setUserTYpe}:{setUserTYpe: any})=> {
 
   const [currentUser, setCurrentuser] = React.useState<Users>(Users.JHDoctor);
 
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
     console.log("passed value ->", value);
     switch (value) {
@@ -25,13 +26,16 @@ const SubMenu = ({setUserTYpe}:{setUserTYpe: any})=> {
     }
   };
 
+
   useEffect(() => {
     setUserTYpe(currentUser)
-  }, [currentUser])
+  }, [currentUser]);
+
 
   return (
     <div style={{marginLeft: "40px"}}>
       <h2>Side menu </h2>
+
 
       <FormControl>
         <FormLabel id="form-user">User</FormLabel>
@@ -50,5 +54,6 @@ const SubMenu = ({setUserTYpe}:{setUserTYpe: any})=> {
     </div>
   );
 }
+
 
 export default SubMenu;
