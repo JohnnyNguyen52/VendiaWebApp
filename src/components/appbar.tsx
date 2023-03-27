@@ -107,7 +107,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-export default function ResponsiveAppBar() {
+export default function ResponsiveAppBar({clickedOption}:{clickedOption: any}) {
     // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -129,6 +129,7 @@ export default function ResponsiveAppBar() {
 
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    //const [clickedOption, setClickedOption] = React.useState("");
 
     const handleDrawerOpen = () => {
       setOpen(true);
@@ -138,7 +139,10 @@ export default function ResponsiveAppBar() {
       setOpen(false);
     };
 
-
+    const onclickhandle = (index: any) => {
+      console.log("You have clicked here")
+      clickedOption("test"+index)
+    }
     return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -167,7 +171,7 @@ export default function ResponsiveAppBar() {
           
         <List>
           {settings.map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+            <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => {clickedOption(index)}}>
               <ListItemButton
               sx={{
                 minHeight: 48,

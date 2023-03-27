@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ResponsiveAppBar from '@/components/appbar';
 import { Box, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Container } from '@mui/material';
 import DataTable from '@/components/data-table';
@@ -15,27 +15,37 @@ export default function Home() {
   let d: any = "";
   fetch("http://localhost:3000/api/items/studyStatus").then((response) => response.json()).then((data) => { d = data });
   const [studyStatus, setStudyStatus] = React.useState(d.studyStatus);
-
+  const [nextcomponent, setNextcomponent] = React.useState();
   
+  useEffect(() => {
+    console.log("nextcomponent-> ", nextcomponent)
+  }, [nextcomponent])
   return (
     <>
-    {/* <ResponsiveAppBar/> */}
-      <br></br>
+    <ResponsiveAppBar clickedOption={setNextcomponent}/>
+    <br/>
+      {
+        (nextcomponent == 0 || !nextcomponent) && 
+        <>
+          <AssignBatchNumberButton />
+          <StartStudyButton studyStatus={studyStatus} setStudyStatus={setStudyStatus} />
+          <Container maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
+            <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px'}}>
+              <SideMenu setUserTYpe={setCurrentuser}/>
+            </Box>
 
-    <AssignBatchNumberButton />
-  <StartStudyButton studyStatus={studyStatus} setStudyStatus={setStudyStatus} />
-      <Container maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
-        <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px'}}>
-          <SideMenu setUserTYpe={setCurrentuser}/>
-        </Box>
-
-        <Box sx={{flexGrow: 1}}>
-          <DataTable
-            currentUser={currentUser}
-          />
-          <AddPatientForm />
-        </Box>
-      </Container>
+            <Box sx={{flexGrow: 1}}>
+              <DataTable
+                currentUser={currentUser}
+              />
+              <AddPatientForm />
+            </Box>
+          </Container>
+        </>
+      }{
+      nextcomponent != 0 &&
+      <p>Other component loaded.</p>
+      }
     </>
   );
 }
