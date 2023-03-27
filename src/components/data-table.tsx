@@ -53,7 +53,10 @@ function DataTable({ currentUser }: { currentUser: Users }) {
     // return true if placebo, false if not placebo
     const getBatchNumberPlacebo = (batchNumber:any) =>
     {
-        return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
+        if(batchNumber)
+            return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
+        else 
+            return ""; 
     }
 
     if (currentUser == Users.BavariaAdmin) {
