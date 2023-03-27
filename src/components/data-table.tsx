@@ -1,7 +1,7 @@
 import { BatchNumberAPI } from "@/api/BatchNumberAPI";
 import useJaneHopkins from "@/api/useJaneHopkins";
-import useRefreshKey from "@/api/useRefreshKey";
 import Users from "@/api/Users";
+import { Button } from "@mui/material";
 import { DataGrid, GridColDef, GridRowModel } from "@mui/x-data-grid"
 import React, { useEffect } from "react";
 
@@ -22,18 +22,47 @@ function DataTable({ currentUser }: { currentUser: Users }) {
     const { entities } = useJaneHopkins();
     const [patients, setPatients] = React.useState<any[]>([]);
     const [drugs, setDrugs] = React.useState<any[]>([]);
-    const {count, setCount} : any = useRefreshKey();
-
+    const [deleted, setDeleted] = React.useState(false);
 
     let rows: any[] = [];
 
+    // check the ondelete button click
+    const renderDetailsButton = (params: any) => {
+        return (
+            <Button
+                variant="contained"
+                className="danger"
+                onClick={async () => {
+                    if(confirm("Are you sure want to delte the patient")){
+                        const checkVisit = patients.filter(pat => pat._id==params.id);
+                        if( checkVisit[0].visits == null){
+                            const delted = await entities.patient.remove(params.id);
+                            setDeleted(delted);
+                        }else {
+                            alert("The patient has already visited,  can not delete.")
+                        }
+                    }
+                }}
+                >
+                Delete
+            </Button>
+        )
+    }
     let columns = [
         { field: 'patientPicture', headerName: 'Picture', width: 125 },
         { field: 'id', headerName: 'ID', width: 300 },
         { field: 'name', headerName: 'Name', width: 150 },
         { field: 'dob', headerName: 'Date of Birth', width: 100 },
+       /* { field: 'action', 
+            headerName: 'Action', 
+            width: 100, 
+            sortable: false, 
+            disableClickEventBubbling: true,
+            renderCell: renderDetailsButton
+        },*/
     ];
 
+    
     //List patients
     const listPatients = async () => {
         let patientList = await entities.patient.list();
@@ -48,12 +77,12 @@ function DataTable({ currentUser }: { currentUser: Users }) {
     useEffect(() => {
         listPatients();
         listDrugs();
-    },[count]);
+    }, [deleted]);
 
     // return true if placebo, false if not placebo
-    const getBatchNumberPlacebo = (batchNumber:any) =>
+    const getBatchNumberPlacebo = (batchNumber: any) =>
     {
-        if(drugs.length >0)
+        if(drugs.length >0 && batchNumber)
             return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
         return "";
     }
@@ -66,6 +95,7 @@ function DataTable({ currentUser }: { currentUser: Users }) {
                 id: patients[i]._id,
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
+                
             });
         }
     }
@@ -73,7 +103,7 @@ function DataTable({ currentUser }: { currentUser: Users }) {
         removePII(columns);
         columns.push({ field: 'batchNumber', headerName: 'Batch #', width: 100 });
         columns.push({ field: 'placebo', headerName: 'placebo', width: 100 });
-
+        
         //Pushes out the info to the data table.
         for (let i = 0; i < patients.length; i++) {
             rows.push({
@@ -103,6 +133,9 @@ function DataTable({ currentUser }: { currentUser: Users }) {
                 uuid: patients[i].uuid,
             });
         }
+        if( currentUser == Users.JHDoctor)
+            columns.push({ field: 'action', headerName: 'Action', width: 100, sortable: false, disableClickEventBubbling: false, renderCell: renderDetailsButton });
+
     }
 
         /**
@@ -133,6 +166,11 @@ function DataTable({ currentUser }: { currentUser: Users }) {
                 console.log(error);
             };
 
+        const onRowClicked = (params: any) =>{
+            console.log("here you are."+params.id)
+
+            // will work on
+        }
         return (
             <>
                 <div className="table" style={{ height: '100%', width: '100%' }}>
@@ -142,6 +180,7 @@ function DataTable({ currentUser }: { currentUser: Users }) {
                         experimentalFeatures={{ newEditingApi: true }}
                         rows={rows}
                         columns={columns}
+                        onRowClick={onRowClicked}
                     />
                 </div>
             </>
