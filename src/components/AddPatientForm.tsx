@@ -18,7 +18,7 @@ import { sizeHeight } from "@mui/system";
 import { useReducer, useState } from "react";
 import useRefreshKey from "@/api/useRefreshKey";
 
-let visitsArray: any[] = [];
+
 function AddPatientForm() {
   const { entities } = useJaneHopkins();
   const [openViewModal, setOpenViewModal] = useState(false); //set to false so that it is closed
@@ -26,29 +26,7 @@ function AddPatientForm() {
 
   const handleCloseView = () => setOpenViewModal(false);
 
-  const handleVisitInput = (evt: any) => {
-    const name = evt.target.name;
-    const newValue = evt.target.value;
 
-    setVisitsColumn({ [name]: newValue });
-  };
-  //the array. We are pushing visitsColumn into it
-  //format of every object
-  const [visitsColumn, setVisitsColumn] = useReducer(
-    (state: any, newState: any) => ({ ...state, ...newState }),
-    {
-      patient: "",
-      dateTime: "",
-      notes: "",
-      hivViralLoad: "",
-    }
-  );
-  const visitAdd = async () => {
-    visitsArray.push(visitsColumn);
-    console.log(visitsArray);
-    setFormInput({ ...formInput, ["visits"]: visitsArray });
-    resetVisitInput();
-  };
 
   //This creates the "name: formInput[0].name" to be set into the formInput that is above this.
 
@@ -175,15 +153,7 @@ function AddPatientForm() {
       visits: [],
     });
   };
-  //Resets the values but doesn't get rid of the appearance.
-  const resetVisitInput = async () => {
-    setVisitsColumn({
-      patient: "",
-      dateTime: "",
-      notes: "",
-      hivViralLoad: "",
-    });
-  };
+ 
   return (
     <>
       <Button
@@ -473,36 +443,7 @@ function AddPatientForm() {
                 </FormHelperText>
               </FormControl>
 
-              <TextField
-                sx={{ m: 1, width: "25ch" }}
-                helperText="Patient"
-                name="patient"
-                onChange={handleVisitInput}
-                defaultValue={visitsColumn.patient}
-              />
-              <TextField
-                sx={{ m: 1, width: "25ch" }}
-                helperText="Date and Time"
-                name="dateTime"
-                onChange={handleVisitInput}
-                defaultValue={visitsColumn.dateTime}
-              />
-              <TextField
-                sx={{ m: 1, width: "25ch" }}
-                helperText="Notes"
-                name="notes"
-                multiline
-                maxRows={4}
-                onChange={handleVisitInput}
-                defaultValue={visitsColumn.notes}
-              />
-              <TextField
-                sx={{ m: 1, width: "25ch" }}
-                helperText="HIV Viral Load"
-                name="hivViralLoad"
-                onChange={handleVisitInput}
-                defaultValue={visitsColumn.hivViralLoad}
-              />
+              
               <FormControl></FormControl>
 
               {/*                */}
@@ -517,13 +458,7 @@ function AddPatientForm() {
                 flexWrap: "nowrap",
               }}
             >
-              <Button
-                sx={{ width: "fit-content" }}
-                variant="contained"
-                onClick={visitAdd}
-              >
-                Add Visit
-              </Button>
+              
               <Button
                 sx={{ width: "fit-content" }}
                 variant="contained"
