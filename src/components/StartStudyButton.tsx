@@ -10,32 +10,34 @@ import BiotechIcon from '@mui/icons-material/Biotech';
 export default function StartStudyButton() {
     const [refreshKey, setRefreshKey] = React.useState(false);
     const [status, setStatus] = React.useState(-1);
-    const buttonText = 'Start Study';
+    const [buttonText, setButtonText] = React.useState('');
 
     const onClick = () => {
         setRefreshKey(!refreshKey);
     }
 
-
     useEffect(() => {
-        const fetchStatus = async () => {
+        const changeStudyStatus = async () => {
             let s: number = await VendiaWebAppAPI.getStudyStatus() as number;
             switch (s) {
                 case 0:
-                    setStatus(await VendiaWebAppAPI.setStudyStatus(1));
+                    VendiaWebAppAPI.setStudyStatus(1);
+                    setButtonText("Stop Study");
                     break;
 
                 case 1:
-                    setStatus(await VendiaWebAppAPI.setStudyStatus(2));
+                    VendiaWebAppAPI.setStudyStatus(2);
+                    setButtonText("Study Finished");
                     break;
 
                 case 2:
-                    setStatus(await VendiaWebAppAPI.setStudyStatus(0));
+                    VendiaWebAppAPI.setStudyStatus(0);
+                    setButtonText("Start Study");
                     break;
             }
         }
 
-        fetchStatus();
+        changeStudyStatus();
     }, [refreshKey])
 
     return (
