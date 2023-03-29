@@ -1,4 +1,5 @@
 import { BatchNumberAPI } from "@/api/BatchNumberAPI";
+import useDrug from "@/api/useDrug";
 import useJaneHopkins from "@/api/useJaneHopkins";
 import useRefreshKey from "@/api/useRefreshKey";
 import Users from "@/api/Users";
@@ -18,20 +19,20 @@ function removePII(columns: GridColDef[]) {
  * @param {GridColDef[]} columns Columns to display
  * @public
  */
-function DataTable({ currentUser }: { currentUser: Users }) {
+function DrugTable({ currentUser }: { currentUser: Users }) {
     const { entities } = useJaneHopkins();
     const [patients, setPatients] = React.useState<any[]>([]);
     const [drugs, setDrugs] = React.useState<any[]>([]);
     const {count, setCount} : any = useRefreshKey();
 
-
+    //Selected Drug
+    const {drug, setDrug}: any = useDrug();
     let rows: any[] = [];
 
     let columns = [
-        { field: 'patientPicture', headerName: 'Picture', width: 125 },
-        { field: 'id', headerName: 'ID', width: 300 },
-        { field: 'name', headerName: 'Name', width: 150 },
-        { field: 'dob', headerName: 'Date of Birth', width: 100 },
+        { field: 'placebo', headerName: 'Placebo', width: 125 },
+        { field: 'batchNumber', headerName: 'Batch Number', width: 300 },
+        { field: 'id', headerName: 'ID', width: 150 },
     ];
 
     //List patients
@@ -42,11 +43,12 @@ function DataTable({ currentUser }: { currentUser: Users }) {
     };
     const listDrugs = async () => {
         let drugs = await entities.drug.list();
+        console.log("Drug Table");
+        console.log(currentUser);
         setDrugs(drugs.items);
     };
 
     useEffect(() => {
-        listPatients();
         listDrugs();
     },[count]);
 
@@ -55,53 +57,20 @@ function DataTable({ currentUser }: { currentUser: Users }) {
     {
         return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
     }
-
-    if (currentUser == Users.BavariaAdmin) {
-        removePII(columns);
+    if (currentUser == Users.BavariaAdmin || currentUser == Users.FDAAdmin) {
+       // removePII(columns);
         //Pushes out the info to the data table.
-        for (let i = 0; i < patients.length; i++) {
+        for (let i = 0; i < drugs.length; i++) {
             rows.push({
-                id: patients[i]._id,
-                dob: patients[i].dob,
-                uuid: patients[i].uuid,
+                id: drugs[i]._id,
+                placebo: drugs[i].placebo,
+                batchNumber: drugs[i].batchNumber,
+                
             });
         }
     }
-    else if (currentUser == Users.FDAAdmin) {
-        removePII(columns);
-        columns.push({ field: 'batchNumber', headerName: 'Batch #', width: 100 });
-        columns.push({ field: 'placebo', headerName: 'placebo', width: 100 });
 
-        //Pushes out the info to the data table.
-        for (let i = 0; i < patients.length; i++) {
-            rows.push({
-                id: patients[i]._id,
-                dob: patients[i].dob,
-                uuid: patients[i].uuid,
-                batchNumber: patients[i].batchNumber,
-               // placebo: getBatchNumberPlacebo(patients[i].batchNumber)
-            });
-        }
 
-        if (columns.indexOf({ field: 'medication', headerName: 'Medication', width: 100 }) != -1)
-        {
-            columns.push({ field: 'medication', headerName: 'Medication', width: 100 });
-        }
-    }
-
-    else if (currentUser == Users.JHAdmin || currentUser == Users.JHDoctor)
-    {
-        //Pushes out the info to the data table.
-        for (let i = 0; i < patients.length; i++) {
-            rows.push({
-                patientPicture: patients[i].patientPicture,
-                id: patients[i]._id,
-                name: patients[i].name,
-                dob: patients[i].dob,
-                uuid: patients[i].uuid,
-            });
-        }
-    }
 
         /**
          * Called when a row has been edited and "Enter" key was pressed to save
@@ -130,7 +99,12 @@ function DataTable({ currentUser }: { currentUser: Users }) {
                 // Display message saying error was made
                 console.log(error);
             };
-
+        // Filters through rows to find currently selected athlete
+    const onRowsSelectionHandler = (ids: any[]) => {
+        const selectedRowsData = ids.map((id) => rows.find((row) => row.id === id));
+        console.log(selectedRowsData);
+        setDrug(selectedRowsData);
+     };
         return (
             <>
                 <div className="table" style={{ height: '100%', width: '100%' }}>
@@ -140,9 +114,10 @@ function DataTable({ currentUser }: { currentUser: Users }) {
                         experimentalFeatures={{ newEditingApi: true }}
                         rows={rows}
                         columns={columns}
+                        onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
                     />
                 </div>
             </>
         )
     }
-    export default DataTable;
+    export default DrugTable;

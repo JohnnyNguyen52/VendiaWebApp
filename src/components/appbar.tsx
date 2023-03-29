@@ -18,6 +18,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
+import Link from 'next/link';
 import MailIcon from '@mui/icons-material/Mail';
 import HomeIcon from '@mui/icons-material/Home';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -32,10 +33,20 @@ import IconButton from '@mui/material/IconButton';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import PersonIcon from '@mui/icons-material/Person';
+import MedicationIcon from '@mui/icons-material/Medication';
+import Users from "@/api/Users";
+import BavariaTable from './drug-table';
+import drugPage from '@/pages/drugPage';
 
-const pages = ['Home', 'Products', 'Pricing', 'Help'];
+
+let pages: any[] = [];
+const pagesBasic = ['Home', 'Products', 'Pricing', 'Help'];
+const pagesBavariaFDA = ['Home', 'Products', 'Pricing', 'Help','Drugs'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const drawerWidth = 250;
+
+
+
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -107,7 +118,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-export default function ResponsiveAppBar() {
+export default function ResponsiveAppBar({ currentUser }: { currentUser: Users }) {
     // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -125,11 +136,21 @@ export default function ResponsiveAppBar() {
     // const handleCloseUserMenu = () => {
     //     setAnchorElUser(null);
     // };
+    if (currentUser == Users.BavariaAdmin) {
+      pages = pagesBavariaFDA;
+    }
+    else if (currentUser == Users.FDAAdmin) {
+      pages = pagesBavariaFDA;
+    }
 
+    else if (currentUser == Users.JHAdmin || currentUser == Users.JHDoctor)
+    {
+      pages = pagesBasic;
+    }
 
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
     const handleDrawerOpen = () => {
       setOpen(true);
     };
@@ -139,6 +160,15 @@ export default function ResponsiveAppBar() {
     };
 
 
+    const handleListItemClick = (
+      event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+      index: number,
+    ) => {
+      setSelectedIndex(index);
+      if(selectedIndex == 4 ){
+        <Link href="/drugPage" passHref></Link>
+      }
+    };
     return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -198,7 +228,9 @@ export default function ResponsiveAppBar() {
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
-                px: 2.5,}}>
+                px: 2.5,}}
+                selected={selectedIndex === index}
+                onClick={(event) => handleListItemClick(event, index)}>
                 <ListItemIcon
                 sx={{
                   minWidth: 0,
@@ -208,7 +240,13 @@ export default function ResponsiveAppBar() {
                   {index === 0 ? <HomeIcon /> 
                   : index === 1 ? <ShoppingBasketIcon /> 
                   : index === 2 ? <AttachMoneyIcon/>
-                  : index === 3 ? <HelpCenterIcon/> : null} 
+                  : index === 3 ? <HelpCenterIcon /> 
+                  : index === 4 ? 
+                  <Link 
+                    href="/drugPage" passHref 
+                  ><MedicationIcon/> </Link>
+                  : null
+                  } 
                 </ListItemIcon>
                 <ListItemText primary={text}  sx={{ opacity: open ? 1 : 0 }}/>
               </ListItemButton>

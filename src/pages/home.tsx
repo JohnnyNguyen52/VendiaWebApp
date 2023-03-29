@@ -7,9 +7,11 @@ import AddPatientForm from "@/components/AddPatientForm";
 import SideMenu from "@/components/SubMenu";
 import StartStudyButton from "@/components/StartStudyButton";
 import AssignBatchNumberButton from "@/components/AssignBatchNumberButton";
+import useCurrentUserGlobal from "@/api/useCurrentUser";
 
 export default function Home() {
   const [currentUser, setCurrentuser] = React.useState<Users>(Users.JHDoctor);
+  const {currentUserGlobal, setCurrentUserGlobal} = useCurrentUserGlobal();
 
   // 0 == not started, 1 == started, 2 == finished
   let d: any = "";
@@ -17,7 +19,6 @@ export default function Home() {
   const [studyStatus, setStudyStatus] = React.useState(d.studyStatus);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
-    console.log("ASDASD");
     switch (value) {
       case "Users.JHDoctor":
         setCurrentuser(Users.JHDoctor);
@@ -27,16 +28,18 @@ export default function Home() {
         break;
       case "Users.FDAAdmin":
         setCurrentuser(Users.FDAAdmin);
+        setCurrentUserGlobal(Users.FDAAdmin);
         break;
       case "Users.BavariaAdmin":
         setCurrentuser(Users.BavariaAdmin);
+        setCurrentUserGlobal(Users.BavariaAdmin);
         break;
     }
   }
-
+  
   return (
     <>
-      <ResponsiveAppBar />
+      <ResponsiveAppBar currentUser={currentUser}  />
       <br></br>
 
     <AssignBatchNumberButton />
