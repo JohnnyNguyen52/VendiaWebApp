@@ -1,5 +1,4 @@
 import useJaneHopkins from "@/api/useJaneHopkins";
-import useRefreshKey from "@/api/useRefreshKey";
 import {
   Box,
   Button,
@@ -17,14 +16,42 @@ import {
 } from "@mui/material";
 import { sizeHeight } from "@mui/system";
 import { useReducer, useState } from "react";
+import useRefreshKey from "@/api/useRefreshKey";
 
+let visitsArray: any[] = [];
 function AddPatientForm() {
   const { entities } = useJaneHopkins();
   const [openViewModal, setOpenViewModal] = useState(false); //set to false so that it is closed
   const { count, setCount }: any = useRefreshKey();
 
   const handleCloseView = () => setOpenViewModal(false);
+
+  const handleVisitInput = (evt: any) => {
+    const name = evt.target.name;
+    const newValue = evt.target.value;
+
+    setVisitsColumn({ [name]: newValue });
+  };
+  //the array. We are pushing visitsColumn into it
+  //format of every object
+  const [visitsColumn, setVisitsColumn] = useReducer(
+    (state: any, newState: any) => ({ ...state, ...newState }),
+    {
+      patient: "",
+      dateTime: "",
+      notes: "",
+      hivViralLoad: "",
+    }
+  );
+  const visitAdd = async () => {
+    visitsArray.push(visitsColumn);
+    console.log(visitsArray);
+    setFormInput({ ...formInput, ["visits"]: visitsArray });
+    resetVisitInput();
+  };
+
   //This creates the "name: formInput[0].name" to be set into the formInput that is above this.
+
   const handleInput = (evt: any) => {
     const name = evt.target.name;
     const newValue = evt.target.value;
@@ -54,22 +81,29 @@ function AddPatientForm() {
     reader.readAsDataURL(file);
   };
 
+  //Note schema must be changed before currentlyEmployed or currentlyInsured
+  //Can be set as boolean variables
   //This stores the info that you inputted.
   const [formInput, setFormInput] = useReducer(
     (state: any, newState: any) => ({ ...state, ...newState }),
     {
+      uuid: "",
       name: "",
       dob: "",
       height: "",
       weight: "",
       insuranceNumber: "",
       address: "",
-      currentMedications: [], // as string array
+      bloodPressure: "",
+      temperature: "",
+      oxygenSaturation: "",
+      currentMedications: [],
       familyHistory: "",
-      currentlyEmployed: "No",
-      currentlyInsured: "No",
-      icdHealthCodes: [], // as string array
-      allergies: [], // as string array
+      currentlyEmployed: "",
+      currentlyInsured: "",
+      icdHealthCodes: [],
+      allergies: [],
+      visits: [],
     }
   );
   //Takes the information inputted into the formInput and stores it into the Vendia Database
@@ -77,18 +111,23 @@ function AddPatientForm() {
     try {
       const addPatientResponse = await entities.patient.add(
         {
+          uuid: formInput.uuid,
           name: formInput.name,
           dob: formInput.dob,
           height: formInput.height,
           weight: formInput.weight,
           insuranceNumber: formInput.insuranceNumber,
           address: formInput.address,
+          bloodPressure: formInput.bloodPressure,
+          temperature: formInput.temperature,
+          oxygenSaturation: formInput.oxygenSaturation,
           currentMedications: formInput.currentMedications,
           familyHistory: formInput.familyHistory,
           currentlyEmployed: formInput.currentlyEmployed,
           currentlyInsured: formInput.currentlyInsured,
           icdHealthCodes: formInput.icdHealthCodes,
           allergies: formInput.allergies,
+          visits: formInput.visits,
         },
         {
           aclInput: {
@@ -104,9 +143,9 @@ function AddPatientForm() {
           },
         }
       );
-
+      console.log(formInput);
       setCount(count + 1);
-      setOpenViewModal(false);
+      setOpenViewModal(false); //Closes it
     } catch (error) {
       console.log("Error adding patient: ", error);
       // Add  error handling code here,
@@ -117,18 +156,32 @@ function AddPatientForm() {
   //Probably a better way to do this.
   const resetFormInput = async () => {
     setFormInput({
+      uuid: "",
       name: "",
       dob: "",
       height: "",
       weight: "",
       insuranceNumber: "",
       address: "",
+      bloodPressure: "",
+      temperature: "",
+      oxygenSaturation: "",
       currentMedications: [],
       familyHistory: "",
-      currentlyEmployed: false,
-      currentlyInsured: false,
+      currentlyEmployed: "",
+      currentlyInsured: "",
       icdHealthCodes: [],
       allergies: [],
+      visits: [],
+    });
+  };
+  //Resets the values but doesn't get rid of the appearance.
+  const resetVisitInput = async () => {
+    setVisitsColumn({
+      patient: "",
+      dateTime: "",
+      notes: "",
+      hivViralLoad: "",
     });
   };
   return (
@@ -168,8 +221,9 @@ function AddPatientForm() {
               zIndex: 1059,
             }}
           >
-            <label style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Patient Information</label>
-
+            <label style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+              Patient Information
+            </label>
 
             <Box
               sx={{
@@ -191,13 +245,19 @@ function AddPatientForm() {
               />
               <TextField
                 type="date"
-                sx={{ m: 1, width: 350 }}
+                sx={{ m: 1, width: 200 }}
                 helperText="Date of Birth"
                 name="dob"
                 onChange={handleInput}
                 defaultValue={formInput.dob}
+              />{" "}
+              <TextField
+                sx={{ m: 2, width: 200 }}
+                helperText="Address"
+                name="address"
+                onChange={handleInput}
+                defaultValue={formInput.address}
               />
-
               <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
                 <OutlinedInput
                   id="outlined-adornment-height"
@@ -231,6 +291,24 @@ function AddPatientForm() {
                   Weight
                 </FormHelperText>
               </FormControl>
+              <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+                <OutlinedInput
+                  id="outlined-adornment-bloodPressure"
+                  endAdornment={
+                    <InputAdornment position="end">mm Hg</InputAdornment>
+                  }
+                  aria-describedby="outlined-bloodPressure-helper-text"
+                  inputProps={{
+                    "aria-label": "bloodPressure",
+                  }}
+                  name="bloodPressure"
+                  onChange={handleInput}
+                  defaultValue={formInput.bloodPressure}
+                />
+                <FormHelperText id="outlined-height-helper-text">
+                  Blood Pressure
+                </FormHelperText>
+              </FormControl>
             </Box>
 
             <Box
@@ -245,25 +323,17 @@ function AddPatientForm() {
             >
               {/* Second column content */}
               <label>Upload Image:</label>
-              <Input 
+              <Input
                 type="file"
+                sx={{ m: 1, width: 200, marginBottom: 2 }}
                 name="image"
-                sx={{ m: 1 }}
                 inputProps={{
                   accept: "image/*",
                   onChange: handlePictureUpload,
-                  
                 }}
               />
-              <TextField
-                sx={{ m: 2, width: 200 }}
-                helperText="Address"
-                name="address"
-                onChange={handleInput}
-                defaultValue={formInput.address}
-              />
 
-              <FormControl sx={{ minWidth: 120, marginBottom: 2 }}>
+              <FormControl sx={{ minWidth: 200, marginBottom: 2 }}>
                 <InputLabel id="icd-health-codes-label">
                   ICD Health Codes
                 </InputLabel>
@@ -287,7 +357,7 @@ function AddPatientForm() {
                   <MenuItem value="A02.2">A02.2</MenuItem>
                 </Select>
               </FormControl>
-              <FormControl sx={{ minWidth: 120, marginBottom: 2 }}>
+              <FormControl sx={{ minWidth: 200, marginBottom: 2 }}>
                 <InputLabel id="allergies-label">Allergies</InputLabel>
                 <Select
                   labelId="allergies-label"
@@ -306,6 +376,29 @@ function AddPatientForm() {
                   <MenuItem value="Wheat">Wheat</MenuItem>
                 </Select>
               </FormControl>
+              <FormControl sx={{ minWidth: 200, marginBottom: 2 }}>
+                <InputLabel id="medications-label">
+                  Current Medications
+                </InputLabel>
+                <Select
+                  labelId="medications-label"
+                  id="currentMedications"
+                  multiple
+                  value={formInput.currentMedications}
+                  onChange={handleInput}
+                  inputProps={{
+                    name: "currentMedications",
+                    id: "currentMedications",
+                  }}
+                >
+                  <MenuItem value="Medication 1">Medication 1</MenuItem>
+                  <MenuItem value="Medication 2">Medication 2</MenuItem>
+                  <MenuItem value="Medication 3">Medication 3</MenuItem>
+                  <MenuItem value="Medication 4">Medication 4</MenuItem>
+                  <MenuItem value="Medication 5">Medication 5</MenuItem>
+                </Select>
+              </FormControl>
+
               <TextField
                 sx={{ m: 1, width: 200 }}
                 helperText="Insurance"
@@ -313,6 +406,39 @@ function AddPatientForm() {
                 onChange={handleInput}
                 defaultValue={formInput.insuranceNumber}
               />
+
+              <TextField
+                sx={{ m: 1, width: 200 }}
+                helperText="Family History"
+                name="familyHistory"
+                onChange={handleInput}
+                defaultValue={formInput.familyHistory}
+              />
+              <Box
+                sx={{
+                  gridColumn: "3 / 4",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  m: 2,
+                }}
+              >
+                <FormControl sx={{ display: "flex", flexDirection: "row" }}>
+                  <Checkbox
+                    checked={formInput.currentlyEmployed}
+                    onChange={handleCheckbox}
+                    name="currentlyEmployed"
+                  />
+                  Currently Employed
+                  <Checkbox
+                    checked={formInput.currentlyInsured}
+                    onChange={handleCheckbox}
+                    name="currentlyInsured"
+                  />
+                  Currently Insured
+                </FormControl>
+              </Box>
             </Box>
 
             <Box
@@ -326,43 +452,116 @@ function AddPatientForm() {
               }}
             >
               {/* Third column content */}
-            
+
+              <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+                <OutlinedInput
+                  id="outlined-adornment-temperature"
+                  endAdornment={
+                    <InputAdornment position="end">°F</InputAdornment>
+                  }
+                  aria-describedby="outlined-temperature-helper-text"
+                  inputProps={{
+                    "aria-label": "temperature",
+                  }}
+                  name="temperature"
+                  onChange={handleInput}
+                  defaultValue={formInput.temperature}
+                />
+                <FormHelperText id="outlined-temperature-helper-text">
+                  Temperature
+                </FormHelperText>
+              </FormControl>
+              <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+                <OutlinedInput
+                  id="outlined-adornment-oxygenSaturation"
+                  endAdornment={
+                    <InputAdornment position="end">%</InputAdornment>
+                  }
+                  aria-describedby="outlined-oxygenSaturation-helper-text"
+                  inputProps={{
+                    "aria-label": "oxygenSaturation",
+                  }}
+                  name="temperature"
+                  onChange={handleInput}
+                  defaultValue={formInput.oxygenSaturatione}
+                />
+                <FormHelperText id="outlined-oxygenSaturation-helper-text">
+                  Oxygen Saturation
+                </FormHelperText>
+              </FormControl>
+
               <TextField
-                sx={{ m: 1, width: 200 }}
-                helperText="Current Medications"
-                name="currentMedications"
-                onChange={handleInput}
-                defaultValue={formInput.currentMedications}
+                sx={{ m: 1, width: "25ch" }}
+                helperText="Patient"
+                name="patient"
+                onChange={handleVisitInput}
+                defaultValue={visitsColumn.patient}
               />
               <TextField
-                sx={{ m: 1, width: 200 }}
-                helperText="Family History"
-                name="familyHistory"
-                onChange={handleInput}
-                defaultValue={formInput.familyHistory}
-              />{" "}
-              <FormControl>
-                <Checkbox
-                  checked={formInput.currentlyEmployed}
-                  onChange={handleCheckbox}
-                  name="currentlyEmployed"
-                />
-                Currently Employed
-                <Checkbox
-                  checked={formInput.currentlyInsured}
-                  onChange={handleCheckbox}
-                  name="currentlyInsured"
-                />
-                Currently Insured
-              </FormControl>
+                sx={{ m: 1, width: "25ch" }}
+                helperText="Date and Time"
+                name="dateTime"
+                onChange={handleVisitInput}
+                defaultValue={visitsColumn.dateTime}
+              />
+              <TextField
+                sx={{ m: 1, width: "25ch" }}
+                helperText="Notes"
+                name="notes"
+                multiline
+                maxRows={4}
+                onChange={handleVisitInput}
+                defaultValue={visitsColumn.notes}
+              />
+              <TextField
+                sx={{ m: 1, width: "25ch" }}
+                helperText="HIV Viral Load"
+                name="hivViralLoad"
+                onChange={handleVisitInput}
+                defaultValue={visitsColumn.hivViralLoad}
+              />
+              <FormControl></FormControl>
+
               {/*                */}
             </Box>
 
-            <Box>
-              <Button variant="contained" onClick={handleAdd}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                gap: "10px", // or any other value that suits your layout needs
+                flexWrap: "nowrap",
+              }}
+            >
+              {/* <Button
+                sx={{ width: "fit-content" }}
+                variant="contained"
+                onClick={visitAdd}
+              >
+                Add Visit
+              </Button> */}
+              <Button
+                sx={{ width: "fit-content" }}
+                variant="contained"
+                onClick={handleAdd}
+              >
                 Add Patient
               </Button>
               <Button
+                sx={{
+                  width: "fit-content",
+                  flex: 1,
+                  bgcolor: "white",
+                  color: "primary.main",
+                  border: "1px solid",
+                  borderColor: "primary.main",
+                  "&:hover": {
+                    bgcolor: "primary.light",
+                    color: "white",
+                    borderColor: "primary.dark",
+                  },
+                }}
                 variant="outlined"
                 onClick={() => {
                   setOpenViewModal(false);
