@@ -10,8 +10,8 @@ export class VendiaWebAppAPI {
 
         // Fetch the 2 batch numbers. Should only be 2 in the table.
         let batchNumbers: string[] = [];
-        drugs.items.forEach(drug => {
-            if (batchNumbers.find(drug.batchNumber) == undefined) {
+        drugs.items.forEach((drug: { batchNumber: string; }) => {
+            if (batchNumbers.find((batchNumber) => batchNumber == drug.batchNumber) == undefined) {
                 batchNumbers.push(drug.batchNumber);
             }
         });
@@ -28,7 +28,7 @@ export class VendiaWebAppAPI {
         let batchNumbers = await this.getBatchNumbers();
 
         // Randomly select a batch number for each patient.
-        patients.items.forEach(patient => {
+        patients.items.forEach((patient: { _id: string; }) => {
             let x = 0;
             if (Math.random() > .5) {
                 x = 1

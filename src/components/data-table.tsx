@@ -1,4 +1,3 @@
-import { BatchNumberAPI } from "@/api/BatchNumberAPI";
 import useJaneHopkins from "@/api/useJaneHopkins";
 import useRefreshKey from "@/api/useRefreshKey";
 import Users from "@/api/Users";
@@ -53,7 +52,10 @@ function DataTable({ currentUser }: { currentUser: Users }) {
     // return true if placebo, false if not placebo
     const getBatchNumberPlacebo = (batchNumber:any) =>
     {
-        return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
+        let drug = drugs.find(drug => drug.batchNumber == batchNumber);
+
+        if (drug == undefined || drug.placebo == undefined) return false;
+        return drug.placebo;
     }
 
     if (currentUser == Users.BavariaAdmin) {
