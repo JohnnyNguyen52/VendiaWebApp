@@ -43,8 +43,36 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
       placebo:formInput.placebo,
       batchNumber:formInput.batchNumber,
       id:formInput.id,
-
-    
+      },
+      {
+        aclInput:{
+          acl:[
+            {
+              principal:{
+                nodes:["Bavaria","FDA", "JaneHopkins"]//what nodes are allowed to see it
+              },
+              operations: ["READ"], //Write gives the option to update
+              path:"batchNumber", 
+              
+            },
+            {
+              principal:{
+                nodes:["Bavaria","FDA", "JaneHopkins"]
+              },
+              operations: ["READ"], 
+              path:"id", 
+              
+            },
+            {
+              principal:{
+                nodes:["Bavaria"]
+              },
+              operations: ["READ"], 
+              path:"placebo", 
+              
+            },
+          ],
+        },
       }
     );
     setCount(count+1)
@@ -129,7 +157,6 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
                         defaultValue={formInput.placebo}
                     />
                     <TextField sx = {{m: 1,width: 200 }} helperText="Batch Number" name="batchNumber" onChange={handleInput}defaultValue={formInput.batchNumber} />
-                    <TextField sx = {{m: 1,width: 200 }} helperText="ID" name="id" onChange={handleInput}defaultValue={formInput.id} />
                 </Box>
                 <Box>
                     <Button 

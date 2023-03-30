@@ -7,8 +7,8 @@ import { DataGrid, GridColDef, GridRowModel } from "@mui/x-data-grid"
 import React, { useEffect } from "react";
 
 function removePII(columns: GridColDef[]) {
-    columns.splice(columns.findIndex(i => i.field == 'patientPicture'), 1);
-    columns.splice(columns.findIndex(i => i.field == 'name'), 1);
+    columns.splice(columns.findIndex(i => i.field == 'placebo'), 1);
+
 }
 
 /**
@@ -32,7 +32,7 @@ function DrugTable({ currentUser }: { currentUser: Users }) {
     let columns = [
         { field: 'placebo', headerName: 'Placebo', width: 125 },
         { field: 'batchNumber', headerName: 'Batch Number', width: 300 },
-        { field: 'id', headerName: 'ID', width: 150 },
+        { field: 'id', headerName: 'ID', width: 300 },
     ];
 
     //List patients
@@ -57,7 +57,7 @@ function DrugTable({ currentUser }: { currentUser: Users }) {
     {
         return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
     }
-    if (currentUser == Users.BavariaAdmin || currentUser == Users.FDAAdmin) {
+    if (currentUser == Users.BavariaAdmin) {
        // removePII(columns);
         //Pushes out the info to the data table.
         for (let i = 0; i < drugs.length; i++) {
@@ -69,7 +69,18 @@ function DrugTable({ currentUser }: { currentUser: Users }) {
             });
         }
     }
+    else if(currentUser == Users.FDAAdmin){
+        removePII(columns);
+        for (let i = 0; i < drugs.length; i++) {
+            rows.push({
+                id: drugs[i]._id,
+                batchNumber: drugs[i].batchNumber,
+                
+            });
+        }
+    }
 
+    
 
 
         /**
