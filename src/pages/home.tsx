@@ -39,13 +39,12 @@ export default function Home() {
   
   return (
     <>
-      <ResponsiveAppBar currentUser={currentUser}  />
+<ResponsiveAppBar currentUser={currentUser}  />
       <br></br>
-
-    <AssignBatchNumberButton />
-  <StartStudyButton studyStatus={studyStatus} setStudyStatus={setStudyStatus} />
       <Container maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
+      <ResponsiveAppBar />
         <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px'}}>
+
           <SideMenu/>
           <FormControl>
             <FormLabel id="form-user">User</FormLabel>
