@@ -27,6 +27,11 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
     setFormInput({ [name]: newValue });
     
   };
+  const handleCheckbox = (evt: any) => {
+    const { name, checked } = evt.target;
+    const value = checked ? true : false;
+    setFormInput({ [name]: checked });
+  };
 //This stores the info that you inputted.
   const [formInput, setFormInput] = useReducer(
     (state: any, newState: any) => ({ ...state, ...newState }),
@@ -39,6 +44,7 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
   );
 //Takes the information inputted into the formInput and stores it into the Vendia Database
   const handleAdd = async () => {
+    console.log(formInput);
     const addDrugResponse = await entities.drug.add({
       placebo:formInput.placebo,
       batchNumber:formInput.batchNumber,
@@ -149,12 +155,15 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
                 }}
                 >
                     <FormControlLabel
-                        value="placebo"
-                        control={<Checkbox />}
-                        label="Placebo"
-                        labelPlacement="end"
-                        onChange={handleInput}
-                        defaultValue={formInput.placebo}
+                      
+                      control={<Checkbox
+                        value={formInput.placebo}
+                        name = "placebo"
+                        onChange={handleCheckbox} />}
+                      label="Placebo"
+                      labelPlacement="end"
+                     
+                        
                     />
                     <TextField sx = {{m: 1,width: 200 }} helperText="Batch Number" name="batchNumber" onChange={handleInput}defaultValue={formInput.batchNumber} />
                 </Box>
