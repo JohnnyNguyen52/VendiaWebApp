@@ -19,10 +19,17 @@ export default function Home() {
   });
   const [studyStatus, setStudyStatus] = React.useState(d.studyStatus);
   const [nextcomponent, setNextcomponent] = React.useState();
+  const [selectedPatientId, setSelectedPatientId] = React.useState<any>({});
   
   useEffect(() => {
     console.log("nextcomponent-> ", nextcomponent)
   }, [nextcomponent])
+
+
+  // useEffect(() => {
+  //     console.log("objectttttt  => ", selectedPatientId)
+  // }, [selectedPatientId])
+
   return (
     <>
     <ResponsiveAppBar clickedOption={setNextcomponent}/>
@@ -40,8 +47,9 @@ export default function Home() {
             <Box sx={{flexGrow: 1}}>
               <DataTable
                 currentUser={currentUser}
+                setSelectedPatientId={setSelectedPatientId}
               />
-              <AddPatientForm />
+              <AddPatientForm selectedPatientId= {selectedPatientId} />
             </Box>
           </Container>
         </>

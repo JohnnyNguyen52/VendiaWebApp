@@ -18,10 +18,11 @@ function removePII(columns: GridColDef[]) {
  * @param {GridColDef[]} columns Columns to display
  * @public
  */
-function DataTable({ currentUser }: { currentUser: Users }) {
+function DataTable({ currentUser, setSelectedPatientId }: { currentUser: Users, setSelectedPatientId: any }) {
     const { entities } = useJaneHopkins();
     const [patients, setPatients] = React.useState<any[]>([]);
     const [drugs, setDrugs] = React.useState<any[]>([]);
+
     const [deleted, setDeleted] = React.useState(false);
 
     let rows: any[] = [];
@@ -123,6 +124,9 @@ function DataTable({ currentUser }: { currentUser: Users }) {
 
     else if (currentUser == Users.JHAdmin || currentUser == Users.JHDoctor)
     {
+        let isDeleteAble = 0;
+        if( currentUser == Users.JHDoctor)
+            isDeleteAble = 1;
         //Pushes out the info to the data table.
         for (let i = 0; i < patients.length; i++) {
             rows.push({
@@ -131,10 +135,12 @@ function DataTable({ currentUser }: { currentUser: Users }) {
                 name: patients[i].name,
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
+                visits: patients[i].visits,
+                isDeleteAble: isDeleteAble
             });
         }
-        if( currentUser == Users.JHDoctor)
-            columns.push({ field: 'action', headerName: 'Action', width: 100, sortable: false, disableClickEventBubbling: false, renderCell: renderDetailsButton });
+        // if( currentUser == Users.JHDoctor)
+        //     columns.push({ field: 'action', headerName: 'Action', width: 100, sortable: false, disableClickEventBubbling: false, renderCell: renderDetailsButton });
 
     }
 
@@ -167,7 +173,7 @@ function DataTable({ currentUser }: { currentUser: Users }) {
             };
 
         const onRowClicked = (params: any) =>{
-            console.log("here you are."+params.id)
+            setSelectedPatientId({id: params.row.id,isDeleteable: params.row.isDeleteAble, visits: params.row.visits });
 
             // will work on
         }

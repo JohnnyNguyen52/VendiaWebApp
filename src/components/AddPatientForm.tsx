@@ -15,11 +15,11 @@ import {
   InputLabel,
 } from "@mui/material";
 import { sizeHeight } from "@mui/system";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import useRefreshKey from "@/api/useRefreshKey";
 
 
-function AddPatientForm() {
+function AddPatientForm({selectedPatientId}: {selectedPatientId: any}) {
   const { entities } = useJaneHopkins();
   const [openViewModal, setOpenViewModal] = useState(false); //set to false so that it is closed
   const { count, setCount }: any = useRefreshKey();
@@ -153,7 +153,17 @@ function AddPatientForm() {
       visits: [],
     });
   };
- 
+
+  const removePatient = async () =>{
+    console.log("-----------===>" , selectedPatientId)
+    if(confirm("Are you sure want to delte the patient")){
+      if( selectedPatientId.visits == null){
+          const delted = await entities.patient.remove(selectedPatientId.id);
+      }else {
+          alert("The patient has already visited,  can not delete.")
+      }
+    }
+  }
   return (
     <>
       <Button
@@ -165,6 +175,12 @@ function AddPatientForm() {
       >
         Add
       </Button>
+
+      { selectedPatientId.isDeleteable == 1 && 
+        <Button variant="contained"  className="danger" onClick={() => {  removePatient(); }} >
+          Delete
+        </Button>
+      }
       <Modal
         open={openViewModal}
         onClose={handleCloseView}
