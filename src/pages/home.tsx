@@ -42,6 +42,7 @@ export default function Home() {
         <Box sx={{ boxShadow: 2, border: 0, borderLeft: 0, borderColor: '#aaaaaa', width: '20%', paddingLeft: '10px'}}>
 
           <SideMenu/>
+          <AddPatientForm />
           <FormControl>
             <FormLabel id="form-user">User</FormLabel>
             <RadioGroup
