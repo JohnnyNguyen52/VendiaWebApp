@@ -16,6 +16,15 @@
       "items": {
         "type": "object",
         "properties": {
+          "eligible": {
+            "type": "boolean"
+          },
+          "dosesID": {
+            "type": "string"
+          },
+          "currentDosage": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
@@ -64,10 +73,10 @@
             "type": "string"
           },
           "currentlyEmployed": {
-            "type": "string"
+            "type": "boolean"
           },
           "currentlyInsured": {
-            "type": "string"
+            "type": "boolean"
           },
           "icdHealthCodes": {
             "type": "array",
@@ -119,13 +128,13 @@
       "items": {
         "type": "object",
         "properties": {
+          "dosage": {
+            "type": "string"
+          },
           "placebo": {
             "type": "boolean"
           },
           "batchNumber": {
-            "type": "string"
-          },
-          "id": {
             "type": "string"
           }
         }
