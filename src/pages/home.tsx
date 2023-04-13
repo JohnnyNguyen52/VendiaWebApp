@@ -41,10 +41,6 @@ export default function Home() {
     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'col' }}>
     <ResponsiveAppBar currentUser={currentUser}  />
       <Box sx={{ boxShadow: 2, border: 0, borderLeft: 0, borderColor: '#aaaaaa', width: '20%', paddingLeft: '10px'}}>
-
-  <AssignBatchNumberButton />
-<StartStudyButton studyStatus={studyStatus} setStudyStatus={setStudyStatus} />
-      <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px'}}>
         <SideMenu/>
         <FormControl>
           <FormLabel id="form-user">User</FormLabel>
@@ -67,7 +63,6 @@ export default function Home() {
           currentUser={currentUser}
         />
       </Box>
-    </Box>
     </Box>
   );
  
