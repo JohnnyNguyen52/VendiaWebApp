@@ -1,3 +1,4 @@
+import { BatchNumberAPI } from "@/api/BatchNumberAPI";
 import useJaneHopkins from "@/api/useJaneHopkins";
 import useRefreshKey from "@/api/useRefreshKey";
 import Users from "@/api/Users";
@@ -52,10 +53,7 @@ function DataTable({ currentUser }: { currentUser: Users }) {
     // return true if placebo, false if not placebo
     const getBatchNumberPlacebo = (batchNumber:any) =>
     {
-        let x = drugs.find(drug => drug.batchNumber == batchNumber);
-
-        if (x == null) return false;
-        return x.placebo;
+        return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
     }
 
     if (currentUser == Users.BavariaAdmin) {
@@ -135,8 +133,8 @@ function DataTable({ currentUser }: { currentUser: Users }) {
 
         return (
             <>
-                <div className="table" style={{ height: '100%' , width: '100%' }}>
-                    <DataGrid 
+                <div className="table" style={{ height: '100%', width: '100%' }}>
+                    <DataGrid
                         processRowUpdate={processRowUpdate}
                         onProcessRowUpdateError={processRowUpdateError}
                         experimentalFeatures={{ newEditingApi: true }}

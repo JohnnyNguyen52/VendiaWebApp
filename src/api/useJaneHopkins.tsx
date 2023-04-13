@@ -4,9 +4,9 @@ import {useState} from "react";
 //Connects it to the Vendia Client.
 //Also has to be done for the other two.
 const client = createVendiaClient({
-  apiUrl: `https://150qs2byv3.execute-api.us-west-2.amazonaws.com/graphql/`,
-  websocketUrl: `wss://cg24hicyq9.execute-api.us-west-2.amazonaws.com/graphql`,
-  apiKey: '7uYdpmEm764SnyoTDvaNEzLAFM3qEEB1D8CBHyqTUJQe', // <---- API key
+  apiUrl: `https://00p2cukqq3.execute-api.us-west-2.amazonaws.com/graphql/`,
+  websocketUrl: `wss://3xia2y12zd.execute-api.us-west-2.amazonaws.com/graphql`,
+  apiKey: 'ACLw6gPffjmhEfXRMyaZV9cdy8jLr8wcTk34kR4UaBK2', // <---- API key
 })
 
 const { entities }: any = client;

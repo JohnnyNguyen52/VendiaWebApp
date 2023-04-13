@@ -38,10 +38,12 @@ export default function Home() {
   }
   
   return (
-    <>      
-      <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'col' }}>
+    <>
+<ResponsiveAppBar currentUser={currentUser}  />
+      <br></br>
+      <Container maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
       <ResponsiveAppBar />
-        <Box sx={{ boxShadow: 2, border: 0, borderLeft: 0, borderColor: '#aaaaaa', width: '20%', paddingLeft: '10px'}}>
+        <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px'}}>
 
           <SideMenu/>
           <FormControl>
@@ -60,12 +62,13 @@ export default function Home() {
           </FormControl>
         </Box>
 
-        <Box sx={{flexGrow: 1 }}>
+        <Box sx={{flexGrow: 1}}>
           <DataTable
             currentUser={currentUser}
           />
+          <AddPatientForm />
         </Box>
-      </Box>
+      </Container>
     </>
   );
 }
