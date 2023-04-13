@@ -38,38 +38,40 @@ export default function Home() {
   }
   
   return (
-    <>      
-      <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'col' }}>
-      <ResponsiveAppBar />
-        <Box sx={{ boxShadow: 2, border: 0, borderLeft: 0, borderColor: '#aaaaaa', width: '20%', paddingLeft: '10px'}}>
+    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'col' }}>
+    <ResponsiveAppBar currentUser={currentUser}  />
+      <Box sx={{ boxShadow: 2, border: 0, borderLeft: 0, borderColor: '#aaaaaa', width: '20%', paddingLeft: '10px'}}>
 
-          <SideMenu/>
-          <FormControl>
-            <FormLabel id="form-user">User</FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="Users.JHDoctor"
-              name="radio-buttons-group"
-              onChange={onChange}
-            >
-              <FormControlLabel value="Users.JHDoctor" control={<Radio />} label="JHDoctor" />
-              <FormControlLabel value="Users.JHAdmin" control={<Radio />} label="JHAdmin" />
-              <FormControlLabel value="Users.FDAAdmin" control={<Radio />} label="FDAAdmin" />
-              <FormControlLabel value="Users.BavariaAdmin" control={<Radio />} label="BavariaAdmin" />
-            </RadioGroup>
-          </FormControl>
-        </Box>
-
-        <Box sx={{flexGrow: 1 }}>
-          <DataTable
-            currentUser={currentUser}
-          />
-        </Box>
+  <AssignBatchNumberButton />
+<StartStudyButton studyStatus={studyStatus} setStudyStatus={setStudyStatus} />
+      <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px'}}>
+        <SideMenu/>
+        <FormControl>
+          <FormLabel id="form-user">User</FormLabel>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue="Users.JHDoctor"
+            name="radio-buttons-group"
+            onChange={onChange}
+          >
+            <FormControlLabel value="Users.JHDoctor" control={<Radio />} label="JHDoctor" />
+            <FormControlLabel value="Users.JHAdmin" control={<Radio />} label="JHAdmin" />
+            <FormControlLabel value="Users.FDAAdmin" control={<Radio />} label="FDAAdmin" />
+            <FormControlLabel value="Users.BavariaAdmin" control={<Radio />} label="BavariaAdmin" />
+          </RadioGroup>
+        </FormControl>
       </Box>
-    </>
-  );
-}
 
+      <Box sx={{flexGrow: 1 }}>
+        <DataTable
+          currentUser={currentUser}
+        />
+      </Box>
+    </Box>
+    </Box>
+  );
+ 
+}
 /*
 //Allows for the changing of buttons from one to another.
 {openViewModal === false ? (
@@ -133,3 +135,4 @@ export default function Home() {
       
       Shows stuff from the button
       */
+
