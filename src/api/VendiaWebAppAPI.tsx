@@ -1,7 +1,9 @@
 import useJaneHopkins from "./useJaneHopkins";
 import Users from "./Users";
+import useStudyStatus from "./useStudyStatus";
 
 export class VendiaWebAppAPI {
+
     static async getBatchNumbers(): Promise<string[]> {
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -59,25 +61,4 @@ export class VendiaWebAppAPI {
 
         return true;
     };
-
-    static async getStudyStatus(): Promise<number> {
-        let dd: number = -1;
-        await fetch("http://localhost:3000/api/items/studyStatus")
-            .then((response) => response.json())
-            .then((data) => { dd = data; console.log(data) });
-        return dd;
-    }
-
-    // Returns what the study status was set to
-    static async setStudyStatus(studyStatus: number): Promise<number> {
-        let d: number = -1;
-        const requestOptions = {
-            method: 'PUT',
-            body: JSON.stringify({ studyStatus: studyStatus })
-        };
-        await fetch(`http://localhost:3000/api/items/studyStatus/${studyStatus}`, requestOptions)
-            .then(response => response.json())
-            .then((data) => { d = data })
-        return d;
-    }
 }

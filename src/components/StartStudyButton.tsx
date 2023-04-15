@@ -1,16 +1,15 @@
-import { VendiaWebAppAPI } from "@/api/VendiaWebAppAPI";
 import { Button, ListItemButton, setRef } from "@mui/material";
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { color } from "@mui/system";
 import React, { useEffect } from "react";
-import CSS from 'csstype';
 import BiotechIcon from '@mui/icons-material/Biotech';
+import useStudyStatus from "@/api/useStudyStatus";
 
 export default function StartStudyButton() {
     const [refreshKey, setRefreshKey] = React.useState(false);
-    const [status, setStatus] = React.useState(-1);
     const [buttonText, setButtonText] = React.useState('');
+    // This button component will update this global studyStatus hook with the backend studyStatus.
+    const { studyStatus, setStudyStatus } = useStudyStatus();
+
 
     const onClick = () => {
         setRefreshKey(!refreshKey);
@@ -18,35 +17,35 @@ export default function StartStudyButton() {
 
     useEffect(() => {
         const changeStudyStatus = async () => {
-            let s: number = await VendiaWebAppAPI.getStudyStatus() as number;
-            switch (s) {
+            switch (studyStatus) {
                 case 0:
-                    VendiaWebAppAPI.setStudyStatus(1);
+                    setStudyStatus(1);
                     setButtonText("Stop Study");
                     break;
 
                 case 1:
-                    VendiaWebAppAPI.setStudyStatus(2);
+                    setStudyStatus(2);
                     setButtonText("Study Finished");
                     break;
 
                 case 2:
-                    VendiaWebAppAPI.setStudyStatus(0);
+                    setStudyStatus(0);
                     setButtonText("Start Study");
                     break;
             }
         }
 
         changeStudyStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refreshKey])
 
     return (
         // <Button onClick={onClick} variant="contained">{status}</Button>
         <ListItemButton onClick={onClick}>
-        <ListItemIcon sx={{minWidth: 0, mr: 3, justifyContent: 'center'}}>
-            <BiotechIcon />
-        </ListItemIcon>
-        {buttonText}
+            <ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: 'center' }}>
+                <BiotechIcon />
+            </ListItemIcon>
+            {buttonText}
         </ListItemButton>
     );
 }
