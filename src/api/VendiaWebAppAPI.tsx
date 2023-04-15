@@ -1,6 +1,4 @@
 import useJaneHopkins from "./useJaneHopkins";
-import Users from "./Users";
-import useStudyStatus from "./useStudyStatus";
 
 export class VendiaWebAppAPI {
 
@@ -58,6 +56,7 @@ export class VendiaWebAppAPI {
         }
 
         // Add more eligibility checks here as needed
+
 
         return true;
     };

@@ -1,7 +1,6 @@
 import { VendiaWebAppAPI } from "@/api/VendiaWebAppAPI";
-import { Button, ListItemButton, ListItemIcon } from "@mui/material";
+import { ListItemButton, ListItemIcon } from "@mui/material";
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import AssignmentTurnedIn from "@mui/icons-material/AssignmentTurnedIn";
 
 export default function AssignBatchNumberButton()
 {

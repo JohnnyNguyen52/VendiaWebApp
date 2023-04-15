@@ -27,16 +27,11 @@ import AssignBatchNumberButton from '@/components/AssignBatchNumberButton';
 import StartStudyButton from '@/components/StartStudyButton';
 import useCurrentUserGlobal from "@/api/useCurrentUser";
 
-
 let pages: any[] = [];
 const pagesBasic = ['Home', 'Products', 'Pricing', 'Help'];
 const pagesBavariaFDA = ['Home', 'Products', 'Pricing', 'Help','Drugs'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-const functionButtons = [StartStudyButton, AssignBatchNumberButton];
 const drawerWidth = 250;
-
-
-
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,

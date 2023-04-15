@@ -3,7 +3,6 @@ import { Checkbox, FormControlLabel, Box, Button, FormControl, FormHelperText, I
 import { useReducer, useState } from "react";
 import useRefreshKey from "@/api/useRefreshKey";
 
-
 function AddPatientForm()
 {
     const { entities } = useJaneHopkins();
