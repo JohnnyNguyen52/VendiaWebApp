@@ -5,43 +5,38 @@ import DataTable from '@/components/data-table';
 import Users from "@/api/Users";
 import AddPatientForm from "@/components/AddPatientForm";
 import SideMenu from "@/components/SubMenu";
-import StartStudyButton from "@/components/StartStudyButton";
-import AssignBatchNumberButton from "@/components/AssignBatchNumberButton";
 import useCurrentUserGlobal from "@/api/useCurrentUser";
+import useStudyStatus from "@/api/useStudyStatus";
 
 export default function Home() {
-  const [currentUser, setCurrentuser] = React.useState<Users>(Users.JHDoctor);
-  const {currentUserGlobal, setCurrentUserGlobal} = useCurrentUserGlobal();
+  const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
 
   // 0 == not started, 1 == started, 2 == finished
-  let d: any = "";
-  fetch("http://localhost:3000/api/items/studyStatus").then((response) => response.json()).then((data) => { d = data });
-  const [studyStatus, setStudyStatus] = React.useState(d.studyStatus);
+  const { studyStatus, setStudyStatus } = useStudyStatus();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
     switch (value) {
       case "Users.JHDoctor":
-        setCurrentuser(Users.JHDoctor);
+        setCurrentUserGlobal(Users.JHDoctor);
         break;
       case "Users.JHAdmin":
-        setCurrentuser(Users.JHAdmin);
+        setCurrentUserGlobal(Users.JHAdmin);
         break;
       case "Users.FDAAdmin":
-        setCurrentuser(Users.FDAAdmin);
         setCurrentUserGlobal(Users.FDAAdmin);
         break;
       case "Users.BavariaAdmin":
-        setCurrentuser(Users.BavariaAdmin);
         setCurrentUserGlobal(Users.BavariaAdmin);
         break;
     }
   }
-  
+
   return (
     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'col' }}>
-    <ResponsiveAppBar currentUser={currentUser}  />
-      <Box sx={{ boxShadow: 2, border: 0, borderLeft: 0, borderColor: '#aaaaaa', width: '20%', paddingLeft: '10px'}}>
-        <SideMenu/>
+      <ResponsiveAppBar />
+      <Box sx={{ boxShadow: 2, border: 0, borderLeft: 0, borderColor: '#aaaaaa', width: '20%', paddingLeft: '10px' }}>
+        <SideMenu />
+        <AddPatientForm />
         <FormControl>
           <FormLabel id="form-user">User</FormLabel>
           <RadioGroup
@@ -58,14 +53,20 @@ export default function Home() {
         </FormControl>
       </Box>
 
-      <Box sx={{flexGrow: 1 }}>
-        <DataTable
-          currentUser={currentUser}
-        />
+      <Box sx={{ flexGrow: 1 }}>
+        {(studyStatus != 0 || (currentUserGlobal != Users.BavariaAdmin && currentUserGlobal != Users.FDAAdmin)) &&
+          <DataTable
+          />
+        }
+        {studyStatus == 0 && (currentUserGlobal == Users.BavariaAdmin || currentUserGlobal == Users.FDAAdmin) &&
+          <center>
+            <h2>Study has not started. Please wait for it to start before viewing patients.</h2>
+          </center>
+        }
       </Box>
     </Box>
   );
- 
+
 }
 /*
 //Allows for the changing of buttons from one to another.

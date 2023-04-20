@@ -1,5 +1,4 @@
 import { createVendiaClient } from '@vendia/client'
-import {useState} from "react";
 
 //Connects it to the Vendia Client.
 //Also has to be done for the other two.

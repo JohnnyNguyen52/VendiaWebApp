@@ -9,7 +9,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
 import Link from 'next/link';
-import MailIcon from '@mui/icons-material/Mail';
 import HomeIcon from '@mui/icons-material/Home';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
@@ -24,24 +23,15 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import PersonIcon from '@mui/icons-material/Person';
 import MedicationIcon from '@mui/icons-material/Medication';
 import Users from "@/api/Users";
-import BavariaTable from './drug-table';
-import drugPage from '@/pages/drugPage';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import BiotechIcon from '@mui/icons-material/Biotech';
 import AssignBatchNumberButton from '@/components/AssignBatchNumberButton';
 import StartStudyButton from '@/components/StartStudyButton';
-import { start } from 'repl';
-
+import useCurrentUserGlobal from "@/api/useCurrentUser";
 
 let pages: any[] = [];
 const pagesBasic = ['Home', 'Products', 'Pricing', 'Help'];
 const pagesBavariaFDA = ['Home', 'Products', 'Pricing', 'Help','Drugs'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-const functionButtons = [StartStudyButton, AssignBatchNumberButton];
 const drawerWidth = 250;
-
-
-
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -113,7 +103,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-export default function ResponsiveAppBar({ currentUser }: { currentUser: Users }) {
+export default function ResponsiveAppBar() {
+    const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
     // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -131,14 +122,14 @@ export default function ResponsiveAppBar({ currentUser }: { currentUser: Users }
     // const handleCloseUserMenu = () => {
     //     setAnchorElUser(null);
     // };
-    if (currentUser == Users.BavariaAdmin) {
+    if (currentUserGlobal == Users.BavariaAdmin) {
       pages = pagesBavariaFDA;
     }
-    else if (currentUser == Users.FDAAdmin) {
+    else if (currentUserGlobal == Users.FDAAdmin) {
       pages = pagesBavariaFDA;
     }
 
-    else if (currentUser == Users.JHAdmin || currentUser == Users.JHDoctor)
+    else if (currentUserGlobal == Users.JHAdmin || currentUserGlobal == Users.JHDoctor)
     {
       pages = pagesBasic;
     }

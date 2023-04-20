@@ -3,6 +3,7 @@ import useRefreshKey from "@/api/useRefreshKey";
 import Users from "@/api/Users";
 import { DataGrid, GridColDef, GridRowModel } from "@mui/x-data-grid"
 import React, { useEffect } from "react";
+import useCurrentUserGlobal from "@/api/useCurrentUser";
 
 function removePII(columns: GridColDef[]) {
     columns.splice(columns.findIndex(i => i.field == 'patientPicture'), 1);
@@ -17,11 +18,12 @@ function removePII(columns: GridColDef[]) {
  * @param {GridColDef[]} columns Columns to display
  * @public
  */
-function DataTable({ currentUser }: { currentUser: Users }) {
+function DataTable() {
     const { entities } = useJaneHopkins();
     const [patients, setPatients] = React.useState<any[]>([]);
     const [drugs, setDrugs] = React.useState<any[]>([]);
-    const {count, setCount} : any = useRefreshKey();
+    const { count, setCount }: any = useRefreshKey();
+    const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
 
 
     let rows: any[] = [];
@@ -33,32 +35,31 @@ function DataTable({ currentUser }: { currentUser: Users }) {
         { field: 'dob', headerName: 'Date of Birth', width: 100 },
     ];
 
-    //List patients
-    const listPatients = async () => {
-        let patientList = await entities.patient.list();
-        setPatients(patientList.items);
-
-    };
-    const listDrugs = async () => {
-        let drugs = await entities.drug.list();
-        setDrugs(drugs.items);
-    };
 
     useEffect(() => {
+        //List patients
+        const listPatients = async () => {
+            let patientList = await entities.patient.list();
+            setPatients(patientList.items);
+
+        };
+        const listDrugs = async () => {
+            let drugs = await entities.drug.list();
+            setDrugs(drugs.items);
+        };
         listPatients();
         listDrugs();
-    },[count]);
+    }, [count, entities.drug, entities.patient]);
 
     // return true if placebo, false if not placebo
-    const getBatchNumberPlacebo = (batchNumber:any) =>
-    {
+    const getBatchNumberPlacebo = (batchNumber: any) => {
         let x = drugs.find(drug => drug.batchNumber == batchNumber);
 
         if (x == null) return false;
         return x.placebo;
     }
 
-    if (currentUser == Users.BavariaAdmin) {
+    if (currentUserGlobal == Users.BavariaAdmin) {
         removePII(columns);
         //Pushes out the info to the data table.
         for (let i = 0; i < patients.length; i++) {
@@ -69,7 +70,7 @@ function DataTable({ currentUser }: { currentUser: Users }) {
             });
         }
     }
-    else if (currentUser == Users.FDAAdmin) {
+    else if (currentUserGlobal == Users.FDAAdmin) {
         removePII(columns);
         columns.push({ field: 'batchNumber', headerName: 'Batch #', width: 100 });
         columns.push({ field: 'placebo', headerName: 'placebo', width: 100 });
@@ -81,18 +82,16 @@ function DataTable({ currentUser }: { currentUser: Users }) {
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
                 batchNumber: patients[i].batchNumber,
-               // placebo: getBatchNumberPlacebo(patients[i].batchNumber)
+                placebo: getBatchNumberPlacebo(patients[i].batchNumber)
             });
         }
 
-        if (columns.indexOf({ field: 'medication', headerName: 'Medication', width: 100 }) != -1)
-        {
+        if (columns.indexOf({ field: 'medication', headerName: 'Medication', width: 100 }) != -1) {
             columns.push({ field: 'medication', headerName: 'Medication', width: 100 });
         }
     }
 
-    else if (currentUser == Users.JHAdmin || currentUser == Users.JHDoctor)
-    {
+    else if (currentUserGlobal == Users.JHAdmin || currentUserGlobal == Users.JHDoctor) {
         //Pushes out the info to the data table.
         for (let i = 0; i < patients.length; i++) {
             rows.push({
@@ -105,46 +104,46 @@ function DataTable({ currentUser }: { currentUser: Users }) {
         }
     }
 
-        /**
-         * Called when a row has been edited and "Enter" key was pressed to save
-         * 
-         * @param newRow 
-         * @param oldRow 
-         * @returns the new row to display in the DataGrid component
-         */
-        const processRowUpdate =
-            async (newRow: GridRowModel, oldRow: GridRowModel) => {
-                // MODIFY VENDIA DATABASE HERE WHEN TABLE GETS EDITED
-                console.log("New row vals: " + newRow);
-                console.log("Old Row vals: " + oldRow);
+    /**
+     * Called when a row has been edited and "Enter" key was pressed to save
+     * 
+     * @param newRow 
+     * @param oldRow 
+     * @returns the new row to display in the DataGrid component
+     */
+    const processRowUpdate =
+        async (newRow: GridRowModel, oldRow: GridRowModel) => {
+            // MODIFY VENDIA DATABASE HERE WHEN TABLE GETS EDITED
+            console.log("New row vals: " + newRow);
+            console.log("Old Row vals: " + oldRow);
 
-                return newRow;
-            };
+            return newRow;
+        };
 
-        /**
-         * Called when processRowUpdate errors. Receives the thrown error from processRowUpdate
-         * 
-         * @param error 
-         */
-        const processRowUpdateError =
-            async (error: any) => {
+    /**
+     * Called when processRowUpdate errors. Receives the thrown error from processRowUpdate
+     * 
+     * @param error 
+     */
+    const processRowUpdateError =
+        async (error: any) => {
 
-                // Display message saying error was made
-                console.log(error);
-            };
+            // Display message saying error was made
+            console.log(error);
+        };
 
-        return (
-            <>
-                <div className="table" style={{ height: '100%' , width: '100%' }}>
-                    <DataGrid 
-                        processRowUpdate={processRowUpdate}
-                        onProcessRowUpdateError={processRowUpdateError}
-                        experimentalFeatures={{ newEditingApi: true }}
-                        rows={rows}
-                        columns={columns}
-                    />
-                </div>
-            </>
-        )
-    }
-    export default DataTable;
+    return (
+        <>
+            <div className="table" style={{ height: '100%', width: '100%' }}>
+                <DataGrid
+                    processRowUpdate={processRowUpdate}
+                    onProcessRowUpdateError={processRowUpdateError}
+                    experimentalFeatures={{ newEditingApi: true }}
+                    rows={rows}
+                    columns={columns}
+                />
+            </div>
+        </>
+    )
+}
+export default DataTable;
