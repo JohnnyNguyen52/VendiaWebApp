@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useReducer } from "react";
 import LoginPage from "@/components/LoginPage";
+import LandingPage from "@/components/LandingPage";
 
 
 export default function index() {
   return (
-    <LoginPage />
-
+    <LandingPage/>
   );
 }
 
