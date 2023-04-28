@@ -1,18 +1,27 @@
-import { ListItemButton } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ListItemButton } from "@mui/material";
 import ListItemIcon from '@mui/material/ListItemIcon';
 import React, { useEffect } from "react";
-import BiotechIcon from '@mui/icons-material/Biotech';
 import useStudyStatus from "@/api/useStudyStatus";
+import BiotechIcon from '@mui/icons-material/Biotech';
 
 export default function StartStudyButton() {
+    const [open, setOpen] = React.useState(false);
     const [refreshKey, setRefreshKey] = React.useState(false);
     const [buttonText, setButtonText] = React.useState('');
     // This button component will update this global studyStatus hook with the backend studyStatus.
     const { studyStatus, setStudyStatus } = useStudyStatus();
 
+    const handleCancel = () => {
+        setOpen(false);
+    };
 
-    const onClick = () => {
+    const handleConfirm = () => {
+        setOpen(false);
         setRefreshKey(!refreshKey);
+    };
+
+    const onStudyButtonClick = () => {
+        setOpen(true);
     }
 
     useEffect(() => {
@@ -36,16 +45,38 @@ export default function StartStudyButton() {
         }
 
         changeStudyStatus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refreshKey])
 
     return (
-        // <Button onClick={onClick} variant="contained">{status}</Button>
-        <ListItemButton onClick={onClick}>
-            <ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: 'center' }}>
-                <BiotechIcon />
-            </ListItemIcon>
-            {buttonText}
-        </ListItemButton>
+        <>
+            <ListItemButton onClick={onStudyButtonClick}>
+                <ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: 'center' }}>
+                    <BiotechIcon />
+                </ListItemIcon>
+                {buttonText}
+            </ListItemButton>
+            <Dialog
+                open={open}
+                onClose={handleCancel}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Study Status Change"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to change the study status?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCancel}>Cancel</Button>
+                    <Button onClick={handleConfirm} autoFocus>
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
     );
 }
