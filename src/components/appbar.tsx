@@ -28,9 +28,8 @@ import StartStudyButton from '@/components/StartStudyButton';
 import useCurrentUserGlobal from "@/api/useCurrentUser";
 
 let pages: any[] = [];
-const pagesBasic = ['Home', 'Products', 'Pricing', 'Help'];
-const pagesBavariaFDA = ['Home', 'Products', 'Pricing', 'Help', 'Drugs'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pagesBasic = ['Home'];
+const pagesBavariaFDA = ['Home', 'Drugs'];
 const drawerWidth = 250;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -179,34 +178,6 @@ export default function ResponsiveAppBar() {
             <MenuOpenIcon />
           </IconButton>
         </DrawerHeader>
-
-
-        <List>
-          {settings.map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}>
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}>
-                  {index === 0 ? <PersonIcon />
-                    : index === 1 ? <ManageAccountsIcon />
-                      : index === 2 ? <DashboardIcon />
-                        : index === 3 ? <LogoutIcon /> : null}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
         <List>
           {pages.map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
@@ -225,10 +196,7 @@ export default function ResponsiveAppBar() {
                     justifyContent: 'center',
                   }}>
                   {index === 0 ? <HomeIcon />
-                    : index === 1 ? <ShoppingBasketIcon />
-                      : index === 2 ? <AttachMoneyIcon />
-                        : index === 3 ? <HelpCenterIcon />
-                          : index === 4 ?
+                          : index === 1 ?
                             <Link
                               href="/drugPage" passHref
                             ><MedicationIcon /> </Link>
