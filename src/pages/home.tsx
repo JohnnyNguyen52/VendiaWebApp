@@ -56,6 +56,7 @@ export default function Home() {
             <FormControlLabel value="Users.BavariaAdmin" control={<Radio />} label="BavariaAdmin" />
           </RadioGroup>
         </FormControl>
+        <AddPatientForm/>
       </Box>
 
       <Box sx={{flexGrow: 1 }}>
