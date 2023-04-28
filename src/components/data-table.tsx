@@ -35,7 +35,6 @@ function DataTable() {
         { field: 'dob', headerName: 'Date of Birth', width: 100 },
     ];
 
-
     useEffect(() => {
         //List patients
         const listPatients = async () => {
