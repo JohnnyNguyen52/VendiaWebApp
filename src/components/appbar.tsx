@@ -196,11 +196,11 @@ export default function ResponsiveAppBar() {
                     justifyContent: 'center',
                   }}>
                   {index === 0 ? <HomeIcon />
-                          : index === 1 ?
-                            <Link
-                              href="/drugPage" passHref
-                            ><MedicationIcon /> </Link>
-                            : null
+                    : index === 1 ?
+                      <Link
+                        href="/drugPage" passHref
+                      ><MedicationIcon /> </Link>
+                      : null
                   }
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
@@ -230,14 +230,16 @@ export default function ResponsiveAppBar() {
             </ListItem>
           ))} */}
 
-        <List>
-          <ListItem disablePadding sx={{ display: 'block' }}>
-            <StartStudyButton />
-            {currentUserGlobal == Users.FDAAdmin &&
-              <AssignBatchNumberButton />}
-            <ListItemText sx={{ opacity: open ? 1 : 0 }} />
-          </ListItem>
-        </List>
+        {(currentUserGlobal == Users.FDAAdmin &&
+          <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <StartStudyButton />
+              {currentUserGlobal == Users.FDAAdmin &&
+                <AssignBatchNumberButton />}
+              <ListItemText sx={{ opacity: open ? 1 : 0 }} />
+            </ListItem>
+          </List>
+        )}
 
 
 
