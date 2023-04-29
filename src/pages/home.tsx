@@ -39,11 +39,11 @@ export default function Home() {
       <ResponsiveAppBar />
       <br></br>
 
-    <AssignBatchNumberButton />
-  <StartStudyButton studyStatus={studyStatus} setStudyStatus={setStudyStatus} />
-      <Container maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
-        <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px'}}>
-          <SideMenu/>
+      <AssignBatchNumberButton />
+      <StartStudyButton studyStatus={studyStatus} setStudyStatus={setStudyStatus} />
+      <Container maxWidth={false} sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+        <Box sx={{ border: 1, borderLeft: 0, borderColor: '#aaaaaa', borderTopRightRadius: '25px', borderBottomRightRadius: '25px', width: '20%', padding: '10px' }}>
+          <SideMenu />
           <FormControl>
             <FormLabel id="form-user">User</FormLabel>
             <RadioGroup
@@ -60,7 +60,7 @@ export default function Home() {
           </FormControl>
         </Box>
 
-        <Box sx={{flexGrow: 1}}>
+        <Box sx={{ flexGrow: 1 }}>
           <DataTable
             currentUser={currentUser}
           />
