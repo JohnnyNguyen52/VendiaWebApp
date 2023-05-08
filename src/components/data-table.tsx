@@ -1,9 +1,12 @@
 import useJaneHopkins from "@/api/useJaneHopkins";
 import useRefreshKey from "@/api/useRefreshKey";
 import Users from "@/api/Users";
-import { DataGrid, GridColDef, GridRowModel } from "@mui/x-data-grid"
+import { DataGrid, GridColDef, GridRenderCellParams, GridRowModel } from "@mui/x-data-grid"
 import React, { useEffect } from "react";
 import useCurrentUserGlobal from "@/api/useCurrentUser";
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import Image from 'next/image';
 
 function removePII(columns: GridColDef[]) {
     columns.splice(columns.findIndex(i => i.field == 'patientPicture'), 1);
@@ -25,11 +28,34 @@ function DataTable() {
     const { count, setCount }: any = useRefreshKey();
     const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
 
+    // used for the renderCell property for the datagrid columns. Used specifically for the "placebo"
+    // and "eligible column"
+    const renderTrueFalse = (params: GridRenderCellParams<Date>) => {
+        // render cell based on the value of each row. row value is either "true" or "false"
+        return (
+            <>
+                {((params.row == true) ? <CheckIcon /> : <CloseIcon />)}
+            </>
+        );
+
+    };
 
     let rows: any[] = [];
-
     let columns = [
-        { field: 'patientPicture', headerName: 'Picture', width: 125 },
+        {
+            field: 'eligible', headerName: 'Eligible', width: 100,
+
+            // render cell based on the value of each row. row value is either "true" or "false"
+            renderCell: renderTrueFalse
+        },
+        {
+            field: 'patientPicture', headerName: 'Picture', width: 125,
+            renderCell: (params: GridRenderCellParams<Date>) => {
+                return (
+                    <Image src={params.row} alt=""/>
+                )
+            }
+        },
         { field: 'id', headerName: 'ID', width: 300 },
         { field: 'name', headerName: 'Name', width: 150 },
         { field: 'dob', headerName: 'Date of Birth', width: 100 },
@@ -66,13 +92,19 @@ function DataTable() {
                 id: patients[i]._id,
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
+                eligible: patients[i].eligible
             });
         }
     }
+
     else if (currentUserGlobal == Users.FDAAdmin) {
         removePII(columns);
         columns.push({ field: 'batchNumber', headerName: 'Batch #', width: 100 });
-        columns.push({ field: 'placebo', headerName: 'placebo', width: 100 });
+        columns.push({
+            field: 'placebo', headerName: 'placebo', width: 100,
+            // render cell based on the value of each row. row value is either "true" or "false"
+            renderCell: renderTrueFalse
+        });
 
         //Pushes out the info to the data table.
         for (let i = 0; i < patients.length; i++) {
@@ -81,7 +113,8 @@ function DataTable() {
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
                 batchNumber: patients[i].batchNumber,
-                placebo: getBatchNumberPlacebo(patients[i].batchNumber)
+                placebo: getBatchNumberPlacebo(patients[i].batchNumber),
+                eligible: patients[i].eligible,
             });
         }
 
@@ -99,6 +132,7 @@ function DataTable() {
                 name: patients[i].name,
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
+                eligible: patients[i].eligible,
             });
         }
     }

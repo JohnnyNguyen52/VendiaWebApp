@@ -25,26 +25,42 @@ export default function StartStudyButton() {
     }
 
     useEffect(() => {
+
         const changeStudyStatus = async () => {
             switch (studyStatus) {
                 case 0:
-                    setStudyStatus(1);
+                    if (refreshKey)
+                    {
+                        setStudyStatus(1);
+                        setRefreshKey(!refreshKey);
+
+                    }
                     setButtonText("Stop Study");
                     break;
 
                 case 1:
-                    setStudyStatus(2);
+                    if (refreshKey)
+                    {
+                        setStudyStatus(2);
+                        setRefreshKey(!refreshKey);
+
+                    }
                     setButtonText("Study Finished");
                     break;
 
                 case 2:
-                    setStudyStatus(0);
+                    if (refreshKey)
+                    {
+                        setStudyStatus(0);
+                        setRefreshKey(!refreshKey);
+
+                    }
                     setButtonText("Start Study");
                     break;
             }
         }
-
         changeStudyStatus();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refreshKey])
 
