@@ -2,11 +2,14 @@ import useJaneHopkins from "@/api/useJaneHopkins";
 import useRefreshKey from "@/api/useRefreshKey";
 import Users from "@/api/Users";
 import {Button,} from "@mui/material";
-import { DataGrid, GridColDef, GridRowModel, GridToolbarContainer, GridToolbarFilterButton, GridToolbarQuickFilter, } from "@mui/x-data-grid"
+import { DataGrid, GridColDef, GridRenderCellParams, GridRowModel, GridToolbarContainer, GridToolbarFilterButton, GridToolbarQuickFilter, } from "@mui/x-data-grid"
 import usePatient from "@/api/usePatient";
 
 import React, { useEffect } from "react";
 import useCurrentUserGlobal from "@/api/useCurrentUser";
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import Image from 'next/image';
 
 function removePII(columns: GridColDef[]) {
     columns.splice(columns.findIndex(i => i.field == 'patientPicture'), 1);
@@ -28,11 +31,34 @@ function DataTable() {
     const { count, setCount }: any = useRefreshKey();
     const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
 
-    const {patient, setPatient}: any = usePatient();
+    const {patient, setPatient}: any = usePatient();    // used for the renderCell property for the datagrid columns. Used specifically for the "placebo"
+    // and "eligible column"
+    const renderTrueFalse = (params: GridRenderCellParams<Date>) => {
+        // render cell based on the value of each row. row value is either "true" or "false"
+        return (
+            <>
+                {((params.row == true) ? <CheckIcon /> : <CloseIcon />)}
+            </>
+        );
+
+    };
+
     let rows: any[] = [];
-    
     let columns = [
-        { field: 'patientPicture', headerName: 'Picture', width: 125 },
+        {
+            field: 'eligible', headerName: 'Eligible', width: 100,
+
+            // render cell based on the value of each row. row value is either "true" or "false"
+            renderCell: renderTrueFalse
+        },
+        {
+            field: 'patientPicture', headerName: 'Picture', width: 125,
+            renderCell: (params: GridRenderCellParams<Date>) => {
+                return (
+                    <Image src={params.row} alt=""/>
+                )
+            }
+        },
         { field: 'id', headerName: 'ID', width: 300 },
         { field: 'name', headerName: 'Name', width: 150 },
         { field: 'dob', headerName: 'Date of Birth', width: 100 },
@@ -79,13 +105,19 @@ function DataTable() {
                 id: patients[i]._id,
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
+                eligible: patients[i].eligible
             });
         
     }
+
     else if (currentUserGlobal == Users.FDAAdmin) {
         removePII(columns);
         columns.push({ field: 'batchNumber', headerName: 'Batch #', width: 100 });
-        columns.push({ field: 'placebo', headerName: 'placebo', width: 100 });
+        columns.push({
+            field: 'placebo', headerName: 'placebo', width: 100,
+            // render cell based on the value of each row. row value is either "true" or "false"
+            renderCell: renderTrueFalse
+        });
 
      
             rows.push({
@@ -93,7 +125,8 @@ function DataTable() {
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
                 batchNumber: patients[i].dosesID,
-                placebo: getBatchNumberPlacebo(patients[i].dosesID)
+                placebo: getBatchNumberPlacebo(patients[i].dosesID),
+                eligible: patients[i].eligible,
             });
         
 
@@ -109,20 +142,15 @@ function DataTable() {
                 name: patients[i].name,
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
+                eligible: patients[i].eligible,
             });
         
     }
 }
 
 const increaseDosageAmount = async() => {
-    console.log(patient[0])
     const termArray = (patient[0].currentDosage).split("/")
     let number = Number(termArray[0])+1
-    // const actualPatient = await entities.patient.get(patient[0].id)
-    // console.log(actualPatient)
-    // actualPatient.currentDosage = String(number);
-    // console.log(actualPatient)
-    // const updateProductResponse = await entities.patient.update(actualPatient)
     const response = await entities.patient.update({
         _id: patient[0].id,
         currentDosage: String(number),
@@ -130,14 +158,8 @@ const increaseDosageAmount = async() => {
       setCount(count+1)
   };
   const decreaseDosageAmount = async() => {
-    console.log(patient[0])
     const termArray = (patient[0].currentDosage).split("/")
     let number = Number(termArray[0])-1
-    // const actualPatient = await entities.patient.get(patient[0].id)
-    // console.log(actualPatient)
-    // actualPatient.currentDosage = String(number);
-    // console.log(actualPatient)
-    // const updateProductResponse = await entities.patient.update(actualPatient)
     const response = await entities.patient.update({
         _id: patient[0].id,
         currentDosage: String(number),
