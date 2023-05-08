@@ -74,7 +74,7 @@ function AddPatientForm()
   const handleAdd = async () => {
     const addPatientResponse = await entities.patient.add({
       eligible: booleanInput.eligible,
-      dosesID: "1234",
+      dosesID: "",
       currentDosage: "0",
       name:formInput.name,
       dob:formInput.dob,

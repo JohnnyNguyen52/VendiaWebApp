@@ -57,9 +57,12 @@ function DataTable({ currentUser }: { currentUser: Users }) {
     const getBatchNumberPlacebo = (batchNumber:any) =>
     {
         let x = drugs.find(drug => drug.batchNumber == batchNumber);
-
-        if (x == null) return false;
+        if (x == null){
+            return false
+        }
+        else{
         return x.placebo;
+        }
     }
     let dosageString =""
     for (let i = 0; i < patients.length; i++) {
@@ -90,7 +93,7 @@ function DataTable({ currentUser }: { currentUser: Users }) {
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
                 batchNumber: patients[i].dosesID,
-                placebo: getBatchNumberPlacebo(patients[i].batchNumber)
+                placebo: getBatchNumberPlacebo(patients[i].dosesID)
             });
         
 
