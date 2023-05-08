@@ -34,7 +34,7 @@ export class BatchNumberAPI {
             }
             entities.patient.update({
                 _id: patient._id,
-                batchNumber: batchNumbers[x]
+                dosesID: batchNumbers[x]
             })
         });
     }

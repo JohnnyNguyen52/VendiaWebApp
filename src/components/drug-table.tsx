@@ -29,9 +29,11 @@ function DrugTable({ currentUser }: { currentUser: Users }) {
     let rows: any[] = [];
 
     let columns = [
-        { field: 'placebo', headerName: 'Placebo', width: 125 },
-        { field: 'batchNumber', headerName: 'Batch Number', width: 300 },
         { field: 'id', headerName: 'ID', width: 300 },
+        { field: 'placebo', headerName: 'Placebo', width: 125 },
+        { field: 'dosage', headerName: 'Dosage', width: 125 },
+        { field: 'batchNumber', headerName: 'Batch Number', width: 300 },
+        
     ];
 
 
@@ -57,7 +59,8 @@ function DrugTable({ currentUser }: { currentUser: Users }) {
                 id: drugs[i]._id,
                 placebo: drugs[i].placebo,
                 batchNumber: drugs[i].batchNumber,
-
+                dosage: drugs[i].dosage,
+                
             });
         }
     }
@@ -67,7 +70,9 @@ function DrugTable({ currentUser }: { currentUser: Users }) {
             rows.push({
                 id: drugs[i]._id,
                 batchNumber: drugs[i].batchNumber,
+                dosage: drugs[i].dosage,
 
+                
             });
         }
     }

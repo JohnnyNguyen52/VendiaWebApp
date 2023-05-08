@@ -36,9 +36,11 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
   const [formInput, setFormInput] = useReducer(
     (state: any, newState: any) => ({ ...state, ...newState }),
     {
-        placebo: false,
-        batchNumber: "",
-        id: "",
+      // id: "",  
+      placebo: false,
+      dosage:"",
+      batchNumber: "",
+        
 
     }
   );
@@ -46,9 +48,11 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
   const handleAdd = async () => {
     console.log(formInput);
     const addDrugResponse = await entities.drug.add({
+      // id:formInput._id,
       placebo:formInput.placebo,
+      dosage:formInput.dosage,
       batchNumber:formInput.batchNumber,
-      id:formInput.id,
+      
       },
       {
         aclInput:{
@@ -61,17 +65,25 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
               path:"batchNumber", 
               
             },
+            // {
+            //   principal:{
+            //     nodes:["Bavaria","FDA", "JaneHopkins"]
+            //   },
+            //   operations: ["READ"], 
+            //   path:"id", 
+              
+            // },
             {
               principal:{
                 nodes:["Bavaria","FDA", "JaneHopkins"]
               },
               operations: ["READ"], 
-              path:"id", 
+              path:"dosage", 
               
             },
             {
               principal:{
-                nodes:["Bavaria"]
+                nodes:["Bavaria","FDA", "JaneHopkins"]
               },
               operations: ["READ"], 
               path:"placebo", 
@@ -98,7 +110,8 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
    
     formInput.placebo = false;
     formInput.batchNumber = "";
-    formInput.id = "";
+    formInput.dosage = "";
+    // formInput.id = "";
  
   };
 
@@ -166,6 +179,7 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
                         
                     />
                     <TextField sx = {{m: 1,width: 200 }} helperText="Batch Number" name="batchNumber" onChange={handleInput}defaultValue={formInput.batchNumber} />
+                    <TextField sx = {{m: 1,width: 200 }} helperText="Dosage" name="dosage" onChange={handleInput}defaultValue={formInput.dosage} />
                 </Box>
                 <Box>
                     <Button 
