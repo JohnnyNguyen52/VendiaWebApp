@@ -37,7 +37,7 @@ function DataTable() {
         // render cell based on the value of each row. row value is either "true" or "false"
         return (
             <>
-                {((params.row == true) ? <CheckIcon /> : <CloseIcon />)}
+                {((params.row.placebo == true) ? <CheckIcon /> : <CloseIcon />)}
             </>
         );
 
@@ -84,7 +84,7 @@ function DataTable() {
     const getBatchNumberPlacebo = (batchNumber: any) => {
         let x = drugs.find(drug => drug.batchNumber == batchNumber);
         if (x == null){
-            return false
+        return false
         }
         else{
         return x.placebo;
@@ -118,8 +118,6 @@ function DataTable() {
             // render cell based on the value of each row. row value is either "true" or "false"
             renderCell: renderTrueFalse
         });
-
-     
             rows.push({
                 id: patients[i]._id,
                 dob: patients[i].dob,
