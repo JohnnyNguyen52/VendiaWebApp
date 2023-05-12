@@ -10,17 +10,10 @@ import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
 import Link from 'next/link';
 import HomeIcon from '@mui/icons-material/Home';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import LogoutIcon from '@mui/icons-material/Logout';
-import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import PersonIcon from '@mui/icons-material/Person';
+import MenuIcon from '@mui/icons-material/Menu';
 import MedicationIcon from '@mui/icons-material/Medication';
 import Users from "@/api/Users";
 import AssignBatchNumberButton from '@/components/AssignBatchNumberButton';
@@ -30,7 +23,7 @@ import useCurrentUserGlobal from "@/api/useCurrentUser";
 let pages: any[] = [];
 const pagesBasic = ['Home'];
 const pagesBavariaFDA = ['Home', 'Drugs'];
-const drawerWidth = 250;
+const drawerWidth = 170;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -56,8 +49,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
+  padding: theme.spacing(0, 3),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
@@ -134,7 +126,7 @@ export default function ResponsiveAppBar() {
 
 
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -164,19 +156,19 @@ export default function ResponsiveAppBar() {
         variant="permanent" open={open}
         anchor="left" >
         <DrawerHeader>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={open === true ? handleDrawerClose
-              : open === false ? handleDrawerOpen
-                : () => { }}
-            edge="start"
-            sx={{
-              ...(open && { display: '' }),
-            }}
-          >
-            <MenuOpenIcon />
-          </IconButton>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={open === true ? handleDrawerClose
+                : open === false ? handleDrawerOpen
+                  : () => { }}
+              edge="start"
+              sx={{
+                ...(open && { display: '' }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
         </DrawerHeader>
         <List>
           {pages.map((text, index) => (
