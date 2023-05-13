@@ -62,7 +62,6 @@ export default function AssignBatchNumberButton()
                 currentDosage: "0",
             })
         });
-        console.log('done')
         setCount(count+1)
     }
 

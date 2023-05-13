@@ -42,14 +42,23 @@ function DataTable() {
         );
 
     };
+    
+    const renderTrueFalseE = (params: GridRenderCellParams<Date>) => {
+        // render cell based on the value of each row. row value is either "true" or "false"
+        return (
+            <>
+                {((params.row.eligible == true) ? <CheckIcon /> : <CloseIcon />)}
+            </>
+        );
+
+    };
 
     let rows: any[] = [];
     let columns = [
         {
             field: 'eligible', headerName: 'Eligible', width: 100,
-
             // render cell based on the value of each row. row value is either "true" or "false"
-            renderCell: renderTrueFalse
+            renderCell: renderTrueFalseE
         },
         {
             field: 'patientPicture', headerName: 'Picture', width: 125,
@@ -90,6 +99,47 @@ function DataTable() {
         return x.placebo;
         }
     }
+
+    const isPatientEligible = (patient: any)=>{
+        let healthCodes = [];
+        const dob = new Date(patient.dob);
+        for(let num = 0; num < patient.icdHealthCodes.length; num++){
+            healthCodes.push(patient.icdHealthCodes[num].code)
+        }
+
+
+            if ((healthCodes.find(x=> x.startsWith('O')) != undefined)  || (dob > new Date('2005-01-01'))) {
+                return false
+            }
+            else{
+             return true
+            }
+        // if(healthCodes.startsWith("O") == true){
+        //     console.log('false')
+        //     console.log(healthCodes)
+        //     return false
+        // }
+        // console.log('true')
+        // return true;
+
+    };
+        // let healthCodes = patient.icdHealthCodes.code;
+        // console.log(healthCodes)
+        // console.log(healthCodes[0].startsWith('O'))
+        
+        // Exclude ICD-10 Pregnancy codes
+        // if (healthCodes.find((x) => { x.startsWith('O') }) != undefined) {
+        //     console.log('test')
+        // }
+    
+        // // Exclude DOB greater than 1/1/2005
+        // if (dob > new Date('2005-01-01')) {
+        //     return false;
+        // }
+    
+        // Add more eligibility checks here as needed
+
+
     let dosageString =""
     for (let i = 0; i < patients.length; i++) {
         for(let x = 0; x < drugs.length; x++){
@@ -100,12 +150,11 @@ function DataTable() {
     if (currentUserGlobal == Users.BavariaAdmin) {
         removePII(columns);
         //Pushes out the info to the data table.
-
             rows.push({
                 id: patients[i]._id,
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
-                eligible: patients[i].eligible
+                eligible: isPatientEligible(patients[i]),
             });
         
     }
@@ -123,8 +172,9 @@ function DataTable() {
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
                 batchNumber: patients[i].dosesID,
+                currentDosage:dosageString,
                 placebo: getBatchNumberPlacebo(patients[i].dosesID),
-                eligible: patients[i].eligible,
+                eligible: isPatientEligible(patients[i]),
             });
         
 
@@ -140,11 +190,13 @@ function DataTable() {
                 name: patients[i].name,
                 dob: patients[i].dob,
                 uuid: patients[i].uuid,
-                eligible: patients[i].eligible,
+                eligible: isPatientEligible(patients[i]),
             });
         
     }
 }
+
+
 
 const increaseDosageAmount = async() => {
     const termArray = (patient[0].currentDosage).split("/")
@@ -195,6 +247,7 @@ const increaseDosageAmount = async() => {
     const onRowsSelectionHandler = (ids: any[]) => {
         const selectedRowsData = ids.map((id) => rows.find((row) => row.id === id));
         setPatient(selectedRowsData);
+        console.log(selectedRowsData)
         };
             function CustomToolbar() {
                 return (
