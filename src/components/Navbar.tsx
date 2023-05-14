@@ -1,7 +1,17 @@
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { AppBar, Toolbar, Typography, Button, Link } from '@mui/material';
 
 
+//newest
 export default function Navbar() {
+  
+  const { user, error, isLoading} = useUser();
+
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
+  
+
     return (
       <AppBar position="static" style={{ width: "100%", backgroundColor: "transparent"}}>
         <Toolbar>
@@ -11,10 +21,18 @@ export default function Navbar() {
           <Button color="inherit" style=
           {{ color: "black", marginRight:10 }}>Home</Button>
           <Button color="inherit" style={{ color: "black", marginRight:10 }}>About</Button>
-          <a href="api/auth/login" style={{color:'white'}}>
-            <Button color="inherit" variant="outlined" style={{ color: "white", marginRight:10, backgroundColor: "rgb(99, 93, 255)"}}>Login</Button>
-          </a>
+
+          {!user && <Link href="/api/auth/login" style={{color:'white'}}>
+          <Button color="inherit" variant="outlined" style={{ color: "white", marginRight:10, backgroundColor: "rgb(99, 93, 255)"}}>Login</Button>
+          </Link>}
+
+          {user && <Link href="/api/auth/logout" style={{color:'white'}}>
+         <Button color="inherit" variant="outlined" style={{ color: "white", marginRight:10, backgroundColor: "rgb(99, 93, 255)"}}>Logout</Button>
+         </Link>}
         </Toolbar>
       </AppBar>
     );
+
+   
 }
+
