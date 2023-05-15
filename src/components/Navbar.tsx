@@ -1,12 +1,12 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { AppBar, Toolbar, Typography, Button, Link } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Link, Menu, MenuItem, Avatar, Divider, ListItemIcon } from '@mui/material';
+import React from 'react';
 
 
 //newest
 export default function Navbar() {
   
   const { user, error, isLoading} = useUser();
-
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
@@ -18,9 +18,7 @@ export default function Navbar() {
           <Typography variant="h6" style={{ flexGrow: 1, color: 'black', fontWeight: 1000}}>
             Vendia App
           </Typography>
-          <Button color="inherit" style=
-          {{ color: "black", marginRight:10 }}>Home</Button>
-          <Button color="inherit" style={{ color: "black", marginRight:10 }}>About</Button>
+          
 
           {!user && <Link href="/api/auth/login" style={{color:'white'}}>
           <Button color="inherit" variant="outlined" style={{ color: "white", marginRight:10, backgroundColor: "rgb(99, 93, 255)"}}>Login</Button>
@@ -33,6 +31,7 @@ export default function Navbar() {
       </AppBar>
     );
 
+    
    
 }
 

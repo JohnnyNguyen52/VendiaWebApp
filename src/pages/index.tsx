@@ -1,12 +1,26 @@
 import React, { useState, useEffect, useReducer } from "react";
 import LoginPage from "@/components/LoginPage";
 import LandingPage from "@/components/LandingPage";
+import { useUser } from '@auth0/nextjs-auth0/client';
+import Home from "./home";
 
 
-export default function index() {
-  return (
-    <LandingPage/>
-  );
+export default function Index() {
+const { user, error, isLoading} = useUser();
+
+  if(!user)
+  {
+    return (
+      <LandingPage/>
+    );
+  }
+  if(user)
+  {
+    return (
+      <Home/>
+    );
+  }
+  
 }
 
 /*
