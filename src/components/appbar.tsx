@@ -93,7 +93,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-
 export default function ResponsiveAppBar() {
   const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
   // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
