@@ -5,6 +5,7 @@ import useRefreshKey from "@/api/useRefreshKey";
 import useDrug from "@/api/useDrug";
 import Users from "@/api/Users";
 import useCurrentUserGlobal from "@/api/useCurrentUser";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 
 function AddDrugForm({ currentUser }: { currentUser: Users })
@@ -13,6 +14,7 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
     const [openViewModal, setOpenViewModal] = useState(false);//set to false so that it is closed
     const {count, setCount} : any = useRefreshKey();
     const {currentUserGlobal, setCurrentUserGlobal} = useCurrentUserGlobal();
+    const { user } = useUser();
 
     const handleCloseView = () => setOpenViewModal(false);
 
@@ -126,7 +128,8 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
             resetFormInput();
             setOpenViewModal(true);
           }}
-            disabled = {currentUserGlobal != Users.BavariaAdmin}
+            // disabled = {currentUserGlobal != Users.BavariaAdmin}
+            disabled = {user?.name != 'admin@bavaria.com'}
         >Add
       </Button>
       <Button 
@@ -135,7 +138,8 @@ function AddDrugForm({ currentUser }: { currentUser: Users })
             onClick={() => {
             handleRemove(drug);
             }}
-            disabled = {currentUserGlobal != Users.BavariaAdmin}
+            //disabled = {currentUserGlobal != Users.BavariaAdmin}
+            disabled = {user?.name != 'admin@bavaria.com'}
         >Delete
       </Button>
 
