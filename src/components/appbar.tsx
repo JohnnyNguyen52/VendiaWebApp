@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
@@ -9,24 +8,22 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
+import Link from 'next/link';
 import HomeIcon from '@mui/icons-material/Home';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import LogoutIcon from '@mui/icons-material/Logout';
-import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import PersonIcon from '@mui/icons-material/Person';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import MenuIcon from '@mui/icons-material/Menu';
+import MedicationIcon from '@mui/icons-material/Medication';
+import Users from "@/api/Users";
+import AssignBatchNumberButton from '@/components/AssignBatchNumberButton';
+import StartStudyButton from '@/components/StartStudyButton';
+import useCurrentUserGlobal from "@/api/useCurrentUser";
 
-
-const pages = ['Home', 'Products', 'Pricing', 'Help'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-const drawerWidth = 250;
+let pages: any[] = [];
+const pagesBasic = ['Home'];
+const pagesBavariaFDA = ['Home', 'Drugs'];
+const drawerWidth = 170;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -52,8 +49,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
+  padding: theme.spacing(0, 3),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
@@ -64,7 +60,7 @@ interface AppBarProps extends MuiAppBarProps {
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme,  open}) => ({
+})<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
@@ -98,21 +94,59 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function ResponsiveAppBar() {
-    const { user, error, isLoading} = useUser();
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+  const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
+  // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-    const handleDrawerOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleDrawerClose = () => {
-      setOpen(false);
-    };
+  // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+  //     setAnchorElNav(event.currentTarget);
+  // };
+  // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  //     setAnchorElUser(event.currentTarget);
+  // };
+
+  // const handleCloseNavMenu = () => {
+  //     setAnchorElNav(null);
+  // };
+
+  // const handleCloseUserMenu = () => {
+  //     setAnchorElUser(null);
+  // };
+  if (currentUserGlobal == Users.BavariaAdmin) {
+    pages = pagesBavariaFDA;
+  }
+  else if (currentUserGlobal == Users.FDAAdmin) {
+    pages = pagesBavariaFDA;
+  }
+
+  else if (currentUserGlobal == Users.JHAdmin || currentUserGlobal == Users.JHDoctor) {
+    pages = pagesBasic;
+  }
 
 
-    return (
-    <Box sx={{ display: 'flex', marginTop : 0}}>
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(true);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+
+  const handleListItemClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number,
+  ) => {
+    setSelectedIndex(index);
+    if (selectedIndex == 4) {
+      <Link href="/drugPage" passHref></Link>
+    }
+  };
+  return (
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
       </AppBar>
@@ -120,51 +154,53 @@ export default function ResponsiveAppBar() {
       <Drawer
         variant="permanent" open={open}
         anchor="left" >
-      <DrawerHeader>
-      <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={open === true ? handleDrawerClose 
-            : open === false ? handleDrawerOpen
-            : () => {}}
-            edge="start"
-            sx={{
-              ...(open && { display: '' }),
-            }}
-          >
-            <MenuOpenIcon/>
-          </IconButton>
-      </DrawerHeader>
-
-          
+        <DrawerHeader>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={open === true ? handleDrawerClose
+                : open === false ? handleDrawerOpen
+                  : () => { }}
+              edge="start"
+              sx={{
+                ...(open && { display: '' }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+        </DrawerHeader>
         <List>
-          {settings.map((text, index) => (
+          {pages.map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}>
-                <ListItemIcon
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}>
-                  {index === 0 ? <PersonIcon /> 
-                  : index === 1 ? <ManageAccountsIcon /> 
-                  : index === 2 ? <DashboardIcon/>
-                  : index === 3 ? <LogoutIcon/> : null}
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+                selected={selectedIndex === index}
+                onClick={(event) => handleListItemClick(event, index)}>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}>
+                  {index === 0 ? <HomeIcon />
+                    : index === 1 ?
+                      <Link
+                        href="/drugPage" passHref
+                      ><MedicationIcon /> </Link>
+                      : null
+                  }
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }}/>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
         <Divider />
-        <List>
-          {pages.map((text, index) => (
+        {/* {functionPages.map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
               sx={{
@@ -177,21 +213,53 @@ export default function ResponsiveAppBar() {
                   mr: open ? 3 : 'auto',
                   justifyContent: 'center',
                 }}>
-                  {index === 0 ? <HomeIcon /> 
-                  : index === 1 ? <ShoppingBasketIcon /> 
-                  : index === 2 ? <AttachMoneyIcon/>
-                  : index === 3 ? <HelpCenterIcon/> : null} 
+                  {index === 0 ? <BiotechIcon /> 
+                  : index === 1 ? <AssignmentTurnedInIcon />  : null} 
                 </ListItemIcon>
                 <ListItemText primary={text}  sx={{ opacity: open ? 1 : 0 }}/>
               </ListItemButton>
             </ListItem>
-          ))}
-        </List>
-        <Divider />
-      </Drawer>
-      
-        <Toolbar />
-      </Box>
+          ))} */}
 
-    );
+        {(currentUserGlobal == Users.FDAAdmin &&
+          <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <StartStudyButton />
+              {currentUserGlobal == Users.FDAAdmin &&
+                <AssignBatchNumberButton />}
+              <ListItemText sx={{ opacity: open ? 1 : 0 }} />
+            </ListItem>
+          </List>
+        )}
+
+
+
+        {/* <List>
+          {functionButtons.map((button, index) => (
+            <ListItem key={button.name} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,}}>
+                <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}>
+                  {index === 0 ? <BiotechIcon /> 
+                  : index === 1 ? <AssignmentTurnedInIcon /> : null} 
+                </ListItemIcon>
+                <ListItemText primary={button.name}  sx={{ opacity: open ? 1 : 0 }}/>
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List> */}
+
+      </Drawer>
+
+    </Box>
+
+  );
 }
