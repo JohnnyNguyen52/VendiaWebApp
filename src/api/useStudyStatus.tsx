@@ -13,6 +13,9 @@ const { useGlobalState } = createGlobalState(initialState);
 
 // Used as a hook that syncs with the backend's studyStatus. Use this hook if you want to fetch
 // the study status.
+// 0 == Study is not started
+// 1 == Study is started
+// 2 == Study is finished
 export default function useStudyStatus() {
   const [studyStatus, setter] = useGlobalState('count');
 
