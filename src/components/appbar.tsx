@@ -19,6 +19,7 @@ import Users from "@/api/Users";
 import AssignBatchNumberButton from '@/components/AssignBatchNumberButton';
 import StartStudyButton from '@/components/StartStudyButton';
 import useCurrentUserGlobal from "@/api/useCurrentUser";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 let pages: any[] = [];
 const pagesBasic = ['Home'];
@@ -186,8 +187,7 @@ export default function ResponsiveAppBar() {
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
                   }}>
-                  {index === 0 ? <HomeIcon />
-                    : index === 1 ?
+                  {index === 0 ? <HomeIcon /> : index === 1 ?
                       <Link
                         href="/drugPage" passHref
                       ><MedicationIcon /> </Link>
@@ -200,6 +200,32 @@ export default function ResponsiveAppBar() {
           ))}
         </List>
         <Divider />
+        <List>
+        <Link href="/api/auth/logout" style={{ textDecoration: 'none' }}>
+        <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? 'initial' : 'center',
+              px: 2.5,
+            }}>
+          <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : 'auto',
+                justifyContent: 'center',
+              }}
+            >
+            
+            <LogoutIcon />
+            
+            
+
+            </ListItemIcon>
+            <ListItemText primary={'Logout'} style={{ color: 'black' }} sx={{ opacity: open ? 1 : 0 }} />
+          </ListItemButton>
+          </Link>
+        </List>
+        
         {/* {functionPages.map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
