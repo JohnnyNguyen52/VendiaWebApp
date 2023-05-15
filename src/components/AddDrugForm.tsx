@@ -8,7 +8,7 @@ import useCurrentUserGlobal from "@/api/useCurrentUser";
 import { useUser } from '@auth0/nextjs-auth0/client';
 
 
-function AddDrugForm({ currentUser }: { currentUser: Users })
+function AddDrugForm()
 {
     const { entities } = useJaneHopkins();
     const [openViewModal, setOpenViewModal] = useState(false);//set to false so that it is closed
