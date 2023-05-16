@@ -6,6 +6,7 @@ import { Theme, useTheme } from "@mui/material/styles";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { VendiaWebAppAPI } from "@/api/VendiaWebAppAPI";
 import useStudyStatus from "@/api/useStudyStatus";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 
 let visitsArray: any[] = [];
@@ -38,7 +39,7 @@ function AddPatientForm()
   const {count, setCount} : any = useRefreshKey();
   const [open, setOpen] = useState(false);
   const handleToClose = () => {setOpen(false);};
-
+  const { user} = useUser();
   const { studyStatus, setStudyStatus } = useStudyStatus();
 
   const handleCloseView = () => setOpenViewModal(false);
@@ -276,6 +277,7 @@ function AddPatientForm()
 
     return(
         <>
+        {(user?.name == 'doctor@janehopkins.com' || user?.name == 'admin@janehopkins.com') && 
       <Button 
           disabled={studyStatus == 1}
           variant="contained"
@@ -285,7 +287,7 @@ function AddPatientForm()
             
           }}
         >Add
-      </Button>
+      </Button>}
       <div>
       <Dialog
         open={openViewModal}

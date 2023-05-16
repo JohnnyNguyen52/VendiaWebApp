@@ -48,7 +48,7 @@ export class VendiaWebAppAPI {
         const dob = new Date(patient.dob);
 
         // Exclude ICD-10 Pregnancy codes
-        if (healthCodes.find((x) => { x.startsWith('O') }) != undefined) {
+        if (healthCodes.find(x => x.startsWith('O')) != undefined) {
             return false
         }
 

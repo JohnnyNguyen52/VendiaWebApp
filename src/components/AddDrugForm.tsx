@@ -159,33 +159,32 @@ function AddDrugForm() {
 
   return (
     <>
-      <Button
-        name="addButton"
-        variant="contained"
-        disabled={(finalDrugsConfirm != 0) || (studyStatus == 1) || (user?.name != 'admin@bavaria.com')}
-        onClick={() => {
-          resetFormInput();
-          setOpenViewModal(true);
-        }}
-      >Add
-      </Button>
-      <Button
-        name="deleteButton"
-        variant="contained"
-        disabled={(finalDrugsConfirm != 0) || (studyStatus == 1) || (user?.name != 'admin@bavaria.com')}
-        onClick={() => {
-          handleRemove(drug);
-        }}
-      >Delete
-      </Button>
-      <Button
-        name="confirmDrugsButton"
-        variant="contained"
-        disabled={(finalDrugsConfirm != 0) || (studyStatus == 1) || (user?.name != 'admin@bavaria.com')}
-        onClick={onConfirmClick}
-      >Use Final Drugs Confirm
-      </Button>
-
+ {(user?.name == 'admin@bavaria.com' ) && 
+      <><Button
+          name="addButton"
+          variant="contained"
+          disabled={(finalDrugsConfirm != 0) || (studyStatus == 1) || (user?.name != 'admin@bavaria.com')}
+          onClick={() => {
+            resetFormInput();
+            setOpenViewModal(true);
+          } }
+        >Add
+        </Button><Button
+          name="deleteButton"
+          variant="contained"
+          disabled={(finalDrugsConfirm != 0) || (studyStatus == 1) || (user?.name != 'admin@bavaria.com')}
+          onClick={() => {
+            handleRemove(drug);
+          } }
+        >Delete
+          </Button><Button
+            name="confirmDrugsButton"
+            variant="contained"
+            disabled={(finalDrugsConfirm != 0) || (studyStatus == 1) || (user?.name != 'admin@bavaria.com')}
+            onClick={onConfirmClick}
+          >Use Final Drugs Confirm
+          </Button></>
+}
       <Dialog
         open={open}
         onClose={handleCancel}
