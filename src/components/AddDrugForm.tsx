@@ -1,11 +1,14 @@
 import useJaneHopkins from "@/api/useJaneHopkins";
-import { Checkbox, FormControlLabel, Box, Button, FormControl, FormHelperText, InputAdornment, Modal, OutlinedInput, TextField } from "@mui/material";
+import { Checkbox, FormControlLabel, Box, Button, FormControl, FormHelperText, InputAdornment, Modal, OutlinedInput, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ListItemButton } from "@mui/material";
 import { useReducer, useState } from "react";
 import useRefreshKey from "@/api/useRefreshKey";
 import useDrug from "@/api/useDrug";
 import Users from "@/api/Users";
 import useCurrentUserGlobal from "@/api/useCurrentUser";
 import { useUser } from '@auth0/nextjs-auth0/client';
+import React from "react";
+import useLock from "@/api/useLock";
+import useStudyStatus from "@/api/useStudyStatus";
 
 
 function AddDrugForm()
@@ -15,12 +18,33 @@ function AddDrugForm()
     const {count, setCount} : any = useRefreshKey();
     const {currentUserGlobal, setCurrentUserGlobal} = useCurrentUserGlobal();
     const { user } = useUser();
+    const [refreshKey, setRefreshKey] = React.useState(false);
+
+
+    const [open, setOpen] = useState(false);
+
+    const {lock, setLock} = useLock();
+    const { studyStatus, setStudyStatus } = useStudyStatus();
 
     const handleCloseView = () => setOpenViewModal(false);
 
      //Selected Drug
      const {drug, setDrug} = useDrug();
 
+
+     const handleCancel = () => {
+      setOpen(false);
+  };
+
+  const handleConfirm = () => {
+      setOpen(false);
+      handleLock();
+      setRefreshKey(!refreshKey);
+  };
+
+  const onConfirmClick = () => {
+      setOpen(true);
+  }
 
   //This creates the "name: formInput[0].name" to be set into the formInput that is above this.
   const handleInput = (evt: any) => {
@@ -48,7 +72,6 @@ function AddDrugForm()
   );
 //Takes the information inputted into the formInput and stores it into the Vendia Database
   const handleAdd = async () => {
-    console.log(formInput);
     const addDrugResponse = await entities.drug.add({
       // id:formInput._id,
       placebo:formInput.placebo,
@@ -61,23 +84,15 @@ function AddDrugForm()
           acl:[
             {
               principal:{
-                nodes:["Bavaria","FDA", "JaneHopkins"]//what nodes are allowed to see it
+                nodes:["Bavaria", "FDA"]//what nodes are allowed to see it
               },
               operations: ["READ"], //Write gives the option to update
               path:"batchNumber", 
               
             },
-            // {
-            //   principal:{
-            //     nodes:["Bavaria","FDA", "JaneHopkins"]
-            //   },
-            //   operations: ["READ"], 
-            //   path:"id", 
-              
-            // },
             {
               principal:{
-                nodes:["Bavaria","FDA", "JaneHopkins"]
+                nodes:["Bavaria","FDA"]
               },
               operations: ["READ"], 
               path:"dosage", 
@@ -85,25 +100,38 @@ function AddDrugForm()
             },
             {
               principal:{
-                nodes:["Bavaria","FDA", "JaneHopkins"]
+                nodes:["Bavaria","FDA"]
               },
               operations: ["READ"], 
               path:"placebo", 
               
             },
+            // {
+            //   principal:{
+            //     nodes:["Bavaria","FDA"]
+            //   },
+            //   operations: ["READ"], 
+            //   path:"id", 
+              
+            // },
           ],
         },
       }
     );
     setCount(count+1)
-      console.log("DrugForm - "+count);
     setOpenViewModal(false); //Closes it
     
-  };
+  }; 
+
+
 
   const handleRemove = async (drug: any[]) => {
     const removeDrugResponse = await entities.drug.remove(drug[0].id)
     setCount(count+1)
+  }
+
+  const handleLock = async() => {
+    setLock(true)
   }
 
   //This will reset the appearance of the form. Making blank once you enter it again.
@@ -121,27 +149,32 @@ function AddDrugForm()
 
     return(
         <>
-      <Button 
-            name = "addButton"
+        <Button
+            name="addButton"
             variant="contained"
+            disabled={(lock != false)||(studyStatus == 1)||(user?.name != 'admin@bavaria.com')}
             onClick={() => {
-            resetFormInput();
-            setOpenViewModal(true);
-          }}
-            // disabled = {currentUserGlobal != Users.BavariaAdmin}
-            disabled = {user?.name != 'admin@bavaria.com'}
-        >Add
-      </Button>
-      <Button 
-            name = "deleteButton"
-            variant="outlined"
+              resetFormInput();
+              setOpenViewModal(true);
+            } }
+          >Add
+          </Button>
+          <Button
+            name="deleteButton"
+            variant="contained"
+            disabled={(lock != false)||(studyStatus == 1)||(user?.name != 'admin@bavaria.com')}
             onClick={() => {
             handleRemove(drug);
             }}
-            //disabled = {currentUserGlobal != Users.BavariaAdmin}
-            disabled = {user?.name != 'admin@bavaria.com'}
         >Delete
       </Button>
+      <Button
+            name="confirmDrugsButton"
+            variant="contained"
+            disabled={(lock != false)||(studyStatus == 1)||(user?.name != 'admin@bavaria.com')}
+            onClick={onConfirmClick}
+          >Use Final Drugs Confirm
+            </Button>
 
       <Modal
         open={openViewModal}

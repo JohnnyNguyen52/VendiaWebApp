@@ -4,6 +4,7 @@ import { useReducer, useState } from "react";
 import useRefreshKey from "@/api/useRefreshKey";
 import { Theme, useTheme } from "@mui/material/styles";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import useStudyStatus from "@/api/useStudyStatus";
 
 
 
@@ -35,6 +36,8 @@ function AddPatientForm()
   const { entities } = useJaneHopkins();
   const [openViewModal, setOpenViewModal] = useState(false);//set to false so that it is closed
   const {count, setCount} : any = useRefreshKey();
+
+  const { studyStatus, setStudyStatus } = useStudyStatus();
 
   const handleCloseView = () => setOpenViewModal(false);
   let [codesChosen, setCodesChosen] = useState([]);
@@ -279,6 +282,7 @@ function AddPatientForm()
     return(
         <>
       <Button 
+          disabled={studyStatus == 1}
           variant="contained"
           onClick={() => {
             resetFormInput();

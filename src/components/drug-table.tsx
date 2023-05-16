@@ -72,6 +72,7 @@ function DrugTable() {
         for (let i = 0; i < drugs.length; i++) {
             rows.push({
                 id: drugs[i]._id,
+                placebo: drugs[i].placebo,
                 batchNumber: drugs[i].batchNumber,
                 dosage: drugs[i].dosage,
 

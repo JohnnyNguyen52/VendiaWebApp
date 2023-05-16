@@ -157,7 +157,7 @@ export default function ResponsiveAppBar() {
     index: number,
   ) => {
     setSelectedIndex(index);
-    if (selectedIndex == 4) {
+    if (selectedIndex == 1) {
       <Link href="/drugPage" passHref></Link>
     }
   };
@@ -259,10 +259,11 @@ export default function ResponsiveAppBar() {
             </ListItem>
           ))} */}
 
-        {(user?.name == 'admin@fda.com' &&
+        {((user?.name == 'admin@fda.com' || user?.name == 'doctor@janehopkins.com' || user?.name == 'admin@janehopkins.com')&&
           <List>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <StartStudyButton />
+            {(user?.name == 'doctor@janehopkins.com') ||(user?.name == 'admin@janehopkins.com') &&
+              <StartStudyButton />}
               {user?.name == 'admin@fda.com' &&
                 <AssignBatchNumberButton />}
               <ListItemText sx={{ opacity: open ? 1 : 0 }} />
