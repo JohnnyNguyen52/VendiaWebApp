@@ -18,6 +18,7 @@ export default function ConfirmPatientsButton() {
 
     const handleConfirm = () => {
         setOpen(false);
+        setRefreshKey(!refreshKey);
     }
     useEffect(() => {
 
@@ -34,11 +35,12 @@ export default function ConfirmPatientsButton() {
 
     return (
         <>
-            <ListItemButton onClick={onClick}>
+            <ListItemButton disabled={finalPatientsConfirm == 1} onClick={onClick}>
                 <ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: 'center' }}>
                     <SendIcon />
                 </ListItemIcon>
-                Send Patients
+                {finalPatientsConfirm == 0 && "Send Patients"}
+                {finalPatientsConfirm == 1 && "Patients Sent"}
             </ListItemButton>
             <Dialog
                 open={open}
