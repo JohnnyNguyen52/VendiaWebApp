@@ -21,6 +21,7 @@ import useCurrentUserGlobal from "@/api/useCurrentUser";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import ConfirmPatientsButton from './ConfirmPatientsButton';
+import DeletePatientsButton from './DeletePatientsButton';
 
 let pages: any[] = [];
 const pagesBasic = ['Home'];
