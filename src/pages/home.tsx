@@ -8,10 +8,11 @@ import SideMenu from "@/components/SubMenu";
 import useCurrentUserGlobal from "@/api/useCurrentUser";
 import useStudyStatus from "@/api/useStudyStatus";
 import { useUser } from '@auth0/nextjs-auth0/client';
+import DeletePatientsButton from "@/components/DeletePatientsButton";
 
 export default function Home() {
   const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
-  const { user, error, isLoading} = useUser();
+  const { user, error, isLoading } = useUser();
 
   // 0 == not started, 1 == started, 2 == finished
   const { studyStatus, setStudyStatus } = useStudyStatus();
@@ -38,7 +39,8 @@ export default function Home() {
       <ResponsiveAppBar />
       <Box sx={{ boxShadow: 2, border: 0, borderLeft: 0, borderColor: '#aaaaaa', width: '20%', paddingLeft: '10px' }}>
         <SideMenu />
-        <AddPatientForm/>
+        <AddPatientForm />
+        <DeletePatientsButton />
         <FormControl>
           <FormLabel id="form-user">User</FormLabel>
           {/* <RadioGroup
@@ -67,7 +69,7 @@ export default function Home() {
       </Box> */}
       <Box sx={{ flexGrow: 1 }}>
         {(studyStatus != 0 || (user?.name != 'admin@bavaria.com' && user?.name != 'admin@fda.com')) &&
-          <DataTable/>
+          <DataTable />
         }
         {studyStatus == 0 && (user?.name == 'admin@bavaria.com' || user?.name == 'admin@fda.com') &&
           <center>

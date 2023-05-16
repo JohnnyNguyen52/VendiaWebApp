@@ -3,6 +3,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import React, { useEffect } from "react";
 import useStudyStatus from "@/api/useStudyStatus";
 import BiotechIcon from '@mui/icons-material/Biotech';
+import useFinalDrugsConfirm from "@/api/useFinalDrugsConfirm";
+import useFinalPatientsConfirm from "@/api/useFinalPatientsConfirm";
 
 export default function StartStudyButton() {
     const [open, setOpen] = React.useState(false);
@@ -10,6 +12,8 @@ export default function StartStudyButton() {
     const [buttonText, setButtonText] = React.useState('');
     // This button component will update this global studyStatus hook with the backend studyStatus.
     const { studyStatus, setStudyStatus } = useStudyStatus();
+    const { finalDrugsConfirm, setFinalDrugsConfirm } = useFinalDrugsConfirm();
+    const { finalPatientsConfirm: finalPatientsConfirm, setFinalPatientsConfirm: setFinalPatientsConfirm } = useFinalPatientsConfirm();
 
     const handleCancel = () => {
         setOpen(false);
@@ -69,7 +73,7 @@ export default function StartStudyButton() {
 
     return (
         <>
-            <ListItemButton onClick={onStudyButtonClick}>
+            <ListItemButton disabled={finalDrugsConfirm == 0 && finalPatientsConfirm == 0} onClick={onStudyButtonClick}>
                 <ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: 'center' }}>
                     <BiotechIcon />
                 </ListItemIcon>

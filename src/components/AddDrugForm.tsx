@@ -162,7 +162,7 @@ function AddDrugForm() {
       <Button
         name="addButton"
         variant="contained"
-        disabled={(finalDrugsConfirm != 0) || (studyStatus == 1) || (user?.name != 'admin@bavaria.com')}
+        disabled={(finalDrugsConfirm != 0) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
         onClick={() => {
           resetFormInput();
           setOpenViewModal(true);
@@ -172,7 +172,7 @@ function AddDrugForm() {
       <Button
         name="deleteButton"
         variant="contained"
-        disabled={(finalDrugsConfirm != 0) || (studyStatus == 1) || (user?.name != 'admin@bavaria.com')}
+        disabled={(finalDrugsConfirm != 0) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
         onClick={() => {
           handleRemove(drug);
         }}
@@ -181,7 +181,7 @@ function AddDrugForm() {
       <Button
         name="confirmDrugsButton"
         variant="contained"
-        disabled={(finalDrugsConfirm != 0) || (studyStatus == 1) || (user?.name != 'admin@bavaria.com')}
+        disabled={(finalDrugsConfirm != 0) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
         onClick={onConfirmClick}
       >Use Final Drugs Confirm
       </Button>
