@@ -1,10 +1,10 @@
 import useJaneHopkins from "@/api/useJaneHopkins";
-import {  MenuItem, InputLabel, Dialog, DialogTitle, DialogContent, Typography, Divider, Checkbox, FormControlLabel, Box, Button, FormControl, FormHelperText, InputAdornment, Modal, OutlinedInput, TextField } from "@mui/material";
+import {  MenuItem, InputLabel, Dialog, DialogTitle, DialogContent, Typography, Divider, Checkbox, FormControlLabel, Box, Button, FormControl, FormHelperText, InputAdornment, Modal, OutlinedInput, TextField, DialogActions, DialogContentText } from "@mui/material";
 import { useReducer, useState } from "react";
 import useRefreshKey from "@/api/useRefreshKey";
 import { Theme, useTheme } from "@mui/material/styles";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-
+import { VendiaWebAppAPI } from "@/api/VendiaWebAppAPI";
 
 
 let visitsArray: any[] = [];
@@ -18,7 +18,7 @@ let codes = [
   "A01.2",
   "A02.0",
   "A02.1",
-  "A02.2",
+  "O02.2",
 ];
 function getStyles(code: any, codesChosen: any[], theme: Theme) {
   return {
@@ -35,6 +35,8 @@ function AddPatientForm()
   const { entities } = useJaneHopkins();
   const [openViewModal, setOpenViewModal] = useState(false);//set to false so that it is closed
   const {count, setCount} : any = useRefreshKey();
+  const [open, setOpen] = useState(false);
+  const handleToClose = () => {setOpen(false);};
 
   const handleCloseView = () => setOpenViewModal(false);
   let [codesChosen, setCodesChosen] = useState([]);
@@ -71,7 +73,7 @@ function AddPatientForm()
   };
   //Takes the information inputted into the formInput and stores it into the Vendia Database
   const handleAdd = async () => {
-    const addPatientResponse = await entities.patient.add({
+    const patient = {
       eligible: booleanInput.eligible,
       dosesID: "",
       currentDosage: "0",
@@ -92,26 +94,19 @@ function AddPatientForm()
       icdHealthCodes:icdHCArray,
       allergies:formInput.allergies,
       visits:formInput.visits,
-     
-      },
-      {
-        aclInput:{
-          acl:[
-            {
-              principal:{
-                nodes:["Bavaria", "FDA"]
-              },
-              operations: ["READ"], //Write gives the option to update
-              path:"weight",//What is allowed to go to Bavaria and FDA
-            },
-          ],
-        },
-      }
-    );
-    setCount(count+1)
-    setOpenViewModal(false); //Closes it
-    
+    };
+
+    if(VendiaWebAppAPI.isPatientEligible(patient) == true)
+    {
+      const addPatientResponse = await entities.patient.add(patient);
+      setCount(count+1)
+      setOpenViewModal(false); //Closes it
+    }
+    else{
+      setOpen(true);
+    }
   };
+
 
 
 
@@ -549,13 +544,27 @@ function AddPatientForm()
               variant="outlined"
               onClick={() => {
                 setOpenViewModal(false);
-
+                setOpen(true);
               }}
             >Cancel
             </Button>
             </Box>
           </DialogContent>
       </Dialog>
+      {open && <Dialog open={open} onClose={handleToClose}>
+          <DialogTitle>{"Patient is ineligible"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please recheck patient inputs. 
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleToClose} 
+                    color="primary" autoFocus>
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>}
       </div>
       </>
     )
