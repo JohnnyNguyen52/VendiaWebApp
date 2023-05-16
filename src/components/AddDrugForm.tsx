@@ -176,6 +176,29 @@ function AddDrugForm()
           >Use Final Drugs Confirm
             </Button>
 
+            <Dialog
+                open={open}
+                onClose={handleCancel}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Lock Drug Table"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure? This will lock you from adding any more drugs.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCancel}>Cancel</Button>
+                    <Button onClick={handleConfirm} autoFocus>
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+
       <Modal
         open={openViewModal}
         onClose={handleCloseView}
