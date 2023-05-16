@@ -288,7 +288,7 @@ const increaseDosageAmount = async() => {
                     <div>
                     <GridToolbarQuickFilter />
                     <GridToolbarFilterButton />
-                    {(currentUserGlobal == Users.JHDoctor || currentUserGlobal == Users.JHAdmin) && 
+                    {(user?.name == 'doctor@janehopkins.com' || user?.name == 'admin@janehopkins.com') && 
                     <><Button
                     disabled={studyStatus == 1}
                     variant="contained"

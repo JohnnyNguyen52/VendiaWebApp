@@ -1,7 +1,7 @@
 import { createGlobalState } from 'react-hooks-global-state';
 
- async function getLock(): Promise<boolean> {
-        let dd: boolean = false;
+ async function getLock(): Promise<number> {
+        let dd: number = 0;
         await fetch("http://localhost:3000/api/items/lock")
             .then((response) => response.json())
             .then((data) => { dd = data; console.log(data) });
@@ -18,9 +18,9 @@ const { useGlobalState } = createGlobalState(initialState);
 // 2 == Study is finished
 export default function useLock() {
   const [lock, setter] = useGlobalState('count');
-  const setLock = async (x: boolean) => {
+  const setLock = async (x: number) => {
     setter(x);
-    let d: boolean = false;
+    let d: number = 0;
     const requestOptions = {
       method: 'PUT',
       body: JSON.stringify({ lock: x })
