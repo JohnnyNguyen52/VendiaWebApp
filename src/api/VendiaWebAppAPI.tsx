@@ -44,11 +44,11 @@ export class VendiaWebAppAPI {
 
     // Define function to check patient eligibility
     static isPatientEligible(patient: any): boolean {
-        let healthCodes: string[] = patient.icdHealthCodes;
+        let healthCodes: any[] = patient.icdHealthCodes;
         const dob = new Date(patient.dob);
 
         // Exclude ICD-10 Pregnancy codes
-        if (healthCodes.find((x) => { x.startsWith('O') }) != undefined) {
+        if (healthCodes.find((x) => { x.code.startsWith('O') }) != undefined) {
             return false
         }
 
