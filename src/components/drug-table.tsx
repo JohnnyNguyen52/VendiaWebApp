@@ -4,6 +4,8 @@ import useRefreshKey from "@/api/useRefreshKey";
 import Users from "@/api/Users";
 import { DataGrid, GridColDef, GridRowModel } from "@mui/x-data-grid"
 import React, { useEffect } from "react";
+import { useUser } from '@auth0/nextjs-auth0/client';
+
 
 function removePII(columns: GridColDef[]) {
     columns.splice(columns.findIndex(i => i.field == 'placebo'), 1);
@@ -18,11 +20,12 @@ function removePII(columns: GridColDef[]) {
  * @param {GridColDef[]} columns Columns to display
  * @public
  */
-function DrugTable({ currentUser }: { currentUser: Users }) {
+function DrugTable() {
     const { entities } = useJaneHopkins();
     const [patients, setPatients] = React.useState<any[]>([]);
     const [drugs, setDrugs] = React.useState<any[]>([]);
     const { count, setCount }: any = useRefreshKey();
+    const { user } = useUser();
 
     //Selected Drug
     const { drug, setDrug }: any = useDrug();
@@ -41,17 +44,17 @@ function DrugTable({ currentUser }: { currentUser: Users }) {
         const listDrugs = async () => {
             let drugs = await entities.drug.list();
             console.log("Drug Table");
-            console.log(currentUser);
+            //console.log(currentUser);
             setDrugs(drugs.items);
         };
         listDrugs();
-    }, [count, currentUser, entities.drug]);
+    }, [count, user, entities.drug]);
 
     // return true if placebo, false if not placebo
     const getBatchNumberPlacebo = (batchNumber: any) => {
         return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
     }
-    if (currentUser == Users.BavariaAdmin) {
+    if (user?.name == 'admin@bavaria.com') {
         // removePII(columns);
         //Pushes out the info to the data table.
         for (let i = 0; i < drugs.length; i++) {
@@ -64,7 +67,7 @@ function DrugTable({ currentUser }: { currentUser: Users }) {
             });
         }
     }
-    else if (currentUser == Users.FDAAdmin) {
+    else if (user?.name == 'admin@fda.com') {
         removePII(columns);
         for (let i = 0; i < drugs.length; i++) {
             rows.push({

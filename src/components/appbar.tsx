@@ -19,11 +19,14 @@ import Users from "@/api/Users";
 import AssignBatchNumberButton from '@/components/AssignBatchNumberButton';
 import StartStudyButton from '@/components/StartStudyButton';
 import useCurrentUserGlobal from "@/api/useCurrentUser";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 let pages: any[] = [];
 const pagesBasic = ['Home'];
 const pagesBavariaFDA = ['Home', 'Drugs'];
 const drawerWidth = 170;
+
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -94,6 +97,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function ResponsiveAppBar() {
+  const { user, error, isLoading} = useUser();
   const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
   // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -112,14 +116,26 @@ export default function ResponsiveAppBar() {
   // const handleCloseUserMenu = () => {
   //     setAnchorElUser(null);
   // };
-  if (currentUserGlobal == Users.BavariaAdmin) {
+
+  // if (currentUserGlobal == Users.BavariaAdmin) {
+  //   pages = pagesBavariaFDA;
+  // }
+  // else if (currentUserGlobal == Users.FDAAdmin) {
+  //   pages = pagesBavariaFDA;
+  // }
+
+  // else if (currentUserGlobal == Users.JHAdmin || currentUserGlobal == Users.JHDoctor) {
+  //   pages = pagesBasic;
+  // }
+
+  if (user?.name == 'admin@bavaria.com') {
     pages = pagesBavariaFDA;
   }
-  else if (currentUserGlobal == Users.FDAAdmin) {
+  else if (user?.name == 'admin@fda.com') {
     pages = pagesBavariaFDA;
   }
 
-  else if (currentUserGlobal == Users.JHAdmin || currentUserGlobal == Users.JHDoctor) {
+  else if (user?.name == 'admin@janehopkins.com' || user?.name == 'doctor@janehopkins.com') {
     pages = pagesBasic;
   }
 
@@ -186,8 +202,7 @@ export default function ResponsiveAppBar() {
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
                   }}>
-                  {index === 0 ? <HomeIcon />
-                    : index === 1 ?
+                  {index === 0 ? <HomeIcon /> : index === 1 ?
                       <Link
                         href="/drugPage" passHref
                       ><MedicationIcon /> </Link>
@@ -200,6 +215,29 @@ export default function ResponsiveAppBar() {
           ))}
         </List>
         <Divider />
+        <List>
+        <Link href="/api/auth/logout" style={{ textDecoration: 'none' }}>
+        <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? 'initial' : 'center',
+              px: 2.5,
+            }}>
+          <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : 'auto',
+                justifyContent: 'center',
+              }}
+            >
+            <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary={'Logout'} style={{ color: 'black' }} sx={{ opacity: open ? 1 : 0 }} />
+          </ListItemButton>
+          </Link>
+        </List>
+        <Divider />
+
         {/* {functionPages.map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
@@ -221,11 +259,11 @@ export default function ResponsiveAppBar() {
             </ListItem>
           ))} */}
 
-        {(currentUserGlobal == Users.FDAAdmin &&
+        {(user?.name == 'admin@fda.com' &&
           <List>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <StartStudyButton />
-              {currentUserGlobal == Users.FDAAdmin &&
+              {user?.name == 'admin@fda.com' &&
                 <AssignBatchNumberButton />}
               <ListItemText sx={{ opacity: open ? 1 : 0 }} />
             </ListItem>

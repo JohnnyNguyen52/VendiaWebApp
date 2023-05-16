@@ -4,6 +4,7 @@ import Users from "@/api/Users";
 import {Button,} from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams, GridRowModel, GridToolbarContainer, GridToolbarFilterButton, GridToolbarQuickFilter, } from "@mui/x-data-grid"
 import usePatient from "@/api/usePatient";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 import React, { useEffect } from "react";
 import useCurrentUserGlobal from "@/api/useCurrentUser";
@@ -30,6 +31,7 @@ function DataTable() {
     const [drugs, setDrugs] = React.useState<any[]>([]);
     const { count, setCount }: any = useRefreshKey();
     const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
+    const { user} = useUser();
 
     const {patient, setPatient}: any = usePatient();    // used for the renderCell property for the datagrid columns. Used specifically for the "placebo"
     // and "eligible column"
@@ -147,7 +149,7 @@ function DataTable() {
                 dosageString = patients[i].currentDosage + "/" + drugs[x].dosage
             }
         }
-    if (currentUserGlobal == Users.BavariaAdmin) {
+    if (user?.name == 'admin@bavaria.com') {
         removePII(columns);
         //Pushes out the info to the data table.
             rows.push({
@@ -159,7 +161,7 @@ function DataTable() {
         
     }
 
-    else if (currentUserGlobal == Users.FDAAdmin) {
+    else if (user?.name == 'admin@fda.com') {
         removePII(columns);
         columns.push({ field: 'batchNumber', headerName: 'Batch #', width: 100 });
         columns.push({
@@ -180,7 +182,7 @@ function DataTable() {
 
     }
 
-    else if (currentUserGlobal == Users.JHAdmin || currentUserGlobal == Users.JHDoctor) {
+    else if (user?.name == 'admin@janehopkins.com' || user?.name == 'doctor@janehopkins.com') {
         //Pushes out the info to the data table.
        
             rows.push({
