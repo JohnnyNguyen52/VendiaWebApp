@@ -36,7 +36,7 @@ export default function StartStudyButton() {
                         setRefreshKey(!refreshKey);
 
                     }
-                    setButtonText("Stop Study");
+                    setButtonText("Start Study");
                     break;
 
                 case 1:
@@ -47,7 +47,7 @@ export default function StartStudyButton() {
                         setRefreshKey(!refreshKey);
 
                     }
-                    setButtonText("Study Finished");
+                    setButtonText("Stop Study");
                     break;
 
                 case 2:
@@ -58,7 +58,7 @@ export default function StartStudyButton() {
                         setRefreshKey(!refreshKey);
 
                     }
-                    setButtonText("Start Study");
+                    setButtonText("Study Finished");
                     break;
             }
         }

@@ -1,6 +1,6 @@
 import { createGlobalState } from 'react-hooks-global-state';
 
- async function getLock(): Promise<number> {
+ async function getFinalDrugsConfirm(): Promise<number> {
         let dd: number = 0;
         await fetch("http://localhost:3000/api/items/lock")
             .then((response) => response.json())
@@ -8,7 +8,7 @@ import { createGlobalState } from 'react-hooks-global-state';
         return dd;
     }
 
-const initialState = { count: await getLock() };
+const initialState = { count: await getFinalDrugsConfirm() };
 const { useGlobalState } = createGlobalState(initialState);
 
 // Used as a hook that syncs with the backend's studyStatus. Use this hook if you want to fetch
@@ -16,9 +16,9 @@ const { useGlobalState } = createGlobalState(initialState);
 // 0 == Study is not started
 // 1 == Study is started
 // 2 == Study is finished
-export default function useLock() {
-  const [lock, setter] = useGlobalState('count');
-  const setLock = async (x: number) => {
+export default function useFinalDrugsConfirm() {
+  const [finalDrugsConfirm, setter] = useGlobalState('count');
+  const setFinalDrugsConfirm = async (x: number) => {
     setter(x);
     let d: number = 0;
     const requestOptions = {
@@ -30,5 +30,5 @@ export default function useLock() {
       .then((data) => { d = data })
   }
 
-  return { lock: lock, setLock: setLock };
+  return { finalDrugsConfirm: finalDrugsConfirm, setFinalDrugsConfirm: setFinalDrugsConfirm };
 }
