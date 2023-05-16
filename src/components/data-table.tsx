@@ -2,7 +2,7 @@ import useJaneHopkins from "@/api/useJaneHopkins";
 import useRefreshKey from "@/api/useRefreshKey";
 import Users from "@/api/Users";
 import {Button,} from "@mui/material";
-import { DataGrid, GridColDef, GridRenderCellParams, GridRowModel, GridToolbarContainer, GridToolbarFilterButton, GridToolbarQuickFilter, } from "@mui/x-data-grid"
+import { DataGrid, GridColDef, GridRenderCellParams, GridValueGetterParams, GridRowModel, GridToolbarContainer, GridToolbarFilterButton, GridToolbarQuickFilter, } from "@mui/x-data-grid"
 import usePatient from "@/api/usePatient";
 import { useUser } from '@auth0/nextjs-auth0/client';
 
@@ -11,6 +11,7 @@ import useCurrentUserGlobal from "@/api/useCurrentUser";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import Image from 'next/image';
+import useStudyStatus from "@/api/useStudyStatus";
 
 function removePII(columns: GridColDef[]) {
     columns.splice(columns.findIndex(i => i.field == 'patientPicture'), 1);
@@ -32,7 +33,7 @@ function DataTable() {
     const { count, setCount }: any = useRefreshKey();
     const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
     const { user} = useUser();
-
+    const { studyStatus, setStudyStatus } = useStudyStatus();
     const {patient, setPatient}: any = usePatient();    // used for the renderCell property for the datagrid columns. Used specifically for the "placebo"
     // and "eligible column"
     const renderTrueFalse = (params: GridRenderCellParams<Date>) => {
@@ -56,7 +57,7 @@ function DataTable() {
     };
 
     let rows: any[] = [];
-    let columns = [
+    let columns: GridColDef[] = [
         {
             field: 'eligible', headerName: 'Eligible', width: 100,
             // render cell based on the value of each row. row value is either "true" or "false"
@@ -116,15 +117,37 @@ function DataTable() {
             else{
              return true
             }
-        // if(healthCodes.startsWith("O") == true){
-        //     console.log('false')
-        //     console.log(healthCodes)
-        //     return false
-        // }
-        // console.log('true')
-        // return true;
-
     };
+
+    const isDone = (dosageString: any) => {
+    const termArray = dosageString.split("/")
+    if(Number(termArray[0]) == Number(termArray[1])){
+        return true
+
+    }
+    else{
+        return false
+    }
+    };
+    const allDone = (patients: any) =>{
+        let done: any[] = [];
+        
+        if (currentUserGlobal == Users.BavariaAdmin || currentUserGlobal == Users.FDAAdmin ){
+            return null;
+        }
+        for(let num = 0; num < patients.length; num++){
+            done.push(isDone(patients[num].currentDosage))
+
+        }
+        if (done.includes(false) ){
+            return false
+        }
+        else{
+            return true
+        }
+        // console.log(done)
+
+    }
         // let healthCodes = patient.icdHealthCodes.code;
         // console.log(healthCodes)
         // console.log(healthCodes[0].startsWith('O'))
@@ -196,18 +219,25 @@ function DataTable() {
             });
         
     }
+
 }
+
 
 
 
 const increaseDosageAmount = async() => {
     const termArray = (patient[0].currentDosage).split("/")
+    if(Number(termArray[0]) < Number(termArray[1]) ){
     let number = Number(termArray[0])+1
     const response = await entities.patient.update({
         _id: patient[0].id,
         currentDosage: String(number),
       })
       setCount(count+1)
+    }
+    else{
+        console.log('maxed')
+    }
   };
   const decreaseDosageAmount = async() => {
     const termArray = (patient[0].currentDosage).split("/")
@@ -249,7 +279,6 @@ const increaseDosageAmount = async() => {
     const onRowsSelectionHandler = (ids: any[]) => {
         const selectedRowsData = ids.map((id) => rows.find((row) => row.id === id));
         setPatient(selectedRowsData);
-        console.log(selectedRowsData)
         };
             function CustomToolbar() {
                 return (
@@ -259,20 +288,22 @@ const increaseDosageAmount = async() => {
                     <div>
                     <GridToolbarQuickFilter />
                     <GridToolbarFilterButton />
-                    <Button
-                        variant="contained"
-                        onClick={increaseDosageAmount}
-                        sx={{ mx: 2 }}
-                            >
-                        Increase Dosage
-                    </Button>
-                    <Button
-                        variant="contained"
-                        onClick={decreaseDosageAmount}
-                        sx={{ mx: 2 }}
-                            >
+                    {(user?.name == 'doctor@janehopkins.com' || user?.name == 'admin@janehopkins.com') && 
+                    <><Button
+                    disabled={studyStatus == 1}
+                    variant="contained"
+                    onClick={increaseDosageAmount}
+                    sx={{ mx: 2 }}
+                >
+                    Increase Dosage
+                </Button><Button
+                    disabled={studyStatus == 1}
+                    variant="contained"
+                    onClick={decreaseDosageAmount}
+                    sx={{ mx: 2 }}
+                >
                         Decrease Dosage
-                    </Button>
+                    </Button></>}
                     </div>
                   </GridToolbarContainer>
                 );

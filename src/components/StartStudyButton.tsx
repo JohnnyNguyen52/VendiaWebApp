@@ -31,31 +31,34 @@ export default function StartStudyButton() {
                 case 0:
                     if (refreshKey)
                     {
+                        console.log(1)
                         setStudyStatus(1);
+                        setRefreshKey(!refreshKey);
+
+                    }
+                    setButtonText("Start Study");
+                    break;
+
+                case 1:
+                    if (refreshKey)
+                    {
+                        console.log(2)
+                        setStudyStatus(2);
                         setRefreshKey(!refreshKey);
 
                     }
                     setButtonText("Stop Study");
                     break;
 
-                case 1:
-                    if (refreshKey)
-                    {
-                        setStudyStatus(2);
-                        setRefreshKey(!refreshKey);
-
-                    }
-                    setButtonText("Study Finished");
-                    break;
-
                 case 2:
                     if (refreshKey)
                     {
+                        console.log(0)
                         setStudyStatus(0);
                         setRefreshKey(!refreshKey);
 
                     }
-                    setButtonText("Start Study");
+                    setButtonText("Study Finished");
                     break;
             }
         }

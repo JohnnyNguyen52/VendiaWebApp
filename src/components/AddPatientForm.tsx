@@ -5,6 +5,7 @@ import useRefreshKey from "@/api/useRefreshKey";
 import { Theme, useTheme } from "@mui/material/styles";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { VendiaWebAppAPI } from "@/api/VendiaWebAppAPI";
+import useStudyStatus from "@/api/useStudyStatus";
 
 
 let visitsArray: any[] = [];
@@ -37,6 +38,8 @@ function AddPatientForm()
   const {count, setCount} : any = useRefreshKey();
   const [open, setOpen] = useState(false);
   const handleToClose = () => {setOpen(false);};
+
+  const { studyStatus, setStudyStatus } = useStudyStatus();
 
   const handleCloseView = () => setOpenViewModal(false);
   let [codesChosen, setCodesChosen] = useState([]);
@@ -274,6 +277,7 @@ function AddPatientForm()
     return(
         <>
       <Button 
+          disabled={studyStatus == 1}
           variant="contained"
           onClick={() => {
             resetFormInput();

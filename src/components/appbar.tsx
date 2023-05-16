@@ -15,17 +15,17 @@ import MuiDrawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import MedicationIcon from '@mui/icons-material/Medication';
-import Users from "@/api/Users";
 import AssignBatchNumberButton from '@/components/AssignBatchNumberButton';
 import StartStudyButton from '@/components/StartStudyButton';
 import useCurrentUserGlobal from "@/api/useCurrentUser";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useUser } from '@auth0/nextjs-auth0/client';
+import ConfirmPatientsButton from './ConfirmPatientsButton';
 
 let pages: any[] = [];
 const pagesBasic = ['Home'];
 const pagesBavariaFDA = ['Home', 'Drugs'];
-const drawerWidth = 170;
+const drawerWidth = 200;
 
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -97,7 +97,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function ResponsiveAppBar() {
-  const { user, error, isLoading} = useUser();
+  const { user, error, isLoading } = useUser();
   const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
   // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -157,7 +157,7 @@ export default function ResponsiveAppBar() {
     index: number,
   ) => {
     setSelectedIndex(index);
-    if (selectedIndex == 4) {
+    if (selectedIndex == 1) {
       <Link href="/drugPage" passHref></Link>
     }
   };
@@ -171,19 +171,19 @@ export default function ResponsiveAppBar() {
         variant="permanent" open={open}
         anchor="left" >
         <DrawerHeader>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={open === true ? handleDrawerClose
-                : open === false ? handleDrawerOpen
-                  : () => { }}
-              edge="start"
-              sx={{
-                ...(open && { display: '' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={open === true ? handleDrawerClose
+              : open === false ? handleDrawerOpen
+                : () => { }}
+            edge="start"
+            sx={{
+              ...(open && { display: '' }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
         </DrawerHeader>
         <List>
           {pages.map((text, index) => (
@@ -203,10 +203,10 @@ export default function ResponsiveAppBar() {
                     justifyContent: 'center',
                   }}>
                   {index === 0 ? <HomeIcon /> : index === 1 ?
-                      <Link
-                        href="/drugPage" passHref
-                      ><MedicationIcon /> </Link>
-                      : null
+                    <Link
+                      href="/drugPage" passHref
+                    ><MedicationIcon /> </Link>
+                    : null
                   }
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
@@ -216,24 +216,24 @@ export default function ResponsiveAppBar() {
         </List>
         <Divider />
         <List>
-        <Link href="/api/auth/logout" style={{ textDecoration: 'none' }}>
-        <ListItemButton
-            sx={{
-              minHeight: 48,
-              justifyContent: open ? 'initial' : 'center',
-              px: 2.5,
-            }}>
-          <ListItemIcon
+          <Link href="/api/auth/logout" style={{ textDecoration: 'none' }}>
+            <ListItemButton
               sx={{
-                minWidth: 0,
-                mr: open ? 3 : 'auto',
-                justifyContent: 'center',
-              }}
-            >
-            <LogoutIcon />
-            </ListItemIcon>
-            <ListItemText primary={'Logout'} style={{ color: 'black' }} sx={{ opacity: open ? 1 : 0 }} />
-          </ListItemButton>
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}>
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Logout'} style={{ color: 'black' }} sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
           </Link>
         </List>
         <Divider />
@@ -259,13 +259,21 @@ export default function ResponsiveAppBar() {
             </ListItem>
           ))} */}
 
-        {(user?.name == 'admin@fda.com' &&
+        {((user?.name == 'admin@fda.com' || user?.name == 'doctor@janehopkins.com' || user?.name == 'admin@janehopkins.com') &&
           <List>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <StartStudyButton />
+              {(user?.name == 'doctor@janehopkins.com') || (user?.name == 'admin@janehopkins.com') &&
+                <StartStudyButton />}
               {user?.name == 'admin@fda.com' &&
                 <AssignBatchNumberButton />}
               <ListItemText sx={{ opacity: open ? 1 : 0 }} />
+            </ListItem>
+          </List>
+        )}
+        {(user?.name == 'admin@janehopkins.com' &&
+          <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ConfirmPatientsButton />
             </ListItem>
           </List>
         )}

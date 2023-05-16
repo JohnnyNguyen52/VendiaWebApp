@@ -1,12 +1,14 @@
 import { createGlobalState } from 'react-hooks-global-state';
+import useFinalPatientsConfirm from './useFinalPatientsConfirm';
+import useFinalDrugsConfirm from './useFinalDrugsConfirm';
 
- async function getStudyStatus(): Promise<number> {
-        let dd: number = -1;
-        await fetch("http://localhost:3000/api/items/studyStatus")
-            .then((response) => response.json())
-            .then((data) => { dd = data; console.log(data) });
-        return dd;
-    }
+async function getStudyStatus(): Promise<number> {
+  let dd: number = -1;
+  await fetch("http://localhost:3000/api/items/studyStatus")
+    .then((response) => response.json())
+    .then((data) => { dd = data; console.log(data) });
+  return dd;
+}
 
 const initialState = { count: await getStudyStatus() };
 const { useGlobalState } = createGlobalState(initialState);
@@ -18,8 +20,14 @@ const { useGlobalState } = createGlobalState(initialState);
 // 2 == Study is finished
 export default function useStudyStatus() {
   const [studyStatus, setter] = useGlobalState('count');
+  const { finalPatientsConfirm: finalPatientsConfirm, setFinalPatientsConfirm: setFinalPatientsConfirm } = useFinalPatientsConfirm();
+  const { finalDrugsConfirm, setFinalDrugsConfirm } = useFinalDrugsConfirm();
 
   const setStudyStatus = async (x: number) => {
+    if (x == 0) {
+      setFinalPatientsConfirm(0);
+      setFinalDrugsConfirm(0);
+    }
     setter(x);
     let d: number = -1;
     const requestOptions = {

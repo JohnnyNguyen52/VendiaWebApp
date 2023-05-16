@@ -38,6 +38,7 @@ export default function Home() {
       <ResponsiveAppBar />
       <Box sx={{ boxShadow: 2, border: 0, borderLeft: 0, borderColor: '#aaaaaa', width: '20%', paddingLeft: '10px' }}>
         <SideMenu />
+        <AddPatientForm/>
         <FormControl>
           <FormLabel id="form-user">User</FormLabel>
           {/* <RadioGroup
@@ -52,7 +53,6 @@ export default function Home() {
             <FormControlLabel value="Users.BavariaAdmin" control={<Radio />} label="BavariaAdmin" />
           </RadioGroup> */}
         </FormControl>
-        <AddPatientForm/>
       </Box>
 
       {/* <Box sx={{ flexGrow: 1 }}>
