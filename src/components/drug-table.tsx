@@ -1,7 +1,6 @@
 import useDrug from "@/api/useDrug";
 import useJaneHopkins from "@/api/useJaneHopkins";
 import useRefreshKey from "@/api/useRefreshKey";
-import Users from "@/api/Users";
 import { DataGrid, GridColDef, GridRowModel } from "@mui/x-data-grid"
 import React, { useEffect } from "react";
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -9,20 +8,11 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 
 function removePII(columns: GridColDef[]) {
     columns.splice(columns.findIndex(i => i.field == 'placebo'), 1);
-
 }
 
-/**
- * Data Table used to display patient info.
- * Mark rows or columns as editable if necessary. e.g columns={[{ field: 'name', editable: true }]}
- *
- * @param {any[]} rows Rows to display
- * @param {GridColDef[]} columns Columns to display
- * @public
- */
+// Data Table used to display patient info.
 function DrugTable() {
     const { entities } = useJaneHopkins();
-    const [patients, setPatients] = React.useState<any[]>([]);
     const [drugs, setDrugs] = React.useState<any[]>([]);
     const { count, setCount }: any = useRefreshKey();
     const { user } = useUser();
@@ -36,9 +26,8 @@ function DrugTable() {
         { field: 'placebo', headerName: 'Placebo', width: 125 },
         { field: 'dosage', headerName: 'Dosage', width: 125 },
         { field: 'batchNumber', headerName: 'Batch Number', width: 300 },
-        
-    ];
 
+    ];
 
     useEffect(() => {
         const listDrugs = async () => {
@@ -63,7 +52,7 @@ function DrugTable() {
                 placebo: drugs[i].placebo,
                 batchNumber: drugs[i].batchNumber,
                 dosage: drugs[i].dosage,
-                
+
             });
         }
     }
@@ -76,12 +65,10 @@ function DrugTable() {
                 batchNumber: drugs[i].batchNumber,
                 dosage: drugs[i].dosage,
 
-                
+
             });
         }
     }
-
-
 
 
     /**

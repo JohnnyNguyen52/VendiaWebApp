@@ -3,38 +3,25 @@ import React, { useEffect, useState } from "react";
 import { useUser } from '@auth0/nextjs-auth0/client';
 import usePatient from "@/api/usePatient";
 
+// Used to show currently selected patient properties from the data table
 function SubMenu() {
-    const { entities: e } = useJaneHopkins();
+    const { entities } = useJaneHopkins();
     const [realPatient, setRealPatient] = useState(undefined);
     const { patient, setPatient }: any = usePatient();    // used for the renderCell property for the datagrid columns. Used specifically for the "placebo"
-    //const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
+    const { user } = useUser();
+
     useEffect(() => {
         const s = async () => {
             if (patient[0] != undefined) {
-                setRealPatient(await e.patient.get(patient[0].id));
+                setRealPatient(await entities.patient.get(patient[0].id));
             }
         }
         s();
     }, [patient])
 
-
-    const { user } = useUser();
-    const { entities } = useJaneHopkins();
-
-    // {(studyStatus != 0 || (currentUserGlobal != Users.BavariaAdmin && currentUserGlobal != Users.FDAAdmin)) &&
-    //     <DataTable
-    //     />
-    //   }
-
-    // <b>Current Medications: </b>{selectedPatient.currentMedications}
-    // <div> <b>ICD Health Codes: </b>{selectedPatient.icdHealthCodes} </div>
-    // <div> <b>Allergies: </b>{selectedPatient.allergies} </div>
-    // <div> <b>Visits: </b>{selectedPatient.visits} </div>
-
     if (realPatient == undefined) {
         return (<div><h3>Patient not selected</h3></div>)
     }
-
     else {
         return (
             <>
@@ -153,5 +140,4 @@ function SubMenu() {
         )
     }
 }
-
 export default SubMenu;

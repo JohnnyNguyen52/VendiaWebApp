@@ -11,11 +11,7 @@ import { createGlobalState } from 'react-hooks-global-state';
 const initialState = { count: await getFinalDrugsConfirm() };
 const { useGlobalState } = createGlobalState(initialState);
 
-// Used as a hook that syncs with the backend's studyStatus. Use this hook if you want to fetch
-// the study status.
-// 0 == Study is not started
-// 1 == Study is started
-// 2 == Study is finished
+// Hook to indicate whether the drug list is finalized. Syncs with the backend persistant storage
 export default function useFinalDrugsConfirm() {
   const [finalDrugsConfirm, setter] = useGlobalState('count');
   const setFinalDrugsConfirm = async (x: number) => {

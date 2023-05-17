@@ -10,7 +10,6 @@ export default function StartStudyButton() {
     const [open, setOpen] = React.useState(false);
     const [refreshKey, setRefreshKey] = React.useState(false);
     const [buttonText, setButtonText] = React.useState('');
-    // This button component will update this global studyStatus hook with the backend studyStatus.
     const { studyStatus, setStudyStatus } = useStudyStatus();
     const { finalDrugsConfirm, setFinalDrugsConfirm } = useFinalDrugsConfirm();
     const { finalPatientsConfirm: finalPatientsConfirm, setFinalPatientsConfirm: setFinalPatientsConfirm } = useFinalPatientsConfirm();
@@ -29,12 +28,10 @@ export default function StartStudyButton() {
     }
 
     useEffect(() => {
-
         const changeStudyStatus = async () => {
             switch (studyStatus) {
                 case 0:
-                    if (refreshKey)
-                    {
+                    if (refreshKey) {
                         console.log(1)
                         setStudyStatus(1);
                         setRefreshKey(!refreshKey);
@@ -44,8 +41,7 @@ export default function StartStudyButton() {
                     break;
 
                 case 1:
-                    if (refreshKey)
-                    {
+                    if (refreshKey) {
                         console.log(2)
                         setStudyStatus(2);
                         setRefreshKey(!refreshKey);
@@ -55,8 +51,7 @@ export default function StartStudyButton() {
                     break;
 
                 case 2:
-                    if (refreshKey)
-                    {
+                    if (refreshKey) {
                         console.log(0)
                         setStudyStatus(0);
                         setRefreshKey(!refreshKey);

@@ -11,6 +11,7 @@ async function getFinalPatientsConfirm(): Promise<number> {
 const initialState = { count: await getFinalPatientsConfirm() };
 const { useGlobalState } = createGlobalState(initialState);
 
+// Hook to indicate whether the patient list is finalized. Syncs with the backend persistant storage
 export default function useFinalPatientsConfirm() {
   const [finalPatientsConfirm, setter] = useGlobalState('count');
 

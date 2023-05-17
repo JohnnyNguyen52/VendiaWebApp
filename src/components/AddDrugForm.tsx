@@ -3,7 +3,6 @@ import { Checkbox, FormControlLabel, Box, Button, FormControl, FormHelperText, I
 import { useEffect, useReducer, useState } from "react";
 import useRefreshKey from "@/api/useRefreshKey";
 import useDrug from "@/api/useDrug";
-import useCurrentUserGlobal from "@/api/useCurrentUser";
 import { useUser } from '@auth0/nextjs-auth0/client';
 import React from "react";
 import useFinalDrugsConfirm from "@/api/useFinalDrugsConfirm";
@@ -14,7 +13,6 @@ function AddDrugForm() {
   const { entities } = useJaneHopkins();
   const [openViewModal, setOpenViewModal] = useState(false);//set to false so that it is closed
   const { count, setCount }: any = useRefreshKey();
-  const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
   const { user } = useUser();
   const [refreshKey, setRefreshKey] = React.useState(false);
 
@@ -27,11 +25,8 @@ function AddDrugForm() {
   useEffect(() => {
 
     const changeFinalPatientsConfirm = async () => {
-      const handleLock = async () => {
-        setFinalDrugsConfirm(1);
-      }
       if (refreshKey) {
-        handleLock();
+        setFinalDrugsConfirm(1);
         setRefreshKey(!refreshKey);
       }
     }
@@ -162,7 +157,7 @@ function AddDrugForm() {
       <Button
         name="addButton"
         variant="contained"
-        disabled={(finalDrugsConfirm != 0) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
+        disabled={(finalDrugsConfirm == 1) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
         onClick={() => {
           resetFormInput();
           setOpenViewModal(true);
@@ -172,7 +167,7 @@ function AddDrugForm() {
       <Button
         name="deleteButton"
         variant="contained"
-        disabled={(finalDrugsConfirm != 0) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
+        disabled={(finalDrugsConfirm == 1) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
         onClick={() => {
           handleRemove(drug);
         }}
@@ -181,9 +176,9 @@ function AddDrugForm() {
       <Button
         name="confirmDrugsButton"
         variant="contained"
-        disabled={(finalDrugsConfirm != 0) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
+        disabled={(finalDrugsConfirm == 1) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
         onClick={onConfirmClick}
-      >Use Final Drugs Confirm
+      >Send Drugs
       </Button>
 
       <Dialog
@@ -245,8 +240,6 @@ function AddDrugForm() {
                   onChange={handleCheckbox} />}
                 label="Placebo"
                 labelPlacement="end"
-
-
               />
               <TextField sx={{ m: 1, width: 200 }} helperText="Batch Number" name="batchNumber" onChange={handleInput} defaultValue={formInput.batchNumber} />
               <TextField sx={{ m: 1, width: 200 }} helperText="Dosage" name="dosage" onChange={handleInput} defaultValue={formInput.dosage} />

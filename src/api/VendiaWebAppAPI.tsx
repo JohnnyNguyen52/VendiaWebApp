@@ -1,6 +1,4 @@
 import useJaneHopkins from "./useJaneHopkins";
-import useRefreshKey from "@/api/useRefreshKey";
-import Users from "./Users";
 
 export class VendiaWebAppAPI {
 
@@ -21,7 +19,7 @@ export class VendiaWebAppAPI {
     }
 
     // Randomly assigns batch number to all patients
-    static async AssignBatchNumber(): Promise<boolean>{
+    static async AssignBatchNumber(): Promise<boolean> {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const { entities } = useJaneHopkins();
         let patients = await entities.patient.list();
@@ -29,9 +27,9 @@ export class VendiaWebAppAPI {
         let batchNumbers = await this.getBatchNumbers();
         let x = 0;
         // Randomly select a batch number for each patient.
-        patients.items.forEach((patient: { _id: any, dosesID: string, currentDosage: string}) => {  
+        patients.items.forEach((patient: { _id: any, dosesID: string, currentDosage: string }) => {
             if (Math.random() > .5) {
-                x = 1
+                x = 1;
             }
             entities.patient.update({
                 _id: patient._id,
@@ -42,7 +40,7 @@ export class VendiaWebAppAPI {
         return true;
     }
 
-    // Define function to check patient eligibility
+    // checks patient eligibility
     static isPatientEligible(patient: any): boolean {
         let healthCodes: any[] = patient.icdHealthCodes;
         const dob = new Date(patient.dob);
@@ -58,7 +56,6 @@ export class VendiaWebAppAPI {
         }
 
         // Add more eligibility checks here as needed
-
 
         return true;
     };
