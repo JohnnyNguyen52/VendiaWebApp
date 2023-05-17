@@ -51,7 +51,6 @@ function SubMenu() {
                         {/* <div> <b>Allergies: </b>{selectedrealPatient.allergies && selectedPatient.allergies.map((x: any) => <li>{x}</li>)
                         && console.log(selectedrealPatient.allergies)
                     } </div> */}
-                        <div> <b>Family History: </b>{realPatient.familyHistory} </div>
                         <div> <b>Currently Insured: </b>{realPatient.currentlyInsured} </div>
                         <div> <b>Currently Employed: </b>{realPatient.currentlyEmployed} </div>
                         {/* <div> <b>ICD Health Codes: </b>{selectedrealPatient.icdHealthCodes && selectedPatient.icdHealthCodes.map(
@@ -88,7 +87,6 @@ function SubMenu() {
                         {/* <div> <b>Allergies: </b>{selectedrealPatient.allergies && selectedPatient.allergies.map(
                         (x: any) => <p>{x}</p>)
                     } </div> */}
-                        <div> <b>Family History: </b>{realPatient.familyHistory} </div>
                         <div> <b>Currently Insured: </b>{realPatient.currentlyInsured} </div>
                         <div> <b>Currently Employed: </b>{realPatient.currentlyEmployed} </div>
 
@@ -123,7 +121,6 @@ function SubMenu() {
                         {/* <div> <b>Allergies: </b>{selectedrealPatient.allergies && selectedPatient.allergies.map(
                         (x: any) => <p>{x}</p>)
                     } </div> */}
-                        <div> <b>Family History: </b>{realPatient.familyHistory} </div>
                         <div> <b>Currently Insured: </b>{realPatient.currentlyInsured} </div>
                         <div> <b>Currently Employed: </b>{realPatient.currentlyEmployed} </div>
                         {/* <div> <b>ICD Health Codes: </b>{selectedrealPatient.icdHealthCodes && selectedPatient.icdHealthCodes.map(
