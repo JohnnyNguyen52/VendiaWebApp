@@ -51,8 +51,8 @@ function SubMenu() {
                         {/* <div> <b>Allergies: </b>{selectedrealPatient.allergies && selectedPatient.allergies.map((x: any) => <li>{x}</li>)
                         && console.log(selectedrealPatient.allergies)
                     } </div> */}
-                        <div> <b>Currently Insured: </b>{realPatient.currentlyInsured} </div>
-                        <div> <b>Currently Employed: </b>{realPatient.currentlyEmployed} </div>
+                        <div> <b>Currently Insured: </b>{realPatient.currentlyInsured.toString()} </div>
+                        <div> <b>Currently Employed: </b>{realPatient.currentlyEmployed.toString()} </div>
                         {/* <div> <b>ICD Health Codes: </b>{selectedrealPatient.icdHealthCodes && selectedPatient.icdHealthCodes.map(
                         (x: any) => <p>{x}</p>)
                     } </div>
@@ -87,8 +87,8 @@ function SubMenu() {
                         {/* <div> <b>Allergies: </b>{selectedrealPatient.allergies && selectedPatient.allergies.map(
                         (x: any) => <p>{x}</p>)
                     } </div> */}
-                        <div> <b>Currently Insured: </b>{realPatient.currentlyInsured} </div>
-                        <div> <b>Currently Employed: </b>{realPatient.currentlyEmployed} </div>
+                        <div> <b>Currently Insured: </b>{realPatient.currentlyInsured.toString()} </div>
+                        <div> <b>Currently Employed: </b>{realPatient.currentlyEmployed.toString()} </div>
 
                         {/* <div> <b>Visits: </b>{selectedrealPatient.visits && selectedPatient.visits.map(
                         (x: any) => <p>{x}</p>)
@@ -121,8 +121,8 @@ function SubMenu() {
                         {/* <div> <b>Allergies: </b>{selectedrealPatient.allergies && selectedPatient.allergies.map(
                         (x: any) => <p>{x}</p>)
                     } </div> */}
-                        <div> <b>Currently Insured: </b>{realPatient.currentlyInsured} </div>
-                        <div> <b>Currently Employed: </b>{realPatient.currentlyEmployed} </div>
+                        <div> <b>Currently Insured: </b>{realPatient.currentlyInsured.toString()} </div>
+                        <div> <b>Currently Employed: </b>{realPatient.currentlyEmployed.toString()} </div>
                         {/* <div> <b>ICD Health Codes: </b>{selectedrealPatient.icdHealthCodes && selectedPatient.icdHealthCodes.map(
                         (x: any) => <p>{x}</p>)
                     } </div>
