@@ -42,7 +42,6 @@ export default function Home() {
         <AddPatientForm />
         <DeletePatientsButton />
         <FormControl>
-          <FormLabel id="form-user">User</FormLabel>
           {/* <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             defaultValue="Users.JHDoctor"
