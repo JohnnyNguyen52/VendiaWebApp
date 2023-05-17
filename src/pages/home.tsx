@@ -40,7 +40,9 @@ export default function Home() {
       <Box sx={{ boxShadow: 2, border: 0, borderLeft: 0, borderColor: '#aaaaaa', width: '20%', paddingLeft: '10px' }}>
         <SubMenu />
         <AddPatientForm />
-        <DeletePatientsButton />
+        {(user?.name == 'admin@janehopkins.com') &&
+          <DeletePatientsButton />
+        }
         <FormControl>
           {/* <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
