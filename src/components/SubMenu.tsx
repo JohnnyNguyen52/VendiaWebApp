@@ -62,7 +62,6 @@ function SubMenu() {
                         (x: any) => <p>{x}</p>)
                     } </div> */}
 
-                        <div> <b>Eligibility: </b>{realPatient.eligible} </div>
 
                         <div> <b>Blood Pressure: </b>{realPatient.bloodPressure} </div>
                         <div> <b>Temperature: </b>{realPatient.temperature} </div>
@@ -97,7 +96,6 @@ function SubMenu() {
                         (x: any) => <p>{x}</p>)
                     } </div> */}
 
-                        <div> <b>Eligibility: </b>{realPatient.eligible} </div>
 
                         <div> <b>Blood Pressure: </b>{realPatient.bloodPressure} </div>
                         <div> <b>Temperature: </b>{realPatient.temperature} </div>
@@ -136,7 +134,6 @@ function SubMenu() {
                         (x: any) => <p>{x}</p>)
                     } </div> */}
 
-                        <div> <b>Eligibility: </b>{realPatient.eligible} </div>
 
                         <div> <b>Blood Pressure: </b>{realPatient.bloodPressure} </div>
                         <div> <b>Temperature: </b>{realPatient.temperature} </div>
