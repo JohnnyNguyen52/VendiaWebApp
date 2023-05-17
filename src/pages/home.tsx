@@ -4,7 +4,7 @@ import { Box, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Conta
 import DataTable from '@/components/data-table';
 import Users from "@/api/Users";
 import AddPatientForm from "@/components/AddPatientForm";
-import SideMenu from "@/components/SubMenu";
+import SubMenu from "@/components/SubMenu";
 import useCurrentUserGlobal from "@/api/useCurrentUser";
 import useStudyStatus from "@/api/useStudyStatus";
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -38,7 +38,7 @@ export default function Home() {
     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'col' }}>
       <ResponsiveAppBar />
       <Box sx={{ boxShadow: 2, border: 0, borderLeft: 0, borderColor: '#aaaaaa', width: '20%', paddingLeft: '10px' }}>
-        <SideMenu />
+        <SubMenu />
         <AddPatientForm />
         <DeletePatientsButton />
         <FormControl>
