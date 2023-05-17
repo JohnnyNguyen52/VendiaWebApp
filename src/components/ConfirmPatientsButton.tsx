@@ -3,6 +3,7 @@ import { ListItemButton, ListItemIcon, Dialog, DialogTitle, DialogContent, Dialo
 import { useEffect, useState } from "react";
 import SendIcon from '@mui/icons-material/Send';
 
+// Button to confirm the patient list as final
 export default function ConfirmPatientsButton() {
     const [open, setOpen] = useState(false);
     const [refreshKey, setRefreshKey] = useState(false);

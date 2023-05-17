@@ -14,7 +14,7 @@ export default function DeletePatientsButton() {
     const { patient, setPatient }: any = usePatient();    // used for the renderCell property for the datagrid columns. Used specifically for the "placebo"
     const { entities } = useJaneHopkins();
     const [refreshKey, setRefreshKey] = useState(false);
-    const {count, setCount} = useRefreshKey();
+    const { count, setCount } = useRefreshKey();
 
     useEffect(() => {
         const removePatient = async () => {

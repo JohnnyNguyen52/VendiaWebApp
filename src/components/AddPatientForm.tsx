@@ -1,5 +1,5 @@
 import useJaneHopkins from "@/api/useJaneHopkins";
-import {  MenuItem, InputLabel, Dialog, DialogTitle, DialogContent, Typography, Divider, Checkbox, FormControlLabel, Box, Button, FormControl, FormHelperText, InputAdornment, Modal, OutlinedInput, TextField, DialogActions, DialogContentText } from "@mui/material";
+import { MenuItem, InputLabel, Dialog, DialogTitle, DialogContent, Typography, Divider, Checkbox, FormControlLabel, Box, Button, FormControl, FormHelperText, InputAdornment, Modal, OutlinedInput, TextField, DialogActions, DialogContentText } from "@mui/material";
 import { useReducer, useState } from "react";
 import useRefreshKey from "@/api/useRefreshKey";
 import { Theme, useTheme } from "@mui/material/styles";
@@ -7,7 +7,6 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { VendiaWebAppAPI } from "@/api/VendiaWebAppAPI";
 import useStudyStatus from "@/api/useStudyStatus";
 import { useUser } from '@auth0/nextjs-auth0/client';
-
 
 let visitsArray: any[] = [];
 let allergiesArray: any[] = [];
@@ -284,7 +283,7 @@ let codes = [
   "V07",
   "V08",
   "V09",
-  
+
   // Z00–Z99	Factors influencing health status and contact with health services
   "Z00",
   "Z01",
@@ -296,7 +295,7 @@ let codes = [
   "Z07",
   "Z08",
   "Z09",
-  
+
   // U00–U99	Codes for special purposes
   "U00",
   "U01",
@@ -316,25 +315,25 @@ function getStyles(code: any, codesChosen: any[], theme: Theme) {
       codesChosen.indexOf(code) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium
-  };}
+  };
+}
 
-function AddPatientForm()
-{
+function AddPatientForm() {
   const theme = useTheme();
 
   const { entities } = useJaneHopkins();
   const [openViewModal, setOpenViewModal] = useState(false);//set to false so that it is closed
-  const {count, setCount} : any = useRefreshKey();
+  const { count, setCount }: any = useRefreshKey();
   const [open, setOpen] = useState(false);
-  const handleToClose = () => {setOpen(false);};
-  const { user} = useUser();
+  const handleToClose = () => { setOpen(false); };
+  const { user } = useUser();
   const { studyStatus, setStudyStatus } = useStudyStatus();
 
   const handleCloseView = () => setOpenViewModal(false);
   let [codesChosen, setCodesChosen] = useState([]);
 
 
-    //This stores the info that you inputted.
+  //This stores the info that you inputted.
   const [formInput, setFormInput] = useReducer(
     (state: any, newState: any) => ({ ...state, ...newState }),
     {
@@ -343,16 +342,16 @@ function AddPatientForm()
       height: "",
       weight: "",
       insuranceNumber: "",
-      address:"",
-      bloodPressure:"",
-      temperature:"",
-      oxygenSaturation:"",
-      uuid:"",
-      currentMedications:[],
-      familyHistory:"",
-      icdHealthCodes:[],
-      allergies:[],
-      visits:[],
+      address: "",
+      bloodPressure: "",
+      temperature: "",
+      oxygenSaturation: "",
+      uuid: "",
+      currentMedications: [],
+      familyHistory: "",
+      icdHealthCodes: [],
+      allergies: [],
+      visits: [],
 
     }
   );
@@ -361,7 +360,7 @@ function AddPatientForm()
     const name = evt.target.name;
     const newValue = evt.target.value;
     setFormInput({ [name]: newValue });
-    
+
   };
   //Takes the information inputted into the formInput and stores it into the Vendia Database
   const handleAdd = async () => {
@@ -369,32 +368,31 @@ function AddPatientForm()
       eligible: booleanInput.eligible,
       dosesID: "",
       currentDosage: "0",
-      name:formInput.name,
-      dob:formInput.dob,
-      height:formInput.height,
-      weight:formInput.weight,
-      insuranceNumber:formInput.insuranceNumber,
-      address:formInput.address,
-      bloodPressure:formInput.bloodPressure,
-      temperature:formInput.temperature,
-      oxygenSaturation:formInput.oxygenSaturation,
-      uuid:formInput.uuid,
-      currentMedications:formInput.currentMedications,
-      familyHistory:formInput.familyHistory,
-      currentlyEmployed:booleanInput.currentlyEmployed,
-      currentlyInsured:booleanInput.currentlyInsured,
-      icdHealthCodes:icdHCArray,
-      allergies:formInput.allergies,
-      visits:formInput.visits,
+      name: formInput.name,
+      dob: formInput.dob,
+      height: formInput.height,
+      weight: formInput.weight,
+      insuranceNumber: formInput.insuranceNumber,
+      address: formInput.address,
+      bloodPressure: formInput.bloodPressure,
+      temperature: formInput.temperature,
+      oxygenSaturation: formInput.oxygenSaturation,
+      uuid: formInput.uuid,
+      currentMedications: formInput.currentMedications,
+      familyHistory: formInput.familyHistory,
+      currentlyEmployed: booleanInput.currentlyEmployed,
+      currentlyInsured: booleanInput.currentlyInsured,
+      icdHealthCodes: icdHCArray,
+      allergies: formInput.allergies,
+      visits: formInput.visits,
     };
 
-    if(VendiaWebAppAPI.isPatientEligible(patient) == true)
-    {
+    if (VendiaWebAppAPI.isPatientEligible(patient) == true) {
       const addPatientResponse = await entities.patient.add(patient);
-      setCount(count+1)
+      setCount(count + 1)
       setOpenViewModal(false); //Closes it
     }
-    else{
+    else {
       setOpen(true);
     }
   };
@@ -405,20 +403,20 @@ function AddPatientForm()
   const handleBooleanInput = (evt: any) => {
     const name = evt.target.name;
     const newValue = evt.target.value;
-    if(newValue == 'on'){
+    if (newValue == 'on') {
       setBooleanInput({ [name]: true });
     }
-    else{
+    else {
       setBooleanInput({ [name]: false });
     }
-    
+
   };
   const [booleanInput, setBooleanInput] = useReducer(
     (state: any, newState: any) => ({ ...state, ...newState }),
     {
-      eligible:false,
-      currentlyEmployed:false,
-      currentlyInsured:false,
+      eligible: false,
+      currentlyEmployed: false,
+      currentlyInsured: false,
 
 
     }
@@ -440,7 +438,7 @@ function AddPatientForm()
       hivViralLoad: "",
     }
   );
-  
+
   const visitAdd = async () => {
     visitsArray.push(visitsColumn);
     console.log(visitsArray);
@@ -491,31 +489,31 @@ function AddPatientForm()
     resetMedInput();
   };
 
-  const handleICDInput = async() => {
-    for(let i = 0; i < icdColumn.code.length; i++){
-      icdHCArray.push({code:icdColumn.code[i]});
+  const handleICDInput = async () => {
+    for (let i = 0; i < icdColumn.code.length; i++) {
+      icdHCArray.push({ code: icdColumn.code[i] });
     }
   };
 
   const [icdColumn, setIcdColumn] = useReducer(
-    
+
     (state: any, newState: any) => ({ ...state, ...newState }),
     {
       code: "",
     }
-    
+
   );
 
   const handleChange = (evt: any) => {
     const name = evt.target.name;
     const value = evt.target.value;
-    setCodesChosen( value);
-    setIcdColumn({[name]: value})
+    setCodesChosen(value);
+    setIcdColumn({ [name]: value })
   };
 
   //This will reset the appearance of the form. Making blank once you enter it again.
   //Probably a better way to do this.
-  const resetFormInput = async () =>{
+  const resetFormInput = async () => {
 
     formInput.name = "";
     formInput.dob = "";
@@ -523,7 +521,7 @@ function AddPatientForm()
     formInput.weight = "";
     formInput.insuranceNumber = "";
     formInput.address = "";
-    formInput.bloodPressure= "";
+    formInput.bloodPressure = "";
     formInput.temperature = "";
     formInput.oxygenSaturation = "";
     formInput.uuid = "";
@@ -545,14 +543,14 @@ function AddPatientForm()
       hivViralLoad: "",
     });
   };
-   //Resets the values but doesn't get rid of the appearance.
+  //Resets the values but doesn't get rid of the appearance.
   const resetAllergyInput = async () => {
     setAllergyColumn({
       allergy: "",
     });
   };
-   //Resets the values but doesn't get rid of the appearance.
-   const resetMedInput = async () => {
+  //Resets the values but doesn't get rid of the appearance.
+  const resetMedInput = async () => {
     setMedColumn({
       medication: "",
     });
@@ -563,110 +561,110 @@ function AddPatientForm()
     });
   };
 
-    return(
-        <>
-        {(user?.name == 'doctor@janehopkins.com' || user?.name == 'admin@janehopkins.com') && 
-      <Button 
+  return (
+    <>
+      {(user?.name == 'doctor@janehopkins.com' || user?.name == 'admin@janehopkins.com') &&
+        <Button
           disabled={studyStatus == 1}
           variant="contained"
           onClick={() => {
             resetFormInput();
             setOpenViewModal(true);
-            
+
           }}
         >Add
-      </Button>}
+        </Button>}
       <div>
-      <Dialog
-        open={openViewModal}
-        onClose={handleCloseView}
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
-        scroll={'body'}
+        <Dialog
+          open={openViewModal}
+          onClose={handleCloseView}
+          aria-labelledby="scroll-dialog-title"
+          aria-describedby="scroll-dialog-description"
+          scroll={'body'}
 
-      >
-        <DialogTitle id="scroll-dialog-title">Add Patient Form</DialogTitle>
-        <Divider sx={{m:2,}}/>
+        >
+          <DialogTitle id="scroll-dialog-title">Add Patient Form</DialogTitle>
+          <Divider sx={{ m: 2, }} />
           <DialogContent>
-              <Box sx={{
-                display: "flex",
-                justifyContent: "left",
-                alignItems: "center",  
-                }}
-              >
-                <TextField sx = {{m: 1,width: 200 }} helperText="Name" name="name" onChange={handleInput} defaultValue={formInput.name} />
-                <TextField type="date" sx = {{m: 1,width: 350 }} helperText="Date of Birth" name="dob" onChange={handleInput} defaultValue={formInput.dob} />
-                <TextField sx = {{m: 1,width: 200 }} helperText="Address" name="address" onChange={handleInput}defaultValue={formInput.address} />
-              </Box>
-              <Box sx={{
+            <Box sx={{
               display: "flex",
               justifyContent: "left",
               alignItems: "center",
-              m:2,      
-              }}
+            }}
             >
-              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-              <OutlinedInput
-                inputProps={{
-                  'aria-label': 'height',
-                }}
-                name="height"
-                onChange={handleInput}
-                defaultValue={formInput.height}
-              />
-              <FormHelperText >Height</FormHelperText>
-              </FormControl>
-              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-              <OutlinedInput
-                endAdornment={<InputAdornment position="end">lbs</InputAdornment>}
-                inputProps={{
-                  'aria-label': 'weight',
-                }}
-                name="weight"
-                onChange={handleInput}
-                defaultValue={formInput.weight}
-                
-              />
-              <FormHelperText >Weight</FormHelperText>
-              </FormControl>
-              
-              </Box>
-
-              <Box sx={{
+              <TextField sx={{ m: 1, width: 200 }} helperText="Name" name="name" onChange={handleInput} defaultValue={formInput.name} />
+              <TextField type="date" sx={{ m: 1, width: 350 }} helperText="Date of Birth" name="dob" onChange={handleInput} defaultValue={formInput.dob} />
+              <TextField sx={{ m: 1, width: 200 }} helperText="Address" name="address" onChange={handleInput} defaultValue={formInput.address} />
+            </Box>
+            <Box sx={{
               display: "flex",
               justifyContent: "left",
               alignItems: "center",
-              m:2,      
-              }}
+              m: 2,
+            }}
             >
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-              <OutlinedInput
-                endAdornment={<InputAdornment position="end">mm Hg</InputAdornment>}
-                inputProps={{
-                  'aria-label': 'bloodPressure',
-                }}
-                name="bloodPressure"
-                onChange={handleInput}
-                defaultValue={formInput.bloodPressure}
-              />
-              <FormHelperText >Blood Pressure</FormHelperText>
+                <OutlinedInput
+                  inputProps={{
+                    'aria-label': 'height',
+                  }}
+                  name="height"
+                  onChange={handleInput}
+                  defaultValue={formInput.height}
+                />
+                <FormHelperText >Height</FormHelperText>
+              </FormControl>
+              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <OutlinedInput
+                  endAdornment={<InputAdornment position="end">lbs</InputAdornment>}
+                  inputProps={{
+                    'aria-label': 'weight',
+                  }}
+                  name="weight"
+                  onChange={handleInput}
+                  defaultValue={formInput.weight}
+
+                />
+                <FormHelperText >Weight</FormHelperText>
+              </FormControl>
+
+            </Box>
+
+            <Box sx={{
+              display: "flex",
+              justifyContent: "left",
+              alignItems: "center",
+              m: 2,
+            }}
+            >
+              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <OutlinedInput
+                  endAdornment={<InputAdornment position="end">mm Hg</InputAdornment>}
+                  inputProps={{
+                    'aria-label': 'bloodPressure',
+                  }}
+                  name="bloodPressure"
+                  onChange={handleInput}
+                  defaultValue={formInput.bloodPressure}
+                />
+                <FormHelperText >Blood Pressure</FormHelperText>
               </FormControl>
 
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-              <OutlinedInput
-                endAdornment={<InputAdornment position="end">°F</InputAdornment>}
-                inputProps={{
-                  'aria-label': 'temperature',
-                }}
-                name="temperature"
-                onChange={handleInput}
-                defaultValue={formInput.temperature}
-                
-              />
-              <FormHelperText >Temperature</FormHelperText>
+                <OutlinedInput
+                  endAdornment={<InputAdornment position="end">°F</InputAdornment>}
+                  inputProps={{
+                    'aria-label': 'temperature',
+                  }}
+                  name="temperature"
+                  onChange={handleInput}
+                  defaultValue={formInput.temperature}
+
+                />
+                <FormHelperText >Temperature</FormHelperText>
               </FormControl>
-              
-            </Box> 
+
+            </Box>
             <Box
               sx={{
                 display: "flex",
@@ -696,426 +694,172 @@ function AddPatientForm()
               </FormControl>
             </Box>
             <Box sx={{
-            display: "flex",
-            justifyContent: "left",
-            alignItems: "center",
-            m:2,      
+              display: "flex",
+              justifyContent: "left",
+              alignItems: "center",
+              m: 2,
             }}
             >
               <FormControlLabel
                 control={
-                <Checkbox 
-                name="currentlyEmployed"
-                onChange={handleBooleanInput}
-                defaultValue={booleanInput.currentlyEmployed}
-                />}
+                  <Checkbox
+                    name="currentlyEmployed"
+                    onChange={handleBooleanInput}
+                    defaultValue={booleanInput.currentlyEmployed}
+                  />}
                 label="Currently Employed"
                 labelPlacement="end"
               />
               <FormControlLabel
-                    control={<Checkbox 
-                      name="currentlyInsured"
-                      onChange={handleBooleanInput}
-                      defaultValue={booleanInput.currentlyInsured}
-                    />}
-                    label="Currently Insured"
-                    labelPlacement="end"
+                control={<Checkbox
+                  name="currentlyInsured"
+                  onChange={handleBooleanInput}
+                  defaultValue={booleanInput.currentlyInsured}
+                />}
+                label="Currently Insured"
+                labelPlacement="end"
               />
-              </Box>
-              <Divider sx={{m:2,}}/>
-          <div>
-          <Typography>Visits</Typography>
-            <Box sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              m:2,      
+            </Box>
+            <Divider sx={{ m: 2, }} />
+            <div>
+              <Typography>Visits</Typography>
+              <Box sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                m: 2,
               }}
-            >
-            <TextField
-                sx = {{m: 1,width: '25ch'}}
-                helperText="Patient"
-                name = "patient"
-                onChange={handleVisitInput}
-                defaultValue={visitsColumn.patient}
-              />
-            <TextField
-              sx = {{m: 1,width: '25ch'}}
-              helperText="Date and Time"
-              name = "dateTime"
-              onChange={handleVisitInput}
-              defaultValue={visitsColumn.dateTime}
-              />
-            <TextField
-                sx = {{m: 1,width: '25ch' }}
-                helperText="Notes"
-                name = "notes"
+              >
+                <TextField
+                  sx={{ m: 1, width: '25ch' }}
+                  helperText="Patient"
+                  name="patient"
+                  onChange={handleVisitInput}
+                  defaultValue={visitsColumn.patient}
+                />
+                <TextField
+                  sx={{ m: 1, width: '25ch' }}
+                  helperText="Date and Time"
+                  name="dateTime"
+                  onChange={handleVisitInput}
+                  defaultValue={visitsColumn.dateTime}
+                />
+                <TextField
+                  sx={{ m: 1, width: '25ch' }}
+                  helperText="Notes"
+                  name="notes"
                   multiline
                   maxRows={4}
                   onChange={handleVisitInput}
                   defaultValue={visitsColumn.notes}
                 />
-            <TextField
-              sx = {{m: 1,width: '25ch'}}
-              helperText="HIV Viral Load"
-              name = "hivViralLoad"
-              onChange={handleVisitInput}
-              defaultValue={visitsColumn.hivViralLoad}
-            />
-            </Box>
-            <Button
-              variant="contained"
+                <TextField
+                  sx={{ m: 1, width: '25ch' }}
+                  helperText="HIV Viral Load"
+                  name="hivViralLoad"
+                  onChange={handleVisitInput}
+                  defaultValue={visitsColumn.hivViralLoad}
+                />
+              </Box>
+              <Button
+                variant="contained"
                 onClick={visitAdd}
               >Add Visit
-            </Button>
-            </div> 
-            <Divider sx={{m:2,}}/>
+              </Button>
+            </div>
+            <Divider sx={{ m: 2, }} />
             <div>
-          <Typography>Current Medications</Typography>
-            <Box sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              m:2,      
+              <Typography>Current Medications</Typography>
+              <Box sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                m: 2,
               }}
-            >
-            <TextField
-                sx = {{m: 1,width: '25ch'}}
-                helperText="Medication"
-                name = "medication"
-                onChange={handleMedInput}
-                defaultValue={medColumn.medication}
-              />
-            </Box>
-            
-            <Button
-              variant="contained"
+              >
+                <TextField
+                  sx={{ m: 1, width: '25ch' }}
+                  helperText="Medication"
+                  name="medication"
+                  onChange={handleMedInput}
+                  defaultValue={medColumn.medication}
+                />
+              </Box>
+
+              <Button
+                variant="contained"
                 onClick={medicationAdd}
               >Add Medication
-            </Button>
+              </Button>
             </div>
-            <Divider sx={{m:2,}}/>
+            <Divider sx={{ m: 2, }} />
             <div>
-          <Typography>Allergies</Typography>
-            <Box sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              m:2,      
+              <Typography>Allergies</Typography>
+              <Box sx={{
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                m: 2,
               }}
-            >
-            <TextField
-                sx = {{m: 1,width: '25ch'}}
-                helperText="Allergy"
-                name = "allergy"
-                onChange={handleAllergyInput}
-                defaultValue={allergyColumn.allergy}
-              />
-            </Box>
-            <Button
-              variant="contained"
+              >
+                <TextField
+                  sx={{ m: 1, width: '25ch' }}
+                  helperText="Allergy"
+                  name="allergy"
+                  onChange={handleAllergyInput}
+                  defaultValue={allergyColumn.allergy}
+                />
+              </Box>
+              <Button
+                variant="contained"
                 onClick={allergyAdd}
               >Add Allergy
-            </Button>
-            </div>  
-            <Divider sx={{m:2,}}/>
-          <Box
+              </Button>
+            </div>
+            <Divider sx={{ m: 2, }} />
+            <Box
               sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              m:2,      
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center",
+                m: 2,
               }}>
-            <Button 
-              variant="contained"
+              <Button
+                variant="contained"
                 onClick={() => {
                   handleICDInput()
                   handleAdd()
                 }}
               >Add Patient
-            </Button>
-              <Button 
-              variant="outlined"
-              onClick={() => {
-                setOpenViewModal(false);
-                setOpen(true);
-              }}
-            >Cancel
-            </Button>
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setOpenViewModal(false);
+                  setOpen(true);
+                }}
+              >Cancel
+              </Button>
             </Box>
           </DialogContent>
-      </Dialog>
-      {open && <Dialog open={open} onClose={handleToClose}>
+        </Dialog>
+        {open && <Dialog open={open} onClose={handleToClose}>
           <DialogTitle>{"Patient is ineligible"}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Please recheck patient inputs. 
+              Please recheck patient inputs.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleToClose} 
-                    color="primary" autoFocus>
+            <Button onClick={handleToClose}
+              color="primary" autoFocus>
               Close
             </Button>
           </DialogActions>
         </Dialog>}
       </div>
-      </>
-    )
+    </>
+  )
 }
 
 export default AddPatientForm;
-
-/*
- <form onSubmit={handleAdd}>
-        <Box 
-        
-          sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 1000,
-          height: 900,
-          backgroundColor: "background.paper",
-          border: "2px solid #000",
-          boxShadow: 24,
-          p: 2,
-          }}
-        >
-          
-          <Box sx={{
-            display: "flex",
-            justifyContent: "left",
-            alignItems: "center",
-            m:2,      
-            }}
-          >
-            <TextField sx = {{m: 1,width: 200 }} helperText="Name" name="name" onChange={handleInput} defaultValue={formInput.name} />
-            <TextField type="date" sx = {{m: 1,width: 350 }} helperText="Date of Birth" name="dob" onChange={handleInput} defaultValue={formInput.dob} />
-            <TextField sx = {{m: 1,width: 200 }} helperText="Address" name="address" onChange={handleInput}defaultValue={formInput.address} />
-          </Box>
-         
-          <Box sx={{
-            display: "flex",
-            justifyContent: "left",
-            alignItems: "center",
-            m:2,      
-            }}
-          >
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-            <OutlinedInput
-              id="outlined-adornment-height"
-              aria-describedby="outlined-height-helper-text"
-              inputProps={{
-                'aria-label': 'height',
-              }}
-              name="height"
-              onChange={handleInput}
-              defaultValue={formInput.height}
-            />
-            <FormHelperText id="outlined-height-helper-text">Height</FormHelperText>
-            </FormControl>
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-            <OutlinedInput
-              id="outlined-adornment-weight"
-              endAdornment={<InputAdornment position="end">lbs</InputAdornment>}
-              aria-describedby="outlined-weight-helper-text"
-              inputProps={{
-                'aria-label': 'weight',
-              }}
-              name="weight"
-              onChange={handleInput}
-              defaultValue={formInput.weight}
-              
-            />
-            <FormHelperText id="outlined-weight-helper-text">Weight</FormHelperText>
-            </FormControl>
-            
-            </Box>
-            <Box sx={{
-            display: "flex",
-            justifyContent: "left",
-            alignItems: "center",
-            m:2,      
-            }}
-          >
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-            <OutlinedInput
-              id="outlined-adornment-bloodPressure"
-              endAdornment={<InputAdornment position="end">mm Hg</InputAdornment>}
-              aria-describedby="outlined-bloodPressure-helper-text"
-              inputProps={{
-                'aria-label': 'bloodPressure',
-              }}
-              name="bloodPressure"
-              onChange={handleInput}
-              defaultValue={formInput.bloodPressure}
-            />
-            <FormHelperText id="outlined-height-helper-text">Blood Pressure</FormHelperText>
-            </FormControl>
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-            <OutlinedInput
-              id="outlined-adornment-weight"
-              endAdornment={<InputAdornment position="end">°F</InputAdornment>}
-              aria-describedby="outlined-temperature-helper-text"
-              inputProps={{
-                'aria-label': 'temperature',
-              }}
-              name="temperature"
-              onChange={handleInput}
-              defaultValue={formInput.temperature}
-              
-            />
-            <FormHelperText id="outlined-weight-helper-text">Temperature</FormHelperText>
-            </FormControl>
-            
-            </Box>
-            <Box sx={{
-            display: "flex",
-            justifyContent: "left",
-            alignItems: "center",
-            m:2,      
-            }}
-          >
-            <FormControlLabel
-              //value="currentlyEmployed"
-              control={
-              <Checkbox 
-              name="currentlyEmployed"
-              onChange={handleBooleanInput}
-              defaultValue={booleanInput.currentlyEmployed}
-              />}
-              label="Currently Employed"
-              labelPlacement="end"
-            />
-            <FormControlLabel
-                  control={<Checkbox 
-                    name="currentlyInsured"
-                    onChange={handleBooleanInput}
-                    defaultValue={booleanInput.currentlyInsured}
-                  />}
-                  label="Currently Insured"
-                  labelPlacement="end"
-            />
-            </Box>
-        <Divider sx={{m:2,}}/>
-        <div>
-        <Typography>Visits</Typography>
-          <Box sx={{
-            display: "flex",
-            justifyContent: "left",
-            alignItems: "center",
-            m:2,      
-            }}
-          >
-          <TextField
-              sx = {{m: 1,width: '25ch'}}
-              helperText="Patient"
-              name = "patient"
-              onChange={handleVisitInput}
-              defaultValue={visitsColumn.patient}
-            />
-          <TextField
-            sx = {{m: 1,width: '25ch'}}
-            helperText="Date and Time"
-            name = "dateTime"
-            onChange={handleVisitInput}
-            defaultValue={visitsColumn.dateTime}
-            />
-          <TextField
-              sx = {{m: 1,width: '25ch' }}
-              helperText="Notes"
-              name = "notes"
-                multiline
-                maxRows={4}
-                onChange={handleVisitInput}
-                defaultValue={visitsColumn.notes}
-              />
-          <TextField
-            sx = {{m: 1,width: '25ch'}}
-            helperText="HIV Viral Load"
-            name = "hivViralLoad"
-            onChange={handleVisitInput}
-            defaultValue={visitsColumn.hivViralLoad}
-          />
-          </Box>
-          <Button
-            variant="contained"
-              onClick={visitAdd}
-            >Add Visit
-          </Button>
-          </div> 
-          <Divider sx={{m:2,}}/>
-          <div>
-        <Typography>Current Medications</Typography>
-          <Box sx={{
-            display: "flex",
-            justifyContent: "left",
-            alignItems: "center",
-            m:2,      
-            }}
-          >
-          <TextField
-              sx = {{m: 1,width: '25ch'}}
-              helperText="Medication"
-              name = "medication"
-              onChange={handleMedInput}
-              defaultValue={medColumn.medication}
-            />
-          </Box>
-          <Button
-            variant="contained"
-              onClick={medicationAdd}
-            >Add Medication
-          </Button>
-          </div>
-          <Divider sx={{m:2,}}/>
-          <div>
-        <Typography>Allergies</Typography>
-          <Box sx={{
-            display: "flex",
-            justifyContent: "left",
-            alignItems: "center",
-            m:2,      
-            }}
-          >
-          <TextField
-              sx = {{m: 1,width: '25ch'}}
-              helperText="Allergy"
-              name = "allergy"
-              onChange={handleAllergyInput}
-              defaultValue={allergyColumn.allergy}
-            />
-          </Box>
-          <Button
-            variant="contained"
-              onClick={allergyAdd}
-            >Add Allergy
-          </Button>
-          </div> 
-        <Divider sx={{m:2,}}/>
-        <Box
-            sx={{
-            display: "flex",
-            justifyContent: "left",
-            alignItems: "center",
-            m:2,      
-            }}>
-          <Button 
-            variant="contained"
-              onClick={handleAdd}
-            >Add Patient
-          </Button>
-            <Button 
-            variant="outlined"
-            onClick={() => {
-              setOpenViewModal(false);
-
-            }}
-          >Cancel
-          </Button>
-          </Box>
-        </Box>
-        </form>
-*/ 

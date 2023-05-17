@@ -20,7 +20,6 @@ function TextSlider() {
     <Typography variant="h2" style={
       {
         fontWeight: 600,
-
       }}>Want to do a pharmaceutical study? Start here if you are <span style={{
         color: "rgb(99, 93, 255)",
         border: '1px solid black',

@@ -17,11 +17,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MedicationIcon from '@mui/icons-material/Medication';
 import AssignBatchNumberButton from '@/components/AssignBatchNumberButton';
 import StartStudyButton from '@/components/StartStudyButton';
-import useCurrentUserGlobal from "@/api/useCurrentUser";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import ConfirmPatientsButton from './ConfirmPatientsButton';
-import DeletePatientsButton from './DeletePatientsButton';
 
 let pages: any[] = [];
 const pagesBasic = ['Home'];
@@ -99,35 +97,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function ResponsiveAppBar() {
   const { user, error, isLoading } = useUser();
-  const { currentUserGlobal, setCurrentUserGlobal } = useCurrentUserGlobal();
-  // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-
-  // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-  //     setAnchorElNav(event.currentTarget);
-  // };
-  // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-  //     setAnchorElUser(event.currentTarget);
-  // };
-
-  // const handleCloseNavMenu = () => {
-  //     setAnchorElNav(null);
-  // };
-
-  // const handleCloseUserMenu = () => {
-  //     setAnchorElUser(null);
-  // };
-
-  // if (currentUserGlobal == Users.BavariaAdmin) {
-  //   pages = pagesBavariaFDA;
-  // }
-  // else if (currentUserGlobal == Users.FDAAdmin) {
-  //   pages = pagesBavariaFDA;
-  // }
-
-  // else if (currentUserGlobal == Users.JHAdmin || currentUserGlobal == Users.JHDoctor) {
-  //   pages = pagesBasic;
-  // }
 
   if (user?.name == 'admin@bavaria.com') {
     pages = pagesBavariaFDA;
@@ -139,7 +108,6 @@ export default function ResponsiveAppBar() {
   else if (user?.name == 'admin@janehopkins.com' || user?.name == 'doctor@janehopkins.com') {
     pages = pagesBasic;
   }
-
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -239,27 +207,6 @@ export default function ResponsiveAppBar() {
         </List>
         <Divider />
 
-        {/* {functionPages.map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,}}>
-                <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}>
-                  {index === 0 ? <BiotechIcon /> 
-                  : index === 1 ? <AssignmentTurnedInIcon />  : null} 
-                </ListItemIcon>
-                <ListItemText primary={text}  sx={{ opacity: open ? 1 : 0 }}/>
-              </ListItemButton>
-            </ListItem>
-          ))} */}
-
         {((user?.name == 'admin@fda.com' || user?.name == 'doctor@janehopkins.com' || user?.name == 'admin@janehopkins.com') &&
           <List>
             <ListItem disablePadding sx={{ display: 'block' }}>
@@ -278,35 +225,7 @@ export default function ResponsiveAppBar() {
             </ListItem>
           </List>
         )}
-
-
-
-        {/* <List>
-          {functionButtons.map((button, index) => (
-            <ListItem key={button.name} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,}}>
-                <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}>
-                  {index === 0 ? <BiotechIcon /> 
-                  : index === 1 ? <AssignmentTurnedInIcon /> : null} 
-                </ListItemIcon>
-                <ListItemText primary={button.name}  sx={{ opacity: open ? 1 : 0 }}/>
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
-
       </Drawer>
-
     </Box>
-
   );
 }

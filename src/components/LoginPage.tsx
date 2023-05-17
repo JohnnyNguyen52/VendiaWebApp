@@ -1,14 +1,10 @@
 import { Button, Container, TextField, Typography } from '@mui/material';
 import React, { useState, FormEvent } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {push} =  useRouter();
-  const handleLogin = () => push ('api/auth/login')
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -16,7 +12,6 @@ function LoginPage() {
   };
 
   return (
-    
     <Container maxWidth="sm">
       <div style={{
         marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center'

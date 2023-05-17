@@ -5,15 +5,12 @@ import dynamic from 'next/dynamic';
 import AppBar from './appbar';
 import { useUser } from '@auth0/nextjs-auth0/client';
 
-
 const DynamicTextSlider = dynamic(() => import('./TextSlider'), {
   ssr: false,
 });
 
-
 function LandingPage() {
-  const { user, error, isLoading} = useUser();
-
+  const { user, error, isLoading } = useUser();
   return (
     <div>
       {/* {user && <AppBar/>} */}
@@ -34,7 +31,5 @@ function LandingPage() {
     </div>
   );
 }
-
-
 export default LandingPage;
 
