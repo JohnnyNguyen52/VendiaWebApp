@@ -4,7 +4,7 @@ import { createGlobalState } from 'react-hooks-global-state';
         let dd: number = 0;
         await fetch("http://localhost:3000/api/items/lock")
             .then((response) => response.json())
-            .then((data) => { dd = data; console.log(data) });
+            .then((data) => { dd = data });
         return dd;
     }
 

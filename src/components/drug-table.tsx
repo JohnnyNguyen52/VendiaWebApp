@@ -32,8 +32,6 @@ function DrugTable() {
     useEffect(() => {
         const listDrugs = async () => {
             let drugs = await entities.drug.list();
-            console.log("Drug Table");
-            //console.log(currentUser);
             setDrugs(drugs.items);
         };
         listDrugs();
@@ -81,9 +79,6 @@ function DrugTable() {
     const processRowUpdate =
         async (newRow: GridRowModel, oldRow: GridRowModel) => {
             // MODIFY VENDIA DATABASE HERE WHEN TABLE GETS EDITED
-            console.log("New row vals: " + newRow);
-            console.log("Old Row vals: " + oldRow);
-
             return newRow;
         };
 
@@ -96,12 +91,11 @@ function DrugTable() {
         async (error: any) => {
 
             // Display message saying error was made
-            console.log(error);
+            throw error;
         };
     // Filters through rows to find currently selected athlete
     const onRowsSelectionHandler = (ids: any[]) => {
         const selectedRowsData = ids.map((id) => rows.find((row) => row.id === id));
-        console.log(selectedRowsData);
         setDrug(selectedRowsData);
     };
     return (
