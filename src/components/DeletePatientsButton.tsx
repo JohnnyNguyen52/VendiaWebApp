@@ -5,7 +5,6 @@ import useRefreshKey from "@/api/useRefreshKey";
 import useStudyStatus from "@/api/useStudyStatus";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
 
 export default function DeletePatientsButton() {
     const { finalPatientsConfirm: finalPatientsConfirm, setFinalPatientsConfirm: setFinalPatientsConfirm } = useFinalPatientsConfirm();
@@ -13,22 +12,11 @@ export default function DeletePatientsButton() {
     const { user } = useUser();
     const { patient, setPatient }: any = usePatient();    // used for the renderCell property for the datagrid columns. Used specifically for the "placebo"
     const { entities } = useJaneHopkins();
-    const [refreshKey, setRefreshKey] = useState(false);
     const { count, setCount } = useRefreshKey();
 
-    useEffect(() => {
-        const removePatient = async () => {
-            await entities.patient.remove(patient[0].id)
-        }
-        if (patient[0] && refreshKey) {
-            removePatient();
-            setCount(count + 1);
-            setRefreshKey(false);
-        }
-    }, [refreshKey]);
-
     const handleRemove = async () => {
-        setRefreshKey(!refreshKey);
+            await entities.patient.remove(patient[0].id)
+            setCount(count + 1); // Refresh data table
     }
 
     return (

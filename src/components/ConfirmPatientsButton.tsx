@@ -19,23 +19,11 @@ export default function ConfirmPatientsButton() {
 
     const handleConfirm = () => {
         setOpen(false);
-        setRefreshKey(!refreshKey);
+        if (finalPatientsConfirm == 0)
+            setFinalPatientsConfirm(1);
+        else
+            setFinalPatientsConfirm(0);
     }
-    useEffect(() => {
-
-        const changeFinalPatientsConfirm = async () => {
-            if (refreshKey) {
-                if (finalPatientsConfirm == 0)
-                    setFinalPatientsConfirm(1);
-                else
-                    setFinalPatientsConfirm(0);
-                setRefreshKey(!refreshKey);
-            }
-        }
-        changeFinalPatientsConfirm();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [refreshKey])
 
     return (
         <>

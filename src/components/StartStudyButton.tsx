@@ -9,10 +9,10 @@ import useFinalPatientsConfirm from "@/api/useFinalPatientsConfirm";
 export default function StartStudyButton() {
     const [open, setOpen] = React.useState(false);
     const [refreshKey, setRefreshKey] = React.useState(false);
-    const [buttonText, setButtonText] = React.useState('');
     const { studyStatus, setStudyStatus } = useStudyStatus();
     const { finalDrugsConfirm, setFinalDrugsConfirm } = useFinalDrugsConfirm();
     const { finalPatientsConfirm, setFinalPatientsConfirm } = useFinalPatientsConfirm();
+    let buttonText = "";
 
     const handleCancel = () => {
         setOpen(false);
@@ -20,48 +20,38 @@ export default function StartStudyButton() {
 
     const handleConfirm = () => {
         setOpen(false);
-        setRefreshKey(!refreshKey);
+        switch (studyStatus) {
+            case 0:
+                setStudyStatus(1);
+                break;
+
+            case 1:
+                setStudyStatus(2);
+                break;
+
+            case 2:
+                setStudyStatus(0);
+                break;
+        }
     };
 
     const onStudyButtonClick = () => {
         setOpen(true);
     }
 
-    useEffect(() => {
-        const changeStudyStatus = async () => {
-            switch (studyStatus) {
-                case 0:
-                    if (refreshKey) {
-                        setStudyStatus(1);
-                        setRefreshKey(!refreshKey);
+    switch (studyStatus) {
+        case 0:
+            buttonText = "Start Study";
+            break;
 
-                    }
-                    setButtonText("Start Study");
-                    break;
+        case 1:
+            buttonText = "Stop Study";
+            break;
 
-                case 1:
-                    if (refreshKey) {
-                        setStudyStatus(2);
-                        setRefreshKey(!refreshKey);
-
-                    }
-                    setButtonText("Stop Study");
-                    break;
-
-                case 2:
-                    if (refreshKey) {
-                        setStudyStatus(0);
-                        setRefreshKey(!refreshKey);
-
-                    }
-                    setButtonText("Study Finished");
-                    break;
-            }
-        }
-        changeStudyStatus();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [refreshKey])
+        case 2:
+            buttonText = "Study Finished";
+            break;
+    }
 
     return (
         <>

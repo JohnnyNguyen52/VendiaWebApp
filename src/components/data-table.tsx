@@ -39,7 +39,6 @@ function DataTable() {
                 {((params.row.placebo == true) ? <CheckIcon /> : <CloseIcon />)}
             </>
         );
-
     };
 
     const renderTrueFalseE = (params: GridRenderCellParams<Date>) => {

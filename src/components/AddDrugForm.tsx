@@ -1,6 +1,6 @@
 import useJaneHopkins from "@/api/useJaneHopkins";
 import { Checkbox, FormControlLabel, Box, Button, FormControl, FormHelperText, InputAdornment, Modal, OutlinedInput, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ListItemButton } from "@mui/material";
-import { useEffect, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 import useRefreshKey from "@/api/useRefreshKey";
 import useDrug from "@/api/useDrug";
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -14,32 +14,10 @@ function AddDrugForm() {
   const [openViewModal, setOpenViewModal] = useState(false);//set to false so that it is closed
   const { count, setCount }: any = useRefreshKey();
   const { user } = useUser();
-  const [refreshKey, setRefreshKey] = React.useState(false);
-
-
   const [open, setOpen] = useState(false);
-
   const { finalDrugsConfirm, setFinalDrugsConfirm } = useFinalDrugsConfirm();
   const { studyStatus, setStudyStatus } = useStudyStatus();
 
-  useEffect(() => {
-
-    const changeFinalPatientsConfirm = async () => {
-      const handleLock = async () => {
-        if (finalDrugsConfirm == 0)
-          setFinalDrugsConfirm(1);
-        else
-          setFinalDrugsConfirm(0);
-      }
-      if (refreshKey) {
-        handleLock();
-        setRefreshKey(!refreshKey);
-      }
-    }
-    changeFinalPatientsConfirm();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshKey])
   const handleCloseView = () => setOpenViewModal(false);
 
   //Selected Drug
@@ -51,7 +29,12 @@ function AddDrugForm() {
 
   const handleConfirm = () => {
     setOpen(false);
-    setRefreshKey(!refreshKey);
+    if (finalDrugsConfirm == 0)
+      setFinalDrugsConfirm(1);
+    else
+      setFinalDrugsConfirm(0);
+    
+    setCount(count + 1); // Refresh drug table
   };
 
   const onConfirmClick = () => {
