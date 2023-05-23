@@ -140,7 +140,6 @@ function DataTable() {
                 uuid: patients[i].uuid,
                 eligible: isPatientEligible(patients[i]),
             });
-
         }
 
         else if (user?.name == 'admin@fda.com') {
@@ -160,13 +159,10 @@ function DataTable() {
                 placebo: getBatchNumberPlacebo(patients[i].dosesID),
                 eligible: isPatientEligible(patients[i]),
             });
-
-
         }
 
         else if (user?.name == 'admin@janehopkins.com' || user?.name == 'doctor@janehopkins.com') {
             //Pushes out the info to the data table.
-
             rows.push({
                 patientPicture: patients[i].patientPicture,
                 currentDosage: dosageString,
@@ -176,9 +172,7 @@ function DataTable() {
                 uuid: patients[i].uuid,
                 eligible: isPatientEligible(patients[i]),
             });
-
         }
-
     }
 
     const increaseDosageAmount = async () => {
