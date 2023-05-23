@@ -18,10 +18,29 @@ function AddDrugForm() {
   const { finalDrugsConfirm, setFinalDrugsConfirm } = useFinalDrugsConfirm();
   const { studyStatus, setStudyStatus } = useStudyStatus();
 
+  const dialogTitleConfirm = "Send Drugs"
+  const dialogMsgConfirm = "Are you sure that you want to send the drugs?";
+
+  const dialogTitleUndo = "Undo Drugs"
+  const dialogMsgUndo = "Are you sure that you want to undo the drug sending?";
+
+  let dialogTitle = "";
+  let dialogMsg = "";
+
   const handleCloseView = () => setOpenViewModal(false);
 
   //Selected Drug
   const { drug, setDrug } = useDrug();
+
+  if (finalDrugsConfirm == 0) {
+    dialogTitle = dialogTitleConfirm;
+    dialogMsg = dialogMsgConfirm;
+  }
+  else {
+
+    dialogTitle = dialogTitleUndo;
+    dialogMsg = dialogMsgUndo;
+  }
 
   const handleCancel = () => {
     setOpen(false);
@@ -29,11 +48,17 @@ function AddDrugForm() {
 
   const handleConfirm = () => {
     setOpen(false);
-    if (finalDrugsConfirm == 0)
+    if (finalDrugsConfirm == 0) {
       setFinalDrugsConfirm(1);
-    else
+      dialogTitle = dialogTitleUndo;
+      dialogMsg = dialogMsgUndo;
+    }
+    else {
       setFinalDrugsConfirm(0);
-    
+      dialogTitle = dialogTitleConfirm;
+      dialogMsg = dialogMsgConfirm;
+    }
+
     setCount(count + 1); // Refresh drug table
   };
 
@@ -167,7 +192,7 @@ function AddDrugForm() {
               name="confirmDrugsButton"
               variant="contained"
               onClick={onConfirmClick}
-            >Use Final Drugs Confirm
+            >Send Drugs
             </Button>
           )}
           {(finalDrugsConfirm != 0 &&
@@ -175,7 +200,7 @@ function AddDrugForm() {
               name="confirmDrugsButton"
               variant="contained"
               onClick={onConfirmClick}
-            >Undo drug confirm
+            >Undo Drug Sending
             </Button>
 
           )}
@@ -189,11 +214,11 @@ function AddDrugForm() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Lock Drug Table"}
+          {dialogTitle}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure? This will lock you from adding any more drugs.
+            {dialogMsg}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

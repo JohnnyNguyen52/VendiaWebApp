@@ -9,6 +9,15 @@ export default function ConfirmPatientsButton() {
     const [refreshKey, setRefreshKey] = useState(false);
     const { finalPatientsConfirm: finalPatientsConfirm, setFinalPatientsConfirm: setFinalPatientsConfirm } = useFinalPatientsConfirm();
 
+    const dialogTitleConfirm = "Send Patients";
+    const dialogMsgConfirm = "Are you sure that you want to send the patients?";
+
+    const dialogTitleUndo = "Undo Patients";
+    const dialogMsgUndo = "Are you sure that you want to undo the patient sending?";
+
+    let dialogTitle = "";
+    let dialogMsg = "";
+
     const onClick = () => {
         setOpen(true);
     }
@@ -19,10 +28,26 @@ export default function ConfirmPatientsButton() {
 
     const handleConfirm = () => {
         setOpen(false);
-        if (finalPatientsConfirm == 0)
+        if (finalPatientsConfirm == 0) {
             setFinalPatientsConfirm(1);
-        else
+            dialogTitle = (dialogTitleUndo);
+            dialogMsg = (dialogMsgUndo);
+        }
+        else {
             setFinalPatientsConfirm(0);
+            dialogTitle = (dialogTitleConfirm);
+            dialogMsg = (dialogMsgConfirm);
+        }
+    }
+
+    if (finalPatientsConfirm == 0) {
+        dialogTitle = (dialogTitleConfirm);
+        dialogMsg = (dialogMsgConfirm);
+    }
+    else {
+
+        dialogTitle = (dialogTitleUndo);
+        dialogMsg = (dialogMsgUndo);
     }
 
     return (
@@ -41,11 +66,11 @@ export default function ConfirmPatientsButton() {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Study Status Change"}
+                    {dialogTitle}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to send patient data to FDA?
+                        {dialogMsg}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
