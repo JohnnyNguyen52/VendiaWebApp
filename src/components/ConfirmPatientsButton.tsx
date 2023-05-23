@@ -25,7 +25,10 @@ export default function ConfirmPatientsButton() {
 
         const changeFinalPatientsConfirm = async () => {
             if (refreshKey) {
-                setFinalPatientsConfirm(1);
+                if (finalPatientsConfirm == 0)
+                    setFinalPatientsConfirm(1);
+                else
+                    setFinalPatientsConfirm(0);
                 setRefreshKey(!refreshKey);
             }
         }
@@ -36,12 +39,12 @@ export default function ConfirmPatientsButton() {
 
     return (
         <>
-            <ListItemButton disabled={finalPatientsConfirm == 1} onClick={onClick}>
+            <ListItemButton onClick={onClick}>
                 <ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: 'center' }}>
                     <SendIcon />
                 </ListItemIcon>
                 {finalPatientsConfirm == 0 && "Send Patients"}
-                {finalPatientsConfirm == 1 && "Patients Sent"}
+                {finalPatientsConfirm == 1 && "Undo Patients"}
             </ListItemButton>
             <Dialog
                 open={open}

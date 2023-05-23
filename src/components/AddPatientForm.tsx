@@ -7,6 +7,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { VendiaWebAppAPI } from "@/api/VendiaWebAppAPI";
 import useStudyStatus from "@/api/useStudyStatus";
 import { useUser } from '@auth0/nextjs-auth0/client';
+import useFinalPatientsConfirm from "@/api/useFinalPatientsConfirm";
 
 let visitsArray: any[] = [];
 let allergiesArray: any[] = [];
@@ -328,6 +329,7 @@ function AddPatientForm() {
   const handleToClose = () => { setOpen(false); };
   const { user } = useUser();
   const { studyStatus, setStudyStatus } = useStudyStatus();
+  const { finalPatientsConfirm, setFinalPatientsConfirm } = useFinalPatientsConfirm();
 
   const handleCloseView = () => setOpenViewModal(false);
   let [codesChosen, setCodesChosen] = useState([]);
@@ -441,7 +443,6 @@ function AddPatientForm() {
 
   const visitAdd = async () => {
     visitsArray.push(visitsColumn);
-    console.log(visitsArray);
     setFormInput({ ...formInput, ["visits"]: visitsArray });
     resetVisitInput();
   };
@@ -462,7 +463,6 @@ function AddPatientForm() {
 
   const allergyAdd = async () => {
     allergiesArray.push(allergyColumn);
-    console.log(allergiesArray);
     setFormInput({ ...formInput, ["allergies"]: allergiesArray });
     resetAllergyInput();
   };
@@ -481,11 +481,8 @@ function AddPatientForm() {
   );
 
   const medicationAdd = async () => {
-    console.log(medColumn)
     currentMedsArray.push(medColumn);
-    console.log(currentMedsArray)
     setFormInput({ ...formInput, ["currentMedications"]: currentMedsArray });
-    console.log(formInput.currentMedications)
     resetMedInput();
   };
 
@@ -565,12 +562,11 @@ function AddPatientForm() {
     <>
       {(user?.name == 'doctor@janehopkins.com' || user?.name == 'admin@janehopkins.com') &&
         <Button
-          disabled={studyStatus == 1}
+          disabled={studyStatus != 0 || finalPatientsConfirm != 0}
           variant="contained"
           onClick={() => {
             resetFormInput();
             setOpenViewModal(true);
-
           }}
         >Add
         </Button>}

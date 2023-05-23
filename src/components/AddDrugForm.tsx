@@ -25,8 +25,14 @@ function AddDrugForm() {
   useEffect(() => {
 
     const changeFinalPatientsConfirm = async () => {
+      const handleLock = async () => {
+        if (finalDrugsConfirm == 0)
+          setFinalDrugsConfirm(1);
+        else
+          setFinalDrugsConfirm(0);
+      }
       if (refreshKey) {
-        setFinalDrugsConfirm(1);
+        handleLock();
         setRefreshKey(!refreshKey);
       }
     }
@@ -150,36 +156,48 @@ function AddDrugForm() {
 
   };
 
-
-
   return (
     <>
-      <Button
-        name="addButton"
-        variant="contained"
-        disabled={(finalDrugsConfirm == 1) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
-        onClick={() => {
-          resetFormInput();
-          setOpenViewModal(true);
-        }}
-      >Add
-      </Button>
-      <Button
-        name="deleteButton"
-        variant="contained"
-        disabled={(finalDrugsConfirm == 1) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
-        onClick={() => {
-          handleRemove(drug);
-        }}
-      >Delete
-      </Button>
-      <Button
-        name="confirmDrugsButton"
-        variant="contained"
-        disabled={(finalDrugsConfirm == 1) && (studyStatus != 0) && (user?.name != 'admin@bavaria.com')}
-        onClick={onConfirmClick}
-      >Send Drugs
-      </Button>
+      {(user?.name == "admin@bavaria.com" &&
+        <>
+          <Button
+            name="addButton"
+            variant="contained"
+            disabled={finalDrugsConfirm != 0 || studyStatus != 0}
+            onClick={() => {
+              resetFormInput();
+              setOpenViewModal(true);
+            }}
+          >Add
+          </Button>
+          <Button
+            name="deleteButton"
+            variant="contained"
+            disabled={finalDrugsConfirm != 0 || studyStatus != 0}
+            onClick={() => {
+              handleRemove(drug);
+            }}
+          >Delete
+          </Button>
+          {(finalDrugsConfirm == 0 &&
+            <Button
+              name="confirmDrugsButton"
+              variant="contained"
+              onClick={onConfirmClick}
+            >Use Final Drugs Confirm
+            </Button>
+          )}
+          {(finalDrugsConfirm != 0 &&
+            <Button
+              name="confirmDrugsButton"
+              variant="contained"
+              onClick={onConfirmClick}
+            >Undo drug confirm
+            </Button>
+
+          )}
+        </>
+      )}
 
       <Dialog
         open={open}

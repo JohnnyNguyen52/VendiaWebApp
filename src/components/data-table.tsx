@@ -192,9 +192,6 @@ function DataTable() {
             })
             setCount(count + 1)
         }
-        else {
-            console.log('maxed')
-        }
     };
     const decreaseDosageAmount = async () => {
         const termArray = (patient[0].currentDosage).split("/")
@@ -216,9 +213,6 @@ function DataTable() {
     const processRowUpdate =
         async (newRow: GridRowModel, oldRow: GridRowModel) => {
             // MODIFY VENDIA DATABASE HERE WHEN TABLE GETS EDITED
-            console.log("New row vals: " + newRow);
-            console.log("Old Row vals: " + oldRow);
-
             return newRow;
         };
 
@@ -231,7 +225,7 @@ function DataTable() {
         async (error: any) => {
 
             // Display message saying error was made
-            console.log(error);
+            throw error;
         };
     const onRowsSelectionHandler = (ids: any[]) => {
         const selectedRowsData = ids.map((id) => rows.find((row) => row.id === id));

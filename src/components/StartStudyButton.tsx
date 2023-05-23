@@ -12,7 +12,7 @@ export default function StartStudyButton() {
     const [buttonText, setButtonText] = React.useState('');
     const { studyStatus, setStudyStatus } = useStudyStatus();
     const { finalDrugsConfirm, setFinalDrugsConfirm } = useFinalDrugsConfirm();
-    const { finalPatientsConfirm: finalPatientsConfirm, setFinalPatientsConfirm: setFinalPatientsConfirm } = useFinalPatientsConfirm();
+    const { finalPatientsConfirm, setFinalPatientsConfirm } = useFinalPatientsConfirm();
 
     const handleCancel = () => {
         setOpen(false);
@@ -32,7 +32,6 @@ export default function StartStudyButton() {
             switch (studyStatus) {
                 case 0:
                     if (refreshKey) {
-                        console.log(1)
                         setStudyStatus(1);
                         setRefreshKey(!refreshKey);
 
@@ -42,7 +41,6 @@ export default function StartStudyButton() {
 
                 case 1:
                     if (refreshKey) {
-                        console.log(2)
                         setStudyStatus(2);
                         setRefreshKey(!refreshKey);
 
@@ -52,7 +50,6 @@ export default function StartStudyButton() {
 
                 case 2:
                     if (refreshKey) {
-                        console.log(0)
                         setStudyStatus(0);
                         setRefreshKey(!refreshKey);
 
@@ -68,7 +65,7 @@ export default function StartStudyButton() {
 
     return (
         <>
-            <ListItemButton disabled={finalDrugsConfirm == 0 && finalPatientsConfirm == 0} onClick={onStudyButtonClick}>
+            <ListItemButton disabled={finalDrugsConfirm == 0 || finalPatientsConfirm == 0} onClick={onStudyButtonClick}>
                 <ListItemIcon sx={{ minWidth: 0, mr: 3, justifyContent: 'center' }}>
                     <BiotechIcon />
                 </ListItemIcon>

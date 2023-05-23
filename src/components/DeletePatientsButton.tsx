@@ -18,8 +18,7 @@ export default function DeletePatientsButton() {
 
     useEffect(() => {
         const removePatient = async () => {
-            const removeDrugResponse = await entities.patient.remove(patient[0].id)
-            console.log(removeDrugResponse);
+            await entities.patient.remove(patient[0].id)
         }
         if (patient[0] && refreshKey) {
             removePatient();
@@ -33,12 +32,16 @@ export default function DeletePatientsButton() {
     }
 
     return (
-        <Button
-            name="deleteButton"
-            variant="contained"
-            disabled={(finalPatientsConfirm != 0) && (studyStatus != 0) && (user?.name != 'admin@janehopkins.com')}
-            onClick={handleRemove}
-        >Delete
-        </Button>
+        <>
+            {(user?.name == "admin@janehopkins.com" &&
+                <Button
+                    name="deleteButton"
+                    variant="contained"
+                    disabled={(finalPatientsConfirm != 0) || (studyStatus != 0)}
+                    onClick={handleRemove}
+                >Delete
+                </Button>
+            )}
+        </>
     )
 }
