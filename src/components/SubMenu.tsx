@@ -6,8 +6,13 @@ import usePatient from "@/api/usePatient";
 // Used to show currently selected patient properties from the data table
 function SubMenu() {
     const { entities } = useJaneHopkins();
-    const [realPatient, setRealPatient] = useState(undefined);
-    const { patient, setPatient }: any = usePatient();    // used for the renderCell property for the datagrid columns. Used specifically for the "placebo"
+
+    // When patient is selected, useEffect will fetch the data from patient and add that data
+    // to realPatient
+    const [realPatient, setRealPatient] = useState<any>(undefined);
+
+    // Patient data directly from the table
+    const { patient, setPatient }: any = usePatient();
     const { user } = useUser();
 
     useEffect(() => {
@@ -17,18 +22,15 @@ function SubMenu() {
             }
         }
         s();
-    }, [patient])
+    }, [entities.patient, patient])
 
-    if (realPatient == undefined) {
-        return (<div><h3>Patient not selected</h3></div>)
-    }
+    if (realPatient == undefined) return (<h2>Patient not selected</h2>)
     else {
         return (
             <>
-                <h2>Sub Menu</h2>
+                <h2>Patient Information</h2>
                 {((user?.name == 'doctor@janehopkins.com') || (user?.name == 'admin@janehopkins.com')) &&
                     <p>
-                        <h3>realPatient Info</h3>
                         <div> <b>Name: </b>{realPatient.name} </div>
                         <div> <b>Picture: </b>{patient.patientPicture} </div>
                         <div> <b>Insurance Number: </b>{realPatient.insuranceNumber} </div>

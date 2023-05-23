@@ -330,10 +330,8 @@ function AddPatientForm() {
   const { user } = useUser();
   const { studyStatus, setStudyStatus } = useStudyStatus();
   const { finalPatientsConfirm, setFinalPatientsConfirm } = useFinalPatientsConfirm();
-
   const handleCloseView = () => setOpenViewModal(false);
   let [codesChosen, setCodesChosen] = useState([]);
-
 
   //This stores the info that you inputted.
   const [formInput, setFormInput] = useReducer(

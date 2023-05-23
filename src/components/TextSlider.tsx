@@ -5,7 +5,7 @@ function TextSlider() {
   const [currentText, setCurrentText] = useState('A Doctor');
   const [wordIndex, setWordIndex] = useState(1);
 
-  const timer = setInterval(() => {
+  setInterval(() => {
     setWordIndex(wordIndex + 1);
     if (wordIndex % 3 === 0) {
       setCurrentText('A Doctor');

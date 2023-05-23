@@ -1,16 +1,12 @@
-import { Button, Container, Typography, createStyles, makeStyles } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Navbar from './Navbar';
 import dynamic from 'next/dynamic';
-import AppBar from './appbar';
-import { useUser } from '@auth0/nextjs-auth0/client';
 
 const DynamicTextSlider = dynamic(() => import('./TextSlider'), {
   ssr: false,
 });
 
 function LandingPage() {
-  const { user, error, isLoading } = useUser();
   return (
     <div>
       {/* {user && <AppBar/>} */}

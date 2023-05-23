@@ -37,10 +37,6 @@ function DrugTable() {
         listDrugs();
     }, [count, user, entities.drug]);
 
-    // return true if placebo, false if not placebo
-    const getBatchNumberPlacebo = (batchNumber: any) => {
-        return drugs.find(drug => drug.batchNumber == batchNumber).placebo;
-    }
     if (user?.name == 'admin@bavaria.com') {
         // removePII(columns);
         //Pushes out the info to the data table.

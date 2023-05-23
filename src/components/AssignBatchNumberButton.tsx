@@ -11,20 +11,19 @@ export default function AssignBatchNumberButton() {
     const [patients, setPatients] = React.useState<any[]>([]);
     const [drugs, setDrugs] = React.useState<any[]>([]);
 
-    const listPatients = async () => {
-        let patientList = await entities.patient.list();
-        setPatients(patientList.items);
-
-    };
-    const listDrugs = async () => {
-        let drugs = await entities.drug.list();
-        setDrugs(drugs.items);
-    };
-
     useEffect(() => {
+        const listPatients = async () => {
+            let patientList = await entities.patient.list();
+            setPatients(patientList.items);
+
+        };
+        const listDrugs = async () => {
+            let drugs = await entities.drug.list();
+            setDrugs(drugs.items);
+        };
         listPatients();
         listDrugs();
-    }, [count]);
+    }, [count, entities.drug, entities.patient]);
 
 
     const getBatchNumbers = async () => {
