@@ -566,7 +566,7 @@ function AddPatientForm() {
             resetFormInput();
             setOpenViewModal(true);
           }}
-        >Add
+        >Add New Patient
         </Button>}
       <div>
         <Dialog
@@ -715,7 +715,8 @@ function AddPatientForm() {
               />
             </Box>
             <Divider sx={{ m: 2, }} />
-            <div>
+            
+            {/* TODO: PUT VISITS IN A SEPARATE BUTTON ONLY FOR EXISTING PATIENTS AND DISPLAY THEM<div>
               <Typography>Visits</Typography>
               <Box sx={{
                 display: "flex",
@@ -809,7 +810,7 @@ function AddPatientForm() {
                 onClick={allergyAdd}
               >Add Allergy
               </Button>
-            </div>
+            </div> */}
             <Divider sx={{ m: 2, }} />
             <Box
               sx={{
