@@ -32,11 +32,10 @@ function SubMenu() {
                 {((user?.name == 'doctor@janehopkins.com') || (user?.name == 'admin@janehopkins.com')) &&
                     <p>
                         <div> <b>Name: </b>{realPatient.name} </div>
-                        <div> <b>Picture: </b>{patient.patientPicture} </div>
                         <div> <b>Insurance Number: </b>{realPatient.insuranceNumber} </div>
                         <div> <b>Date of Birth: </b>{realPatient.dob} </div>
                         <div> <b>Height: </b>{realPatient.height} </div>
-                        <div> <b>Weight: </b>{realPatient.weight} </div>
+                        <div> <b>Weight: </b>{realPatient.weight} lbs</div>
                         {/* <div> <b>Allergies: </b>{selectedrealPatient.allergies && selectedPatient.allergies.map((x: any) => <li>{x}</li>)
                         && console.log(selectedrealPatient.allergies)
                     } </div> */}
@@ -60,10 +59,6 @@ function SubMenu() {
                         (x: any) => <p>{x}</p>)
                     } </div> */}
                         <div> <b>Current Dosage: </b>{realPatient.currentDosage} </div>
-
-                        <h3>Drug Info</h3>
-                        <div> <b>Dosage: </b>{realPatient.dosage} </div>
-                        <div> <b>Placebo: </b>{realPatient.placebo} </div>
                     </p>
                 }
                 {((user?.name == 'admin@bavaria.com')) &&
@@ -72,7 +67,7 @@ function SubMenu() {
                         <div> <b>Insurance Number: </b>{realPatient.insuranceNumber} </div>
                         <div> <b>Date of Birth: </b>{realPatient.dob} </div>
                         <div> <b>Height: </b>{realPatient.height} </div>
-                        <div> <b>Weight: </b>{realPatient.weight} </div>
+                        <div> <b>Weight: </b>{realPatient.weight} lbs</div>
                         {/* <div> <b>Allergies: </b>{selectedrealPatient.allergies && selectedPatient.allergies.map(
                         (x: any) => <p>{x}</p>)
                     } </div> */}
@@ -94,10 +89,6 @@ function SubMenu() {
                         (x: any) => <p>{x}</p>)
                     } </div> */}
                         <div> <b>Current Dosage: </b>{realPatient.currentDosage} </div>
-
-                        <h3>Drug Info</h3>
-                        <div> <b>Dosage: </b>{realPatient.dosage} </div>
-                        <div> <b>Placebo: </b>{realPatient.placebo} </div>
                     </p>
                 }
                 {((user?.name == 'admin@fda.com')) &&
@@ -106,7 +97,7 @@ function SubMenu() {
                         <div> <b>Insurance Number: </b>{realPatient.insuranceNumber} </div>
                         <div> <b>Date of Birth: </b>{realPatient.dob} </div>
                         <div> <b>Height: </b>{realPatient.height} </div>
-                        <div> <b>Weight: </b>{realPatient.weight} </div>
+                        <div> <b>Weight: </b>{realPatient.weight} lbs</div>
                         {/* <div> <b>Allergies: </b>{selectedrealPatient.allergies && selectedPatient.allergies.map(
                         (x: any) => <p>{x}</p>)
                     } </div> */}
@@ -131,11 +122,6 @@ function SubMenu() {
                         (x: any) => <p>{x}</p>)
                     } </div> */}
                         <div> <b>Current Dosage: </b>{realPatient.currentDosage} </div>
-
-                        <h3>Drug Info</h3>
-                        <div> <b>Dosage: </b>{realPatient.dosage} </div>
-                        <div> <b>Placebo: </b>{realPatient.placebo} </div>
-                        <div> <b>Batch Number: </b>{realPatient.batchNumber} </div>
                     </p>
                 }
             </>

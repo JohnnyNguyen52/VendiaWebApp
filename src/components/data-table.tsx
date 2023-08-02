@@ -11,7 +11,6 @@ import Image from 'next/image';
 import useStudyStatus from "@/api/useStudyStatus";
 
 function removePII(columns: GridColDef[]) {
-    columns.splice(columns.findIndex(i => i.field == 'patientPicture'), 1);
     columns.splice(columns.findIndex(i => i.field == 'name'), 1);
 }
 
@@ -56,14 +55,6 @@ function DataTable() {
             field: 'eligible', headerName: 'Eligible', width: 100,
             // render cell based on the value of each row. row value is either "true" or "false"
             renderCell: renderTrueFalseE
-        },
-        {
-            field: 'patientPicture', headerName: 'Picture', width: 125,
-            renderCell: (params: GridRenderCellParams<Date>) => {
-                return (
-                    <Image src={params.row} alt="" />
-                )
-            }
         },
         { field: 'id', headerName: 'ID', width: 300 },
         { field: 'name', headerName: 'Name', width: 150 },
@@ -164,7 +155,6 @@ function DataTable() {
         else if (user?.name == 'admin@janehopkins.com' || user?.name == 'doctor@janehopkins.com') {
             //Pushes out the info to the data table.
             rows.push({
-                patientPicture: patients[i].patientPicture,
                 currentDosage: dosageString,
                 id: patients[i]._id,
                 name: patients[i].name,
