@@ -24,7 +24,11 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-
+### :camera: Screenshots
+<div align="center">
+  <p> <font size="5"><u><strong>Landing Page</strong></u></font> </p>
+  <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/4222dec5-b53b-4eff-b003-df3fb8aff71c" alt="Dashboard" />
+</div>
 ![Landing_Page](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/4222dec5-b53b-4eff-b003-df3fb8aff71c)
 ![Log_In_Error](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/ccfd1e65-9c0f-418f-84df-cdcfca097d0e)
 ![Assign_Batch_!](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/b151541f-7ceb-41a1-b64b-156af645666b)
