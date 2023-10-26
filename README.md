@@ -35,9 +35,17 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
   <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/ccfd1e65-9c0f-418f-84df-cdcfca097d0e" alt="Log In" />
 </div>
 
+<div align="center">
+  <p> <font size="5"><u><strong>Patient Table</strong></u></font> </p>
+  <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/b151541f-7ceb-41a1-b64b-156af645666b" alt="Patient Table" />
+</div>
 
-![Landing_Page](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/4222dec5-b53b-4eff-b003-df3fb8aff71c)
-![Log_In_Error](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/ccfd1e65-9c0f-418f-84df-cdcfca097d0e)
-![Assign_Batch_!](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/b151541f-7ceb-41a1-b64b-156af645666b)
-![Patient_Form_1](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/aa5599b9-779a-43ee-9925-5f5d2ebe9fd7)
-![Patient_Form_2](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/2784f98c-e6a7-408d-bfea-28e13e38fa42)
+<div align="center">
+  <p> <font size="5"><u><strong>Patient Form</strong></u></font> </p>
+  <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/aa5599b9-779a-43ee-9925-5f5d2ebe9fd7" alt="Patient Form 1" />
+  <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/2784f98c-e6a7-408d-bfea-28e13e38fa42" alt="Patient Form 2" />
+</div>
+
+
+
+
