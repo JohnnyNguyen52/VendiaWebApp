@@ -46,6 +46,12 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
   <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/2784f98c-e6a7-408d-bfea-28e13e38fa42" alt="Patient Form 2" />
 </div>
 
+<div align="center">
+  <p> <font size="5"><u><strong>Drug Table</strong></u></font> </p>
+  <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/8a98dadd-42d0-4acd-b6b2-e212910519d6" alt="Drug Table" />
+</div>
+
+
 
 
 
