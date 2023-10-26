@@ -27,11 +27,11 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 ### :camera: Screenshots
 <div align="center">
   <p> <font size="5"><u><strong>Landing Page</strong></u></font> </p>
-  <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/4222dec5-b53b-4eff-b003-df3fb8aff71c" alt="Dashboard" />
+  <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/4222dec5-b53b-4eff-b003-df3fb8aff71c" alt="Landing Page" />
 </div>
 
 <div align="center">
-  <p> <font size="5"><u><strong>Landing Page</strong></u></font> </p>
+  <p> <font size="5"><u><strong>Log In</strong></u></font> </p>
   <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/ccfd1e65-9c0f-418f-84df-cdcfca097d0e" alt="Log In" />
 </div>
 
