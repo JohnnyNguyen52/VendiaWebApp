@@ -23,3 +23,7 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+
+
+![Assign_Batch_!](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/b151541f-7ceb-41a1-b64b-156af645666b)
