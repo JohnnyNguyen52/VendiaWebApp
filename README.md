@@ -29,6 +29,13 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
   <p> <font size="5"><u><strong>Landing Page</strong></u></font> </p>
   <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/4222dec5-b53b-4eff-b003-df3fb8aff71c" alt="Dashboard" />
 </div>
+
+<div align="center">
+  <p> <font size="5"><u><strong>Landing Page</strong></u></font> </p>
+  <img src="https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/ccfd1e65-9c0f-418f-84df-cdcfca097d0e" alt="Log In" />
+</div>
+
+
 ![Landing_Page](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/4222dec5-b53b-4eff-b003-df3fb8aff71c)
 ![Log_In_Error](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/ccfd1e65-9c0f-418f-84df-cdcfca097d0e)
 ![Assign_Batch_!](https://github.com/JohnnyNguyen52/VendiaWebApp/assets/102269099/b151541f-7ceb-41a1-b64b-156af645666b)
